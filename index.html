@@ -157,6 +157,25 @@ dialog { max-height: calc(100vh - 2rem); overflow-y: auto; }
 .gallery figcaption { font-size: .8125rem; line-height: 1.45; color: var(--muted); margin-top: .5rem; }
 dialog.has-gallery { max-width: 760px; }
 
+.dlg-sub { font-size: 1.05rem; font-weight: 600; margin: 2rem 0 .85rem; letter-spacing: -0.01em; }
+.process { list-style: none; counter-reset: step; margin: 0 0 .5rem; padding: 0; }
+.process li { counter-increment: step; position: relative; padding: 0 0 1.1rem 2.6rem; }
+.process li::before {
+  content: counter(step); position: absolute; left: 0; top: .05rem; width: 1.65rem; height: 1.65rem; border-radius: 50%;
+  border: 1.5px solid var(--accent); color: var(--accent); font-size: .8rem; font-weight: 700; display: grid; place-items: center; background: var(--page);
+}
+.process li:not(:last-child)::after { content: ""; position: absolute; left: calc(.825rem - .75px); top: 1.85rem; bottom: .1rem; width: 1.5px; background: var(--line); }
+.process strong { display: block; font-size: .975rem; margin-bottom: .15rem; }
+.process p { margin: 0 !important; font-size: .95rem; color: var(--muted); }
+.table-wrap { overflow-x: auto; margin: 0 0 .5rem; border: 1px solid var(--line); border-radius: 12px; }
+table.risk { border-collapse: collapse; width: 100%; min-width: 600px; font-size: .875rem; line-height: 1.4; }
+table.risk th { text-align: left; font-weight: 600; padding: .7rem .8rem; border-bottom: 1px solid var(--line); background: #FAFAFC; }
+table.risk td { padding: .7rem .8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.risk tr:last-child td { border-bottom: 0; }
+table.risk td.score { white-space: nowrap; font-variant-numeric: tabular-nums; }
+table.risk td.score.high { color: #C2410C; font-weight: 700; }
+.links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1rem; }
+
 /* about */
 .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-top: 2rem; }
 .about-grid p { margin: 0 0 1rem; max-width: 60ch; }
@@ -314,6 +333,55 @@ const CONTENT = {
       highlights: ["2nd place in the SharkNinja Innovation Challenge, earning $20,000 total toward prototyping ($5K for advancing past round 2, plus $15K for 2nd place)", "Building the product with a Northeastern lab", "Currently in the MVP phase"],
       tools: ["User interviews", "Surveys", "Journey mapping", "Prototyping", "CAD"],
       link: "https://www.matchaluxe.co"
+    },
+    {
+      title: "Bloom: Pregnancy Appointment Companion",
+      type: "School",
+      course: "Tufts University, Human Factors Engineering",
+      year: "2026",
+      role: "Team project with Sydney Dijkstra, Sahir Surani, and Deelia Wang",
+      emoji: "🌸",
+      color: "pink",
+      image: "images/bloom-cover.jpg",
+      blurb: "An end-to-end human factors study, from user research through risk analysis and usability testing, for an app that helps pregnant patients advocate for themselves.",
+      details: "Our research found that pregnant patients often leave short, rushed appointments without asking what they meant to, and the CDC reports 44.7% of patients hold back questions from their providers. We designed Bloom, a mobile companion that records prenatal visits, uses AI to summarize them, suggests questions for the next appointment, and gives week-by-week information. Then we took it through a full human factors process: task analysis, a use-related risk analysis (URRA), and formative usability testing with real parents.",
+      process: [
+        { stage: "Research", text: "Literature review, a survey of 17 people who received pregnancy care in the US, and 2 semi-structured interviews. Affinity diagramming surfaced two themes: patients struggle to self-advocate, and postpartum care falls short." },
+        { stage: "Design", text: "Defined Bloom around self-advocacy: record the visit, get an AI summary and suggested questions, carry saved questions into the next appointment, and use the BRAN framework (Benefits, Risks, Alternatives, Nothing) to guide decisions. Built an interactive HTML prototype from Figma wireframes with Claude." },
+        { stage: "Task analysis", text: "Broke 7 high-level processes into a hierarchical task analysis, down to single motor actions, visual information processing, and verbal exchanges with a provider." },
+        { stage: "Use-related risk analysis", text: "For 23 tasks, identified the use error, hazard, hazardous situation, and harm, then scored each by severity (1 to 4) and probability (1 to 4). Higher scores got stronger mitigations, and the highest-risk tasks became the critical tasks in usability testing." },
+        { stage: "Usability testing", text: "Ran a formative, moderated, remote test with 4 participants (1 currently pregnant, 3 who gave birth within 4 years) across 6 use scenarios, followed by debriefs and root cause analysis of every finding." },
+        { stage: "Iteration", text: "Recorded 1 use error and 1 use difficulty, then traced each to a root cause and design fix. Feedback also shaped next steps: an onboarding walkthrough, calendar sync, renaming the Info tab, separating AI-generated from standard questions, and a postpartum mode." }
+      ],
+      riskTable: {
+        title: "Highest-scoring risks from the URRA",
+        columns: ["Task", "Potential use error and harm", "Severity × probability", "Mitigation"],
+        rows: [
+          ["Get provider consent to record", "User records without consent, risking legal action and distress", "4 × 4 = 16", "Consent reminder above the record button; testing led us to recommend a pop-up"],
+          ["Select appointment to record", "User can't find the appointment, so the visit goes unrecorded", "3 × 3 = 9", "Added a record option on the home screen that works without an appointment"],
+          ["Start recording", "User thinks the app is recording when it isn't", "3 × 3 = 9", "Clear button states and micro-interactions while recording"],
+          ["Enter pregnancy details", "Wrong week leads to irrelevant suggested questions", "3 × 3 = 9", "Summary screen so users can double-check entries"],
+          ["End recording", "Recording keeps running and captures unrelated conversation", "2 × 4 = 8", "Detect idle time and ask whether to keep recording"],
+          ["Delete account", "Accidental deletion loses every recording", "4 × 2 = 8", "Confirmation step before permanent deletion"]
+        ]
+      },
+      highlights: [
+        "The highest URRA risk, recording without consent, scored 16 of 16 and drove a design change before testing",
+        "All 4 participants completed every core flow, with only 1 use error and 1 use difficulty",
+        "All 4 skipped the consent step in testing; root cause analysis separated a test artifact from a real issue, a static banner people learn to tune out",
+        "Every participant named question generation and the recording feature as reasons they'd use the app"
+      ],
+      tools: ["Literature review", "Surveys", "Interviews", "Affinity diagramming", "Task analysis", "URRA", "Usability testing", "Root cause analysis", "Figma", "Claude"],
+      gallery: [
+        { src: "images/bloom-affinity-interviews.jpg", caption: "Affinity diagram from interviews: postpartum care and patient advocacy", wide: true },
+        { src: "images/bloom-screens-record.jpg", caption: "Onboarding and recording a visit, with the consent reminder on the home screen", wide: true },
+        { src: "images/bloom-screens-questions.jpg", caption: "Reviewing a recording, saving suggested questions, and carrying them into the next appointment", wide: true },
+        { src: "images/bloom-screens-info.jpg", caption: "Week-by-week pregnancy info and the BRAN decision framework" },
+        { src: "images/bloom-finding-consent.jpg", caption: "Use error: the static consent banner was easy to overlook" }
+      ],
+      links: [
+        { label: "Try the prototype", url: "bloom/" }
+      ]
     },
     {
       title: "Stroke Recovery Toolkit",
@@ -545,7 +613,37 @@ function openProject(p) {
   body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`));
   if (p.role) body.append(el("p", "dlg-role", p.role));
   body.append(el("p", null, p.details));
+  if (p.process && p.process.length) {
+    body.append(el("h4", "dlg-sub", "Process"));
+    const ol = el("ol", "process");
+    p.process.forEach(step => {
+      const li = el("li");
+      li.append(el("strong", null, step.stage), el("p", null, step.text));
+      ol.append(li);
+    });
+    body.append(ol);
+  }
+  if (p.riskTable) {
+    body.append(el("h4", "dlg-sub", p.riskTable.title || "Risk analysis"));
+    const wrap = el("div", "table-wrap");
+    const t = el("table", "risk");
+    const thead = el("thead"); const hr = el("tr");
+    p.riskTable.columns.forEach(c => hr.append(el("th", null, c)));
+    thead.append(hr); t.append(thead);
+    const tb = el("tbody");
+    p.riskTable.rows.forEach(r => {
+      const tr = el("tr");
+      r.forEach((cell, ci) => {
+        const td = el("td", null, cell);
+        if (ci === 2) { td.className = "score"; const n = parseInt(cell.split("=").pop()); if (n >= 12) td.classList.add("high"); }
+        tr.append(td);
+      });
+      tb.append(tr);
+    });
+    t.append(tb); wrap.append(t); body.append(wrap);
+  }
   if (p.highlights && p.highlights.length) {
+    if (p.process) body.append(el("h4", "dlg-sub", "Key results"));
     const hl = el("ul", "highlights"); p.highlights.forEach(t => hl.append(el("li", null, t))); body.append(hl);
   }
   if (p.tools && p.tools.length) {
@@ -581,6 +679,11 @@ function openProject(p) {
       g.append(fig);
     });
     body.append(g);
+  }
+  if (p.links && p.links.length) {
+    const row = el("div", "links");
+    p.links.forEach(l => { const a = el("a", "link", l.label); a.href = l.url; a.target = "_blank"; a.rel = "noopener"; row.append(a); });
+    body.append(row);
   }
   if (p.link) {
     const a = el("a", "link", "See the full project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
