@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Bloom — Pregnancy Appointment Companion</title>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet">
 <style>
   /* ---------- Global ---------- */
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -15,6 +16,13 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+  }
+
+  /* Material Icons helpers */
+  .material-icons, .material-icons-outlined, .material-icons-round {
+    vertical-align: middle;
+    line-height: 1;
+    user-select: none;
   }
 
   /* ---------- iPhone 17 Frame (approx 402 x 874 CSS px) ---------- */
@@ -145,10 +153,11 @@
     border-radius: 28px;
     background: linear-gradient(135deg, #b886c9, #f5a9c0);
     display: flex; align-items: center; justify-content: center;
-    font-size: 48px;
+    color: #fff;
     margin-bottom: 20px;
     box-shadow: 0 10px 28px rgba(184, 134, 201, 0.4);
   }
+  .logo .material-icons { font-size: 48px; }
 
   /* ---------- Home (Record) ---------- */
   .home-header {
@@ -168,10 +177,21 @@
     border-radius: 22px;
     margin-bottom: 20px;
     box-shadow: 0 10px 25px rgba(184, 134, 201, 0.3);
+    position: relative;
+    overflow: hidden;
   }
   .week-card .week-num { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
   .week-card .week-label { font-size: 13px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
-  .week-card .week-sub { font-size: 13px; opacity: 0.9; margin-top: 8px; }
+  .week-card .week-sub {
+    font-size: 13px; opacity: 0.95; margin-top: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .week-card .week-sub .material-icons { font-size: 18px; }
+  .week-card .bg-ico {
+    position: absolute; right: -10px; bottom: -10px;
+    color: rgba(255,255,255,0.15);
+  }
+  .week-card .bg-ico .material-icons { font-size: 110px; }
 
   /* Record UI */
   .record-area {
@@ -191,18 +211,12 @@
     cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.2s ease;
+    color: #fff;
   }
+  .record-btn .material-icons { font-size: 64px; }
   .record-btn:active { transform: scale(0.96); }
-  .record-btn .dot {
-    width: 60px; height: 60px;
-    background: #fff;
-    border-radius: 50%;
-    transition: all 0.25s ease;
-  }
-  .record-btn.recording .dot {
-    width: 40px; height: 40px;
-    border-radius: 8px;
-    background: #e85a7a;
+  .record-btn.recording {
+    background: radial-gradient(circle at 35% 35%, #f7b0c0, #e85a7a);
   }
   .pulse-ring {
     position: absolute;
@@ -224,11 +238,16 @@
     color: #2d1b3d;
     font-variant-numeric: tabular-nums;
   }
-  .record-hint { color: #8b7c93; font-size: 14px; text-align: center; }
+  .record-hint {
+    color: #8b7c93; font-size: 14px; text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .record-hint .material-icons { font-size: 16px; color: #b886c9; }
 
   /* ---------- Recording Controls (end record / discard) ---------- */
   .record-controls { display: flex; gap: 12px; width: 100%; margin-top: 12px; }
-  .record-controls button { flex: 1; }
+  .record-controls button { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .record-controls button .material-icons { font-size: 18px; }
   .btn-discard {
     background: #fff;
     color: #d44a6a;
@@ -274,12 +293,14 @@
     box-shadow: 0 2px 10px rgba(45, 27, 61, 0.05);
     border: 1px solid #f0e6f2;
   }
-  .meta { font-size: 12px; color: #8b7c93; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+  .meta { font-size: 12px; color: #8b7c93; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
   .pill {
-    display: inline-block; padding: 3px 10px;
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px;
     background: #f0e6f2; color: #7a5a8a;
     border-radius: 20px; font-size: 11px; font-weight: 600;
   }
+  .pill .material-icons { font-size: 12px; }
   .transcript { font-size: 14px; line-height: 1.6; color: #3d2d4a; }
   .highlight { background: #fde9a7; padding: 0 2px; border-radius: 3px; }
 
@@ -290,7 +311,18 @@
     padding: 14px;
     border-radius: 14px;
     margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
   }
+  .res-card .res-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    color: #e89a7c; flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(232, 154, 124, 0.2);
+  }
+  .res-card .res-icon .material-icons { font-size: 20px; }
   .res-card h4 { color: #2d1b3d; font-size: 15px; margin-bottom: 4px; font-weight: 600; }
   .res-card p { font-size: 13px; color: #6b5b73; }
 
@@ -303,6 +335,15 @@
     display: flex;
     gap: 12px;
     align-items: flex-start;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.2s ease;
+    user-select: none;
+  }
+  .q-card:active { transform: scale(0.98); }
+  .q-card:hover { box-shadow: 0 4px 12px rgba(122, 194, 157, 0.2); }
+  .q-card.saved {
+    background: linear-gradient(135deg, #d8ecdd, #c7e3d0);
+    border-left-color: #5ba884;
   }
   .q-card .q-num {
     width: 26px; height: 26px; border-radius: 50%;
@@ -311,22 +352,96 @@
     font-weight: 700; font-size: 13px;
     flex-shrink: 0;
   }
-  .q-card p { font-size: 13px; color: #2d4a3d; }
+  .q-card.saved .q-num { background: #5ba884; }
+  .q-card p { font-size: 13px; color: #2d4a3d; flex: 1; }
+  .q-card .bookmark {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #7ac29d;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+  .q-card .bookmark .material-icons { font-size: 20px; }
+  .q-card.saved .bookmark { color: #5ba884; transform: scale(1.1); }
+
+  /* Saved counter chip */
+  .saved-counter {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px;
+    background: #e6f2ea; color: #5ba884;
+    border-radius: 20px; font-size: 11px; font-weight: 700;
+    margin-left: 6px;
+  }
+  .saved-counter .material-icons { font-size: 13px; }
+
+  /* Name suggestion chips */
+  .name-suggestions {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .chip {
+    padding: 7px 12px;
+    background: #f8f0fa;
+    border: 1px solid #ead8ef;
+    color: #7a5a8a;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }
+  .chip:hover { background: #f0e6f2; }
+  .chip:active { transform: scale(0.96); }
+
+  /* Toast */
+  .toast {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #2d1b3d;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 24px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+    z-index: 200;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast .material-icons { font-size: 16px; color: #7ac29d; }
 
   /* ---------- Tabs ---------- */
   .tabs {
-    display: flex; gap: 8px;
+    display: flex; gap: 4px;
     background: #f0e6f2;
     padding: 4px;
     border-radius: 14px;
     margin-bottom: 16px;
+    width: 100%;
   }
   .tab {
-    flex: 1; text-align: center;
-    padding: 10px; border-radius: 11px;
-    font-size: 13px; font-weight: 600;
-    color: #7a5a8a; cursor: pointer;
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    padding: 10px 6px;
+    border-radius: 11px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #7a5a8a;
+    cursor: pointer;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
   }
   .tab.active { background: #fff; color: #2d1b3d; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
@@ -339,8 +454,9 @@
     width: 36px; height: 36px; border-radius: 50%;
     background: #fff; border: 1px solid #f0e6f2;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 18px; color: #2d1b3d;
+    cursor: pointer; color: #2d1b3d;
   }
+  .back .material-icons { font-size: 22px; }
   .topbar h2 { font-size: 17px; }
 
   /* ---------- Loader ---------- */
@@ -376,8 +492,149 @@
     cursor: pointer;
     font-family: inherit;
   }
-  .navbtn .icon { font-size: 22px; }
+  .navbtn .material-icons { font-size: 24px; }
   .navbtn.active { color: #b886c9; }
+
+  /* ---------- Calendar ---------- */
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .cal-header .cal-title {
+    font-size: 22px; font-weight: 700; color: #2d1b3d;
+  }
+  .cal-nav {
+    display: flex; gap: 8px;
+  }
+  .cal-nav button {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: #fff; border: 1px solid #f0e6f2;
+    display: flex; align-items: center; justify-content: center;
+    color: #2d1b3d; cursor: pointer;
+  }
+  .cal-nav button .material-icons { font-size: 20px; }
+  .cal-nav button:active { transform: scale(0.92); }
+
+  .cal-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 6px;
+  }
+  .cal-weekdays div {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b7c93;
+    padding: 6px 0;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 2px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 14px;
+    color: #2d1b3d;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.15s ease;
+  }
+  .cal-day.other-month { color: #d5cddb; cursor: default; }
+  .cal-day.today .num {
+    background: #2d1b3d;
+    color: #fff;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+  }
+  .cal-day .num {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .cal-day.has-appointment .num {
+    font-weight: 600;
+  }
+  .cal-day.selected .num {
+    background: #b886c9;
+    color: #fff;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    font-weight: 700;
+  }
+  .cal-day.selected.today .num { background: #2d1b3d; }
+  .cal-day .dots {
+    display: flex; gap: 3px;
+    height: 6px;
+    margin-top: 1px;
+  }
+  .cal-day .dots span {
+    width: 5px; height: 5px; border-radius: 50%;
+  }
+  .cal-day .dots .past { background: #b886c9; }
+  .cal-day .dots .upcoming {
+    background: transparent;
+    border: 1.5px solid #b886c9;
+    box-sizing: border-box;
+  }
+
+  .cal-legend {
+    display: flex; gap: 14px;
+    padding: 10px 4px 6px;
+    font-size: 11px; color: #8b7c93;
+  }
+  .cal-legend .leg {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .cal-legend .leg-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #b886c9;
+  }
+  .cal-legend .leg-dot.outlined {
+    background: transparent;
+    border: 1.5px solid #b886c9;
+  }
+
+  .cal-details {
+    margin-top: 8px;
+  }
+  .cal-details h3 {
+    font-size: 14px;
+    color: #8b7c93;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .empty-day {
+    text-align: center;
+    padding: 20px 16px;
+    color: #8b7c93;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 14px;
+    border: 1px dashed #e6dce8;
+  }
+  .empty-day .material-icons {
+    font-size: 32px; color: #c9b8d1; display: block; margin: 0 auto 6px;
+  }
+
+  .recording-item .upcoming-badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: #fff3e0;
+    color: #c96a1b;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
 
   /* ---------- List with Recordings ---------- */
   .recording-item {
@@ -393,11 +650,628 @@
     width: 42px; height: 42px; border-radius: 12px;
     background: linear-gradient(135deg, #f5a9c0, #b886c9);
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 18px;
+    color: #fff;
   }
+  .recording-item .icon .material-icons { font-size: 22px; }
   .recording-item .info { flex: 1; }
   .recording-item .info h4 { font-size: 14px; font-weight: 600; color: #2d1b3d; margin-bottom: 2px; }
   .recording-item .info .meta-line { font-size: 12px; color: #8b7c93; }
+  .recording-item .chev { color: #b886c9; display: flex; align-items: center; }
+  .recording-item .chev .material-icons { font-size: 22px; }
+
+  /* ---------- Info Page ---------- */
+  .info-section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d1b3d;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .trimester-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+    position: relative;
+    padding-top: 28px;
+  }
+  .trimester-block {
+    flex: 1;
+    height: 70px;
+    background: #ece4ee;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+  .trimester-block .fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #c5e6a8, #a8d985);
+    width: 0;
+    transition: width 0.6s ease;
+  }
+  .trimester-line { display: none; }
+  .week-marker {
+    position: absolute;
+    top: 4px;
+    transform: translateX(-50%);
+    background: #6b5b73;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 3;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: left 0.6s ease;
+  }
+  .week-marker::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid #6b5b73;
+  }
+  .trimester-labels {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .trimester-labels div {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2d1b3d;
+  }
+
+  .info-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(45, 27, 61, 0.05);
+    border: 1px solid #f0e6f2;
+  }
+  .info-card h3 {
+    font-size: 18px;
+    color: #2d1b3d;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .info-card.center { text-align: center; }
+  .info-card p {
+    font-size: 14px;
+    color: #5a4a64;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .general-q {
+    background: #f8f4fa;
+    border: 1px solid #ead8ef;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .general-q:hover { background: #f0e6f2; }
+  .general-q.static { cursor: default; }
+  .general-q.static:hover { background: #f8f4fa; }
+  .general-q.saved {
+    background: linear-gradient(135deg, #d8ecdd, #c7e3d0);
+    border-color: #7ac29d;
+  }
+  .general-q .q-label {
+    font-weight: 700;
+    color: #b886c9;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .general-q.saved .q-label { color: #5ba884; }
+  .general-q .q-text {
+    flex: 1;
+    font-size: 13px;
+    color: #2d1b3d;
+    line-height: 1.5;
+  }
+  .general-q .q-bookmark {
+    flex-shrink: 0;
+    color: #b886c9;
+    display: flex; align-items: center;
+  }
+  .general-q.saved .q-bookmark { color: #5ba884; }
+  .general-q .q-bookmark .material-icons { font-size: 18px; }
+
+  .expect-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .expect-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px;
+    background: linear-gradient(135deg, #fff8f1, #fef1ec);
+    border-radius: 12px;
+    border-left: 3px solid #e89a7c;
+  }
+  .expect-item .ex-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    color: #e89a7c;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(232, 154, 124, 0.2);
+  }
+  .expect-item .ex-icon .material-icons { font-size: 20px; }
+  .expect-item h4 {
+    font-size: 14px;
+    color: #2d1b3d;
+    margin-bottom: 2px;
+    font-weight: 600;
+  }
+  .expect-item p {
+    font-size: 13px;
+    color: #6b5b73;
+    line-height: 1.45;
+  }
+
+  /* ---------- Settings ---------- */
+  .settings-avatar {
+    width: 84px; height: 84px; border-radius: 50%;
+    background: linear-gradient(135deg, #f5a9c0, #b886c9);
+    color: #fff; font-weight: 700;
+    font-size: 32px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 8px;
+    box-shadow: 0 8px 22px rgba(184, 134, 201, 0.35);
+  }
+  .settings-name {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d1b3d;
+    margin-bottom: 2px;
+  }
+  .settings-email {
+    text-align: center;
+    font-size: 13px;
+    color: #8b7c93;
+    margin-bottom: 22px;
+  }
+
+  .settings-section {
+    margin-bottom: 18px;
+  }
+  .settings-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #8b7c93;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0 4px 8px;
+  }
+  .settings-list {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #f0e6f2;
+    overflow: hidden;
+  }
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid #f5edf7;
+    gap: 12px;
+  }
+  .settings-row:last-child { border-bottom: none; }
+  .settings-row .label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d1b3d;
+    flex-shrink: 0;
+    width: 100px;
+  }
+  .settings-row .value {
+    flex: 1;
+    font-size: 14px;
+    color: #6b5b73;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .settings-row .value-input {
+    flex: 1;
+    text-align: right;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #2d1b3d;
+    font-family: inherit;
+    outline: none;
+    padding: 0;
+    width: 100%;
+  }
+  .settings-row .row-actions {
+    display: flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+  }
+  .settings-row .icon-btn {
+    background: none; border: none; cursor: pointer;
+    color: #b886c9;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s ease;
+  }
+  .settings-row .icon-btn:hover { background: #f8f0fa; }
+  .settings-row .icon-btn .material-icons { font-size: 18px; }
+  .settings-row .icon-btn.eye { color: #8b7c93; }
+  .settings-row.editing .value { display: none; }
+  .settings-row.editing .value-input { display: block; }
+  .settings-row .value-input { display: none; }
+
+  .delete-account-btn {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 16px;
+    color: #d44a6a;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-top: 8px;
+  }
+  .delete-account-btn .material-icons { font-size: 18px; }
+  .delete-account-btn:active { opacity: 0.6; }
+
+  .logout-btn {
+    width: 100%;
+    background: #fff;
+    border: 1.5px solid #f0e6f2;
+    padding: 14px;
+    color: #2d1b3d;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .logout-btn .material-icons { font-size: 18px; color: #b886c9; }
+
+  /* clickable avatar on home */
+  .avatar { cursor: pointer; transition: transform 0.15s ease; }
+  .avatar:active { transform: scale(0.94); }
+
+  /* Floating action button */
+  .fab {
+    position: absolute;
+    right: 22px;
+    bottom: 90px;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+    color: #fff;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 24px rgba(184, 134, 201, 0.5);
+    cursor: pointer;
+    z-index: 50;
+    transition: transform 0.15s ease;
+  }
+  .fab:active { transform: scale(0.94); }
+  .fab .material-icons { font-size: 28px; }
+
+  /* Add appointment row */
+  .add-appt-row {
+    display: flex; align-items: center; gap: 10px;
+    background: #fff;
+    border: 1.5px dashed #d4a5c2;
+    color: #7a5a8a;
+    padding: 12px 14px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.15s ease;
+  }
+  .add-appt-row:hover { background: #faf4fb; }
+  .add-appt-row .material-icons { color: #b886c9; font-size: 20px; }
+
+  /* Preview of carried-over questions */
+  .preview-q {
+    background: #f0f7f2;
+    border-left: 3px solid #7ac29d;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #2d4a3d;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+  .preview-q .material-icons {
+    font-size: 16px; color: #5ba884; margin-top: 1px;
+  }
+  .preview-q-empty {
+    text-align: center;
+    padding: 16px;
+    background: #faf4fb;
+    border-radius: 12px;
+    color: #8b7c93;
+    font-size: 13px;
+  }
+
+  /* Upcoming appointment hero */
+  .appt-hero {
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+    color: #fff;
+    padding: 22px 20px;
+    border-radius: 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 10px 25px rgba(184, 134, 201, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .appt-hero .label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+    opacity: 0.9; margin-bottom: 6px;
+  }
+  .appt-hero h2 { color: #fff; font-size: 22px; margin-bottom: 10px; }
+  .appt-hero .meta-row {
+    display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px;
+  }
+  .appt-hero .meta-row span {
+    display: inline-flex; align-items: center; gap: 4px;
+    opacity: 0.95;
+  }
+  .appt-hero .meta-row .material-icons { font-size: 16px; }
+  .appt-hero .bg-ico {
+    position: absolute; right: -12px; bottom: -12px;
+    color: rgba(255,255,255,0.18);
+  }
+  .appt-hero .bg-ico .material-icons { font-size: 120px; }
+
+  /* Add question button + composer */
+  .add-q-btn {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, #7ac29d, #5ba884);
+    color: #fff;
+    border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(122, 194, 157, 0.35);
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+  .add-q-btn:active { transform: scale(0.92); }
+  .add-q-btn .material-icons { font-size: 20px; }
+
+  .card-header-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .card-header-row h3 { margin-bottom: 0; }
+
+  .q-composer {
+    display: none;
+    margin-top: 10px;
+    background: #f0f7f2;
+    border: 1.5px solid #c8e0d0;
+    border-radius: 14px;
+    padding: 10px;
+    gap: 8px;
+  }
+  .q-composer.open { display: flex; flex-direction: column; }
+  .q-composer textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 10px 12px;
+    border: 1px solid #c8e0d0;
+    border-radius: 10px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    color: #2d4a3d;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+  }
+  .q-composer textarea:focus { border-color: #7ac29d; }
+  .q-composer .composer-actions {
+    display: flex; justify-content: flex-end; gap: 8px;
+  }
+  .q-composer button {
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .q-composer button .material-icons { font-size: 16px; }
+  .q-composer .cancel-btn {
+    background: transparent;
+    color: #8b7c93;
+  }
+  .q-composer .add-btn {
+    background: linear-gradient(135deg, #7ac29d, #5ba884);
+    color: #fff;
+  }
+
+  /* Custom question styling */
+  .q-card.custom {
+    background: linear-gradient(135deg, #f8f0fa, #f0e6f2);
+    border-left-color: #b886c9;
+  }
+  .q-card.custom .q-num {
+    background: #b886c9;
+  }
+  .q-card.custom .bookmark { color: #b886c9; }
+  .q-card .remove-q, .q-card .edit-q {
+    background: none; border: none; cursor: pointer;
+    color: #7ac29d;
+    padding: 0;
+    display: flex; align-items: center;
+  }
+  .q-card.custom .remove-q, .q-card.custom .edit-q { color: #b886c9; }
+  .q-card .remove-q .material-icons,
+  .q-card .edit-q .material-icons { font-size: 18px; }
+  .q-card .q-actions {
+    display: flex; align-items: center; gap: 6px;
+    flex-shrink: 0;
+  }
+  .q-card .q-body { flex: 1; }
+  .q-card .q-body p { margin: 0; }
+
+  /* Inline edit state */
+  .q-card.editing {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    background: #fff;
+    border-left-color: #b886c9;
+    padding: 12px;
+  }
+  .q-card.editing .q-top-row {
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .q-card.editing .q-top-row textarea {
+    flex: 1;
+    min-height: 70px;
+    padding: 10px 12px;
+    border: 1.5px solid #c8e0d0;
+    border-radius: 10px;
+    background: #fdfdfd;
+    font-family: inherit;
+    font-size: 13px;
+    color: #2d4a3d;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+  }
+  .q-card.editing.custom .q-top-row textarea { border-color: #d9c1e2; }
+  .q-card.editing .q-top-row textarea:focus { border-color: #7ac29d; }
+  .q-card.editing.custom .q-top-row textarea:focus { border-color: #b886c9; }
+  .q-card.editing .edit-actions {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding-left: 38px;
+  }
+  .q-card.editing .edit-actions button {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .q-card.editing .edit-actions button .material-icons { font-size: 14px; }
+  .q-card.editing .edit-actions .cancel-edit {
+    background: transparent;
+    color: #8b7c93;
+  }
+  .q-card.editing .edit-actions .save-edit {
+    background: linear-gradient(135deg, #7ac29d, #5ba884);
+    color: #fff;
+  }
+  .q-card.editing.custom .edit-actions .save-edit {
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+  }
+
+  /* Consent notice */
+  .consent-notice {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: #fff7e6;
+    border: 1px solid #f5d88a;
+    border-left: 4px solid #d99b2b;
+    padding: 12px 14px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+  }
+  .consent-notice .material-icons {
+    color: #b07a18;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .consent-notice .consent-text {
+    flex: 1;
+  }
+  .consent-notice .consent-text strong {
+    display: block;
+    color: #7a5200;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .consent-notice .consent-text p {
+    color: #8a6a1f;
+    font-size: 12px;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* bullet list inside card */
+  .check-list p {
+    display: flex; align-items: flex-start; gap: 8px;
+    margin-bottom: 6px;
+    color: #3d2d4a;
+    font-size: 14px;
+  }
+  .check-list p .material-icons {
+    font-size: 18px; color: #7ac29d; margin-top: 1px;
+  }
+
+  /* Recording complete hero */
+  .hero-ico {
+    width: 64px; height: 64px; border-radius: 20px;
+    background: linear-gradient(135deg, #b886c9, #f5a9c0);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .hero-ico .material-icons { font-size: 36px; }
+
+  .big-ico {
+    color: #b886c9;
+  }
+  .big-ico .material-icons { font-size: 70px; }
+
+  /* LIVE pill */
+  .live-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    background: #fde4e9; color: #d44a6a;
+    border-radius: 20px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .live-pill .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #e85a7a;
+    animation: blink 1.2s ease-in-out infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 </style>
 </head>
 <body>
@@ -416,7 +1290,7 @@
 
     <!-- =========== 1. WELCOME =========== -->
     <div class="page welcome active" id="page-welcome">
-      <div class="logo">🌸</div>
+      <div class="logo"><span class="material-icons">spa</span></div>
       <h1>Bloom</h1>
       <p class="sub" style="text-align:center;">Your appointment companion<br>through every week of pregnancy</p>
       <div style="width:100%; margin-top: 40px;">
@@ -428,7 +1302,7 @@
     <!-- =========== 2. LOGIN / PREGNANCY INFO =========== -->
     <div class="page" id="page-login">
       <div class="topbar">
-        <div class="back" onclick="go('page-welcome')">‹</div>
+        <div class="back" onclick="go('page-welcome')"><span class="material-icons">chevron_left</span></div>
         <h2>Your Pregnancy</h2>
         <div style="width:36px;"></div>
       </div>
@@ -437,15 +1311,15 @@
       <div class="scroll">
         <div class="field">
           <label>Your Name</label>
-          <input type="text" placeholder="Jane Doe" value="Sruthi" />
+          <input type="text" id="loginName" placeholder="Jane Doe" value="Sruthi" />
         </div>
         <div class="field">
           <label>Due Date</label>
-          <input type="date" value="2026-09-15" />
+          <input type="date" id="loginDueDate" value="2026-09-15" />
         </div>
         <div class="field">
           <label>Current Week</label>
-          <select>
+          <select id="loginWeek">
             <option>Week 12</option>
             <option>Week 16</option>
             <option selected>Week 22</option>
@@ -455,7 +1329,7 @@
         </div>
         <div class="field">
           <label>Provider</label>
-          <input type="text" placeholder="Dr. Smith — Greenway OB/GYN" value="Dr. Patel — Bloom OB/GYN" />
+          <input type="text" id="loginProvider" placeholder="Dr. Smith — Greenway OB/GYN" value="Dr. Patel — Bloom OB/GYN" />
         </div>
         <div class="field">
           <label>Pregnancy Type</label>
@@ -467,7 +1341,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary" style="margin-top: 12px;" onclick="go('page-home')">Continue</button>
+      <button class="btn btn-primary" style="margin-top: 12px;" onclick="completeAccountSetup()">Create Account</button>
     </div>
 
     <!-- =========== 3. HOME / RECORD =========== -->
@@ -475,34 +1349,41 @@
       <div class="home-header">
         <div>
           <p style="font-size:13px; color:#8b7c93;">Good morning</p>
-          <h2>Sruthi</h2>
+          <h2 id="homeUserName">Sruthi</h2>
         </div>
-        <div class="avatar">S</div>
+        <div class="avatar" id="homeAvatar" onclick="go('page-settings')" aria-label="Settings">S</div>
       </div>
 
       <div class="week-card">
         <div class="week-label">Week</div>
         <div class="week-num">22</div>
-        <div class="week-sub">Baby is the size of a papaya 🥭</div>
+        <div class="week-sub"><span class="material-icons">child_friendly</span> Baby is the size of a papaya</div>
+        <div class="bg-ico"><span class="material-icons">favorite</span></div>
       </div>
 
-      <h3 style="margin-bottom:4px;">Record Your Visit</h3>
-      <p style="margin-bottom: 10px;">Tap the button below when you start your appointment.</p>
+      <h3 style="margin-bottom:8px;">Record Your Visit</h3>
+      <div class="consent-notice">
+        <span class="material-icons">privacy_tip</span>
+        <div class="consent-text">
+          <strong>Get consent before recording</strong>
+          <p>Always let your provider know you'd like to record, and wait for their verbal agreement. Some states and clinics require explicit consent.</p>
+        </div>
+      </div>
 
       <div class="record-area">
         <div style="position:relative; display:flex; align-items:center; justify-content:center;">
           <div class="pulse-ring"></div>
           <button class="record-btn" id="recordBtn" onclick="startRecording()">
-            <div class="dot"></div>
+            <span class="material-icons">mic</span>
           </button>
         </div>
-        <p class="record-hint">Tap to start recording your appointment</p>
+        <p class="record-hint"><span class="material-icons">touch_app</span> Tap to start recording your appointment</p>
       </div>
 
       <div class="bottomnav">
-        <button class="navbtn active"><span class="icon">🎙️</span>Record</button>
-        <button class="navbtn" onclick="go('page-library')"><span class="icon">📋</span>Visits</button>
-        <button class="navbtn" onclick="go('page-home')"><span class="icon">💜</span>Care</button>
+        <button class="navbtn active"><span class="material-icons">mic</span>Record</button>
+        <button class="navbtn" onclick="go('page-library'); renderCalendar();"><span class="material-icons">calendar_month</span>Visits</button>
+        <button class="navbtn" onclick="go('page-info'); renderInfo();"><span class="material-icons">info</span>Info</button>
       </div>
     </div>
 
@@ -510,23 +1391,24 @@
     <div class="page" id="page-recording">
       <div class="home-header">
         <h2>Recording...</h2>
-        <span class="pill" style="background:#fde4e9; color:#d44a6a;">● LIVE</span>
+        <span class="live-pill"><span class="dot"></span>LIVE</span>
       </div>
 
       <div class="week-card" style="background: linear-gradient(135deg, #e85a7a, #d4a5c2);">
         <div class="week-label">Appointment</div>
         <div class="week-num" id="timer">00:00</div>
-        <div class="week-sub">Week 22 prenatal checkup with Dr. Patel</div>
+        <div class="week-sub"><span class="material-icons">event</span> Week 22 prenatal checkup with Dr. Patel</div>
+        <div class="bg-ico"><span class="material-icons">graphic_eq</span></div>
       </div>
 
       <div class="record-area">
         <div style="position:relative; display:flex; align-items:center; justify-content:center;">
           <div class="pulse-ring"></div>
           <button class="record-btn recording" onclick="stopRecording()">
-            <div class="dot"></div>
+            <span class="material-icons">stop</span>
           </button>
         </div>
-        <p class="record-hint">Listening carefully to every word 💜</p>
+        <p class="record-hint"><span class="material-icons">hearing</span> Listening carefully to every word</p>
         <div class="waveform" style="width:100%;">
           <span></span><span></span><span></span><span></span><span></span><span></span>
           <span></span><span></span><span></span><span></span><span></span><span></span>
@@ -536,45 +1418,67 @@
       </div>
 
       <div class="record-controls">
-        <button class="btn btn-discard" onclick="confirmDiscard()">Discard</button>
-        <button class="btn btn-end" onclick="endRecording()">End Record</button>
+        <button class="btn btn-discard" onclick="confirmDiscard()"><span class="material-icons">delete_outline</span>Discard</button>
+        <button class="btn btn-end" onclick="endRecording()"><span class="material-icons">stop_circle</span>End Record</button>
       </div>
     </div>
 
     <!-- =========== 5. SAVE OR DISCARD =========== -->
     <div class="page" id="page-save">
       <div class="topbar">
-        <div class="back" onclick="go('page-recording')">‹</div>
+        <div class="back" onclick="go('page-recording')"><span class="material-icons">chevron_left</span></div>
         <h2>Review Recording</h2>
         <div style="width:36px;"></div>
       </div>
 
-      <div class="card" style="text-align:center; padding: 22px;">
-        <div style="font-size: 50px; margin-bottom: 10px;">🎙️</div>
-        <h3>Recording Complete</h3>
-        <p class="meta" style="justify-content:center;"><span class="pill">22 min 14 sec</span><span>• April 19, 2026</span></p>
+      <div class="scroll">
+        <div class="card" style="text-align:center; padding: 22px;">
+          <div class="hero-ico"><span class="material-icons">mic</span></div>
+          <h3>Recording Complete</h3>
+          <p class="meta" style="justify-content:center;">
+            <span class="pill"><span class="material-icons">schedule</span>22 min 14 sec</span>
+            <span class="pill"><span class="material-icons">calendar_today</span>April 19, 2026</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="display:flex; align-items:center; gap:6px;">
+            <span class="material-icons" style="font-size:20px; color:#b886c9;">edit</span>
+            Name this visit
+          </h3>
+          <p style="margin-bottom:10px;">Give your recording a name so you can easily find it later.</p>
+          <div class="field" style="margin-bottom: 10px;">
+            <input type="text" id="visitNameInput" placeholder="e.g., Week 22 Checkup" value="Week 22 Checkup" maxlength="60" />
+          </div>
+          <div class="name-suggestions">
+            <button class="chip" onclick="setVisitName('Week 22 Checkup')">Week 22 Checkup</button>
+            <button class="chip" onclick="setVisitName('Anatomy Scan')">Anatomy Scan</button>
+            <button class="chip" onclick="setVisitName('Glucose Test')">Glucose Test</button>
+            <button class="chip" onclick="setVisitName('Ultrasound')">Ultrasound</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>What happens next?</h3>
+          <p style="margin-bottom: 10px;">Your appointment will be privately transcribed, dated, and our AI will scan it to:</p>
+          <div class="check-list">
+            <p><span class="material-icons">check_circle</span>Extract key information from your provider</p>
+            <p><span class="material-icons">check_circle</span>Provide trusted resources to help you</p>
+            <p><span class="material-icons">check_circle</span>Suggest questions for your next visit</p>
+          </div>
+        </div>
       </div>
 
-      <div class="card">
-        <h3>What happens next?</h3>
-        <p style="margin-bottom: 10px;">Your appointment will be privately transcribed, dated, and our AI will scan it to:</p>
-        <p style="margin-bottom: 4px;">✓ Extract key information from your provider</p>
-        <p style="margin-bottom: 4px;">✓ Provide trusted resources to help you</p>
-        <p>✓ Suggest questions for your next visit</p>
-      </div>
-
-      <div style="flex:1;"></div>
-
-      <div class="record-controls">
-        <button class="btn btn-discard" onclick="confirmDiscard()">Discard</button>
-        <button class="btn btn-save" onclick="saveRecording()">Save Recording</button>
+      <div class="record-controls" style="margin-top: 12px;">
+        <button class="btn btn-discard" onclick="confirmDiscard()"><span class="material-icons">delete_outline</span>Discard</button>
+        <button class="btn btn-save" onclick="saveRecording()"><span class="material-icons">save</span>Save Recording</button>
       </div>
     </div>
 
     <!-- =========== 6. DISCARD CONFIRMATION =========== -->
     <div class="page" id="page-discarded">
       <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
-        <div style="font-size: 70px; margin-bottom: 16px;">🗑️</div>
+        <div class="big-ico" style="margin-bottom: 12px;"><span class="material-icons">delete_outline</span></div>
         <h2>Recording Discarded</h2>
         <p style="margin-top: 8px;">No worries — you can always start a<br>fresh recording any time.</p>
       </div>
@@ -593,12 +1497,16 @@
     <!-- =========== 8. TRANSCRIPTION + RESOURCES + QUESTIONS =========== -->
     <div class="page" id="page-results">
       <div class="topbar">
-        <div class="back" onclick="go('page-home')">‹</div>
-        <h2>Week 22 Checkup</h2>
+        <div class="back" onclick="go('page-home')"><span class="material-icons">chevron_left</span></div>
+        <h2 id="resultsTitle">Week 22 Checkup</h2>
         <div style="width:36px;"></div>
       </div>
 
-      <p class="meta"><span class="pill">April 19, 2026</span><span>• 22 min</span><span>• Dr. Patel</span></p>
+      <p class="meta">
+        <span class="pill"><span class="material-icons">calendar_today</span>April 19, 2026</span>
+        <span class="pill"><span class="material-icons">schedule</span>22 min</span>
+        <span class="pill"><span class="material-icons">person</span>Dr. Patel</span>
+      </p>
 
       <div class="tabs" style="margin-top: 14px;">
         <div class="tab active" data-tab="transcript" onclick="switchTab('transcript')">Transcript</div>
@@ -635,108 +1543,385 @@
           <p class="sub">Based on your transcription, we pulled together some trusted resources just for you.</p>
 
           <div class="res-card">
-            <h4>🍽️ Iron-Rich Foods for Pregnancy</h4>
-            <p>A gentle guide to boosting iron through everyday meals — spinach, lentils, and vitamin-C pairings.</p>
+            <div class="res-icon"><span class="material-icons">restaurant</span></div>
+            <div>
+              <h4>Iron-Rich Foods for Pregnancy</h4>
+              <p>A gentle guide to boosting iron through everyday meals — spinach, lentils, and vitamin-C pairings.</p>
+            </div>
           </div>
           <div class="res-card">
-            <h4>🩺 Understanding Your Glucose Test</h4>
-            <p>What to expect at your 1-hour glucose screening, how to prepare, and what results mean.</p>
+            <div class="res-icon"><span class="material-icons">science</span></div>
+            <div>
+              <h4>Understanding Your Glucose Test</h4>
+              <p>What to expect at your 1-hour glucose screening, how to prepare, and what results mean.</p>
+            </div>
           </div>
           <div class="res-card">
-            <h4>💓 Braxton Hicks vs. Real Labor</h4>
-            <p>How to tell the difference and when to call your provider.</p>
+            <div class="res-icon"><span class="material-icons">monitor_heart</span></div>
+            <div>
+              <h4>Braxton Hicks vs. Real Labor</h4>
+              <p>How to tell the difference and when to call your provider.</p>
+            </div>
           </div>
           <div class="res-card">
-            <h4>👶 Tracking Fetal Movement</h4>
-            <p>Simple daily kick count method for peace of mind in the second trimester.</p>
+            <div class="res-icon"><span class="material-icons">child_care</span></div>
+            <div>
+              <h4>Tracking Fetal Movement</h4>
+              <p>Simple daily kick count method for peace of mind in the second trimester.</p>
+            </div>
           </div>
           <div class="res-card">
-            <h4>🎓 Finding a Childbirth Class</h4>
-            <p>In-person and online options near you, with what to expect from each format.</p>
+            <div class="res-icon"><span class="material-icons">school</span></div>
+            <div>
+              <h4>Finding a Childbirth Class</h4>
+              <p>In-person and online options near you, with what to expect from each format.</p>
+            </div>
           </div>
         </div>
 
         <!-- Questions Tab -->
         <div id="tab-questions" class="tab-content" style="display:none;">
-          <p class="sub">Suggested questions to bring to your next visit. Tap to save.</p>
+          <p class="sub">
+            Suggested questions to bring to your next visit. Tap a card to save, or the pencil to edit.
+            <span class="saved-counter" id="savedCounter"><span class="material-icons">bookmark</span><span id="savedCount">0</span> saved</span>
+          </p>
 
-          <div class="q-card">
-            <div class="q-num">1</div>
-            <p>Should I start an iron supplement, or is adjusting my diet enough?</p>
-          </div>
-          <div class="q-card">
-            <div class="q-num">2</div>
-            <p>What glucose levels would indicate I need further testing?</p>
-          </div>
-          <div class="q-card">
-            <div class="q-num">3</div>
-            <p>How often should I feel the baby move each day at this point?</p>
-          </div>
-          <div class="q-card">
-            <div class="q-num">4</div>
-            <p>When should I call you versus go to the hospital for contractions?</p>
-          </div>
-          <div class="q-card">
-            <div class="q-num">5</div>
-            <p>Which childbirth classes do you recommend for first-time moms?</p>
-          </div>
-          <div class="q-card">
-            <div class="q-num">6</div>
-            <p>Is it safe to continue my current exercise routine into the third trimester?</p>
-          </div>
+          <div id="suggestedQuestionsList"></div>
         </div>
       </div>
     </div>
 
-    <!-- =========== 9. VISITS LIBRARY =========== -->
+    <!-- =========== 9. VISITS CALENDAR =========== -->
     <div class="page" id="page-library">
       <div class="topbar">
-        <div class="back" onclick="go('page-home')">‹</div>
+        <div class="back" onclick="go('page-home')"><span class="material-icons">chevron_left</span></div>
         <h2>Your Visits</h2>
         <div style="width:36px;"></div>
       </div>
 
-      <div class="scroll" style="padding-bottom: 80px;">
-        <div class="recording-item" onclick="go('page-results')">
-          <div class="icon">🎙️</div>
-          <div class="info">
-            <h4>Week 22 Checkup</h4>
-            <div class="meta-line">April 19, 2026 • 22 min • Dr. Patel</div>
+      <div class="scroll" style="padding-bottom: 90px;">
+        <div class="cal-header">
+          <div class="cal-title" id="calTitle">April 2026</div>
+          <div class="cal-nav">
+            <button onclick="changeMonth(-1)" aria-label="Previous month"><span class="material-icons">chevron_left</span></button>
+            <button onclick="changeMonth(1)" aria-label="Next month"><span class="material-icons">chevron_right</span></button>
           </div>
-          <span style="color:#b886c9; font-size:20px;">›</span>
         </div>
-        <div class="recording-item">
-          <div class="icon">🎙️</div>
-          <div class="info">
-            <h4>Week 18 Anatomy Scan</h4>
-            <div class="meta-line">March 22, 2026 • 35 min • Dr. Patel</div>
-          </div>
-          <span style="color:#b886c9; font-size:20px;">›</span>
+
+        <div class="cal-weekdays">
+          <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
         </div>
-        <div class="recording-item">
-          <div class="icon">🎙️</div>
-          <div class="info">
-            <h4>Week 12 Checkup</h4>
-            <div class="meta-line">February 8, 2026 • 18 min • Dr. Patel</div>
-          </div>
-          <span style="color:#b886c9; font-size:20px;">›</span>
+        <div class="cal-grid" id="calGrid"></div>
+
+        <div class="cal-legend">
+          <div class="leg"><span class="leg-dot"></span>Past visit</div>
+          <div class="leg"><span class="leg-dot outlined"></span>Upcoming</div>
         </div>
-        <div class="recording-item">
-          <div class="icon">🎙️</div>
-          <div class="info">
-            <h4>Week 8 — First Visit</h4>
-            <div class="meta-line">January 11, 2026 • 45 min • Dr. Patel</div>
-          </div>
-          <span style="color:#b886c9; font-size:20px;">›</span>
+
+        <div class="cal-details">
+          <h3 id="detailsTitle">April 19, 2026</h3>
+          <div id="detailsList"></div>
         </div>
       </div>
 
+      <button class="fab" onclick="openCreateAppointment()" aria-label="Create appointment">
+        <span class="material-icons">add</span>
+      </button>
+
       <div class="bottomnav">
-        <button class="navbtn" onclick="go('page-home')"><span class="icon">🎙️</span>Record</button>
-        <button class="navbtn active"><span class="icon">📋</span>Visits</button>
-        <button class="navbtn"><span class="icon">💜</span>Care</button>
+        <button class="navbtn" onclick="go('page-home')"><span class="material-icons">mic</span>Record</button>
+        <button class="navbtn active"><span class="material-icons">calendar_month</span>Visits</button>
+        <button class="navbtn" onclick="go('page-info'); renderInfo();"><span class="material-icons">info</span>Info</button>
       </div>
     </div>
+
+    <!-- =========== 13. INFO =========== -->
+    <div class="page" id="page-info">
+      <div class="topbar">
+        <div class="back" onclick="go('page-home')"><span class="material-icons">chevron_left</span></div>
+        <h2>Info</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="scroll" style="padding-bottom: 90px;">
+        <div class="info-section-title">Overview</div>
+
+        <div class="trimester-bar">
+          <div class="week-marker" id="weekMarker">22 weeks</div>
+          <div class="trimester-block"><div class="fill" id="fill1"></div></div>
+          <div class="trimester-block"><div class="fill" id="fill2"></div></div>
+          <div class="trimester-block"><div class="fill" id="fill3"></div></div>
+          <div class="trimester-line"></div>
+        </div>
+        <div class="trimester-labels">
+          <div>1st trimester</div>
+          <div>2nd trimester</div>
+          <div>3rd trimester</div>
+        </div>
+
+        <div class="info-card center">
+          <h3 id="infoWeekHeading">22 weeks</h3>
+          <p id="infoWeekBody1">You're more than halfway through your second trimester. Baby is the size of a papaya and weighs about a pound.</p>
+          <p id="infoWeekBody2">You may now be feeling regular movement, and your baby's senses — taste, touch, sight, and hearing — are quickly developing.</p>
+        </div>
+
+        <div class="info-section-title">What to Expect at Week 22</div>
+
+        <div class="expect-list" id="expectList"></div>
+
+        <div class="info-section-title" style="margin-top: 22px;">BRAN Method</div>
+        <p style="text-align:center; font-size: 13px; color: #8b7c93; margin-bottom: 14px;">A simple framework to help guide any medical decision.</p>
+
+        <div id="generalQuestionsList"></div>
+      </div>
+
+      <div class="bottomnav">
+        <button class="navbtn" onclick="go('page-home')"><span class="material-icons">mic</span>Record</button>
+        <button class="navbtn" onclick="go('page-library'); renderCalendar();"><span class="material-icons">calendar_month</span>Visits</button>
+        <button class="navbtn active"><span class="material-icons">info</span>Info</button>
+      </div>
+    </div>
+
+    <!-- =========== 10. CREATE APPOINTMENT =========== -->
+    <div class="page" id="page-create-appt">
+      <div class="topbar">
+        <div class="back" onclick="go('page-library'); renderCalendar();"><span class="material-icons">chevron_left</span></div>
+        <h2>New Appointment</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="scroll">
+        <p class="sub">Schedule a future visit. We'll carry over the questions you saved from your last appointment.</p>
+
+        <div class="field">
+          <label>Appointment Name</label>
+          <input type="text" id="newApptName" placeholder="e.g., Week 26 Checkup" />
+        </div>
+
+        <div class="name-suggestions" style="margin-bottom: 16px;">
+          <button class="chip" onclick="setNewApptName('Routine Checkup')">Routine Checkup</button>
+          <button class="chip" onclick="setNewApptName('Glucose Screening')">Glucose Screening</button>
+          <button class="chip" onclick="setNewApptName('Ultrasound')">Ultrasound</button>
+          <button class="chip" onclick="setNewApptName('Growth Scan')">Growth Scan</button>
+        </div>
+
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="newApptDate" min="2026-04-19" />
+        </div>
+
+        <div class="field">
+          <label>Provider</label>
+          <input type="text" id="newApptProvider" placeholder="Dr. Patel" value="Dr. Patel" />
+        </div>
+
+        <div class="field">
+          <label>Estimated Duration</label>
+          <select id="newApptDuration">
+            <option>15 min</option>
+            <option selected>30 min</option>
+            <option>45 min</option>
+            <option>60 min</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <h3 style="display:flex; align-items:center; gap:6px;">
+            <span class="material-icons" style="font-size:20px; color:#7ac29d;">help_outline</span>
+            Questions for this visit
+          </h3>
+          <p style="margin-bottom: 12px;">These are pulled from the questions you saved in your most recent appointment. You can edit them later.</p>
+          <div id="carryOverQuestions"></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: 12px;" onclick="createAppointment()">
+        <span class="material-icons" style="vertical-align:middle; font-size:18px;">event_available</span>
+        Schedule Appointment
+      </button>
+    </div>
+
+    <!-- =========== 12. SETTINGS =========== -->
+    <div class="page" id="page-settings">
+      <div class="topbar">
+        <div class="back" onclick="go('page-home')"><span class="material-icons">chevron_left</span></div>
+        <h2>Settings</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="scroll">
+        <div class="settings-avatar" id="settingsAvatar">S</div>
+        <div class="settings-name" id="settingsDisplayName">Sruthi</div>
+        <div class="settings-email">sruthi@example.com</div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Profile</div>
+          <div class="settings-list">
+            <div class="settings-row" data-key="firstName">
+              <div class="label">First Name</div>
+              <div class="value" id="settingsFirstNameValue">Sruthi</div>
+              <input class="value-input" id="settingsFirstNameInput" type="text" value="Sruthi" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+
+            <div class="settings-row" data-key="lastName">
+              <div class="label">Last Name</div>
+              <div class="value">Doe</div>
+              <input class="value-input" type="text" value="Doe" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+
+            <div class="settings-row" data-key="birthDate">
+              <div class="label">Birth Date</div>
+              <div class="value">07/16/1995</div>
+              <input class="value-input" type="date" value="1995-07-16" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+
+            <div class="settings-row" data-key="email">
+              <div class="label">Email</div>
+              <div class="value">sruthi@example.com</div>
+              <input class="value-input" type="email" value="sruthi@example.com" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+
+            <div class="settings-row" data-key="password" data-type="password">
+              <div class="label">Password</div>
+              <div class="value" id="passwordValue">••••••••••</div>
+              <input class="value-input" type="password" value="mypassword123" />
+              <div class="row-actions">
+                <button class="icon-btn eye" onclick="togglePasswordVisibility(this)" aria-label="Show password"><span class="material-icons">visibility_off</span></button>
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Pregnancy</div>
+          <div class="settings-list">
+            <div class="settings-row" data-key="dueDate">
+              <div class="label">Due Date</div>
+              <div class="value">09/15/2026</div>
+              <input class="value-input" type="date" value="2026-09-15" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+            <div class="settings-row" data-key="provider">
+              <div class="label">Provider</div>
+              <div class="value">Dr. Patel</div>
+              <input class="value-input" type="text" value="Dr. Patel" />
+              <div class="row-actions">
+                <button class="icon-btn edit-row" onclick="toggleEditRow(this)" aria-label="Edit"><span class="material-icons">edit</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-section-title">Preferences</div>
+          <div class="settings-list">
+            <div class="settings-row">
+              <div class="label">Notifications</div>
+              <div class="value">On</div>
+              <div class="row-actions">
+                <button class="icon-btn edit-row" aria-label="Edit"><span class="material-icons">chevron_right</span></button>
+              </div>
+            </div>
+            <div class="settings-row">
+              <div class="label">Privacy</div>
+              <div class="value">Manage</div>
+              <div class="row-actions">
+                <button class="icon-btn edit-row" aria-label="Edit"><span class="material-icons">chevron_right</span></button>
+              </div>
+            </div>
+            <div class="settings-row">
+              <div class="label">Help & Support</div>
+              <div class="value"></div>
+              <div class="row-actions">
+                <button class="icon-btn edit-row" aria-label="Edit"><span class="material-icons">chevron_right</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button class="logout-btn" onclick="go('page-welcome')">
+          <span class="material-icons">logout</span>Sign Out
+        </button>
+
+        <button class="delete-account-btn" onclick="confirmDeleteAccount()">
+          <span class="material-icons">delete_forever</span>Delete Account
+        </button>
+      </div>
+    </div>
+
+    <!-- =========== 11. UPCOMING APPOINTMENT DETAILS =========== -->
+    <div class="page" id="page-upcoming">
+      <div class="topbar">
+        <div class="back" onclick="go('page-library'); renderCalendar();"><span class="material-icons">chevron_left</span></div>
+        <h2 style="font-size:17px;">Upcoming Visit</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="scroll">
+        <div class="appt-hero">
+          <div class="label">Scheduled</div>
+          <h2 id="upcomingName">Week 26 Checkup</h2>
+          <div class="meta-row">
+            <span><span class="material-icons">calendar_today</span><span id="upcomingDate">May 17, 2026</span></span>
+            <span><span class="material-icons">schedule</span><span id="upcomingDuration">30 min</span></span>
+            <span><span class="material-icons">person</span><span id="upcomingProvider">Dr. Patel</span></span>
+          </div>
+          <div class="bg-ico"><span class="material-icons">event</span></div>
+        </div>
+
+        <div class="consent-notice">
+          <span class="material-icons">privacy_tip</span>
+          <div class="consent-text">
+            <strong>Consent reminder</strong>
+            <p>When your appointment starts, ask your provider for verbal consent before pressing record.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header-row" style="margin-bottom: 12px;">
+            <h3 style="display:flex; align-items:center; gap:6px;">
+              <span class="material-icons" style="font-size:20px; color:#7ac29d;">help_outline</span>
+              Questions to ask
+            </h3>
+            <button class="add-q-btn" onclick="toggleQuestionComposer()" aria-label="Add question">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+          <div id="upcomingQuestionsList"></div>
+
+          <div class="q-composer" id="qComposer">
+            <textarea id="customQInput" placeholder="Type your question here..." maxlength="200"></textarea>
+            <div class="composer-actions">
+              <button class="cancel-btn" onclick="toggleQuestionComposer(false)">Cancel</button>
+              <button class="add-btn" onclick="addCustomQuestion()"><span class="material-icons">check</span>Add question</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: 12px;" onclick="startRecordingFromAppointment()">
+        <span class="material-icons" style="vertical-align:middle; font-size:20px;">fiber_manual_record</span>
+        Start Recording Now
+      </button>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"><span class="material-icons">check_circle</span><span id="toastText">Saved</span></div>
 
   </div>
 </div>
@@ -746,6 +1931,37 @@
   function go(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+  }
+
+  // ---------- Account creation ----------
+  function completeAccountSetup() {
+    const rawName = (document.getElementById('loginName').value || '').trim();
+    const name = rawName || 'Friend';
+    setUserName(name);
+    go('page-home');
+  }
+
+  function setUserName(name) {
+    const firstName = name.split(/\s+/)[0];
+    const initial = firstName.charAt(0).toUpperCase() || 'U';
+
+    // Home greeting + avatar
+    const homeName = document.getElementById('homeUserName');
+    if (homeName) homeName.textContent = firstName;
+    const homeAvatar = document.getElementById('homeAvatar');
+    if (homeAvatar) homeAvatar.textContent = initial;
+
+    // Settings page header
+    const settingsName = document.getElementById('settingsDisplayName');
+    if (settingsName) settingsName.textContent = firstName;
+    const settingsAvatar = document.getElementById('settingsAvatar');
+    if (settingsAvatar) settingsAvatar.textContent = initial;
+
+    // Settings First Name field
+    const fnVal = document.getElementById('settingsFirstNameValue');
+    const fnInput = document.getElementById('settingsFirstNameInput');
+    if (fnVal) fnVal.textContent = firstName;
+    if (fnInput) fnInput.value = firstName;
   }
 
   // ---------- Recording flow ----------
@@ -766,10 +1982,7 @@
     const s = String(seconds % 60).padStart(2, '0');
     document.getElementById('timer').textContent = `${m}:${s}`;
   }
-  function stopRecording() {
-    // Tapping the active record button also ends the recording
-    endRecording();
-  }
+  function stopRecording() { endRecording(); }
   function endRecording() {
     clearInterval(timerInterval);
     go('page-save');
@@ -778,18 +1991,54 @@
     clearInterval(timerInterval);
     go('page-discarded');
   }
+  function setVisitName(name) {
+    document.getElementById('visitNameInput').value = name;
+  }
+
   function saveRecording() {
+    // Pull the custom name (or fall back to default)
+    let name = document.getElementById('visitNameInput').value.trim();
+    if (!name) name = 'Untitled Visit';
+
+    // Propagate name to the results screen
+    const resultsTitle = document.getElementById('resultsTitle');
+    if (resultsTitle) resultsTitle.textContent = name;
+
+    // Compute duration from the timer
+    const totalSec = seconds || 0;
+    const mins = Math.max(1, Math.round(totalSec / 60));
+    const durationStr = `${mins} min`;
+
+    // Save to calendar APPOINTMENTS as a past visit on today's date
+    const todayKey = `${TODAY.getFullYear()}-${TODAY.getMonth()}-${TODAY.getDate()}`;
+    APPOINTMENTS[todayKey] = {
+      name,
+      duration: durationStr,
+      provider: APPOINTMENTS[todayKey]?.provider || 'Dr. Patel',
+      questions: APPOINTMENTS[todayKey]?.questions || [],
+      customQuestions: APPOINTMENTS[todayKey]?.customQuestions || [],
+      recorded: true,
+    };
+
+    // If the user came in from a scheduled (future) appointment, also keep
+    // any name they explicitly typed instead of the scheduled one.
+    if (currentUpcomingKey && currentUpcomingKey !== todayKey) {
+      // Mark scheduled appointment as completed too
+      const scheduled = APPOINTMENTS[currentUpcomingKey];
+      if (scheduled) scheduled.completed = true;
+    }
+
     go('page-processing');
-    // Stage 1: transcribing
     document.getElementById('processingTitle').textContent = 'Transcribing your visit...';
     document.getElementById('processingSub').textContent = 'This usually takes about 30 seconds.';
     setTimeout(() => {
-      // Stage 2: AI analyzing
       document.getElementById('processingTitle').textContent = 'Analyzing for key info...';
       document.getElementById('processingSub').textContent = 'Pulling resources and next-visit questions.';
     }, 1600);
     setTimeout(() => {
       go('page-results');
+      // Keep the calendar in sync for next visit to the Visits tab
+      if (typeof renderCalendar === 'function') renderCalendar();
     }, 3400);
   }
 
@@ -799,6 +2048,702 @@
     ['transcript', 'resources', 'questions'].forEach(n => {
       document.getElementById('tab-' + n).style.display = (n === name) ? 'block' : 'none';
     });
+  }
+
+  // ---------- Save question functionality ----------
+  let toastTimer;
+  // Stores the text of questions saved from the most recent appointment
+  let SAVED_QUESTIONS = [];
+
+  // AI-suggested questions for the past visit (Questions tab on results page)
+  let SUGGESTED_QUESTIONS = [
+    'Should I start an iron supplement, or is adjusting my diet enough?',
+    'What glucose levels would indicate I need further testing?',
+    'How often should I feel the baby move each day at this point?',
+    'When should I call you versus go to the hospital for contractions?',
+    'Which childbirth classes do you recommend for first-time moms?',
+    'Is it safe to continue my current exercise routine into the third trimester?',
+  ];
+  // Tracks which suggested questions are saved (by index)
+  let SUGGESTED_SAVED = new Set();
+
+  function renderSuggestedQuestions() {
+    const list = document.getElementById('suggestedQuestionsList');
+    if (!list) return;
+    list.innerHTML = SUGGESTED_QUESTIONS.map((q, i) => {
+      const saved = SUGGESTED_SAVED.has(i);
+      return `
+        <div class="q-card ${saved ? 'saved' : ''}" data-suggested-index="${i}" onclick="toggleSuggestedQuestion(${i})">
+          <div class="q-num">${i + 1}</div>
+          <div class="q-body"><p>${escapeHtml(q)}</p></div>
+          <div class="q-actions">
+            <button class="edit-q" onclick="event.stopPropagation(); startEditSuggested(${i}, this)" aria-label="Edit question">
+              <span class="material-icons">edit</span>
+            </button>
+            <div class="bookmark"><span class="material-icons">${saved ? 'bookmark' : 'bookmark_border'}</span></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function toggleSuggestedQuestion(index) {
+    const text = SUGGESTED_QUESTIONS[index];
+    if (SUGGESTED_SAVED.has(index)) {
+      SUGGESTED_SAVED.delete(index);
+      SAVED_QUESTIONS = SAVED_QUESTIONS.filter(q => q !== text);
+      syncSavedQuestionToUpcoming(text, 'remove');
+      showToast('Question removed', 'remove_circle_outline');
+    } else {
+      SUGGESTED_SAVED.add(index);
+      if (!SAVED_QUESTIONS.includes(text)) SAVED_QUESTIONS.push(text);
+      syncSavedQuestionToUpcoming(text, 'add');
+      showToast('Question saved for your next visit', 'check_circle');
+    }
+    renderSuggestedQuestions();
+    updateSavedCount();
+  }
+
+  // Push a saved question into (or remove from) every existing upcoming
+  // appointment, so questions saved from a past visit flow to all future
+  // appointments — including ones the user already scheduled.
+  function syncSavedQuestionToUpcoming(text, action) {
+    Object.keys(APPOINTMENTS).forEach(key => {
+      const a = APPOINTMENTS[key];
+      if (!a) return;
+      // Only future / not-yet-recorded appointments. Skip past visits
+      // (recorded === true or === false) so we don't retroactively mutate them.
+      if (a.recorded !== undefined) return;
+      if (!a.questions) a.questions = [];
+      if (action === 'add') {
+        if (!a.questions.includes(text)) a.questions.push(text);
+      } else if (action === 'remove') {
+        a.questions = a.questions.filter(q => q !== text);
+      } else if (action === 'rename' && Array.isArray(text)) {
+        // text = [oldText, newText]
+        const [oldText, newText] = text;
+        const idx = a.questions.indexOf(oldText);
+        if (idx !== -1) a.questions[idx] = newText;
+      }
+    });
+  }
+
+  function startEditSuggested(index, btn) {
+    const card = btn.closest('.q-card');
+    if (!card || card.classList.contains('editing')) return;
+    const current = SUGGESTED_QUESTIONS[index];
+    const num = index + 1;
+    const wasSaved = SUGGESTED_SAVED.has(index);
+
+    card.onclick = null;
+    card.classList.add('editing');
+    if (wasSaved) card.classList.add('saved');
+    card.innerHTML = `
+      <div class="q-top-row">
+        <div class="q-num">${num}</div>
+        <textarea class="edit-textarea">${escapeHtml(current)}</textarea>
+      </div>
+      <div class="edit-actions">
+        <button class="cancel-edit" onclick="renderSuggestedQuestions()">Cancel</button>
+        <button class="save-edit" onclick="saveEditSuggested(${index}, this)">
+          <span class="material-icons">check</span>Save
+        </button>
+      </div>`;
+    const ta = card.querySelector('textarea');
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  }
+
+  function saveEditSuggested(index, btn) {
+    const card = btn.closest('.q-card');
+    const ta = card.querySelector('textarea');
+    const text = ta.value.trim();
+    if (!text) {
+      showToast('Question can\u2019t be empty', 'error_outline');
+      return;
+    }
+    const oldText = SUGGESTED_QUESTIONS[index];
+    SUGGESTED_QUESTIONS[index] = text;
+    // Keep the SAVED_QUESTIONS list in sync if the user already had this saved,
+    // and propagate the rename to every upcoming appointment carrying it.
+    if (SUGGESTED_SAVED.has(index)) {
+      const savedIdx = SAVED_QUESTIONS.indexOf(oldText);
+      if (savedIdx !== -1) SAVED_QUESTIONS[savedIdx] = text;
+      syncSavedQuestionToUpcoming([oldText, text], 'rename');
+    }
+    renderSuggestedQuestions();
+    showToast('Question updated', 'check_circle');
+  }
+
+  function updateSavedCount() {
+    const count = SUGGESTED_SAVED.size;
+    const countEl = document.getElementById('savedCount');
+    if (countEl) countEl.textContent = count;
+    const counter = document.getElementById('savedCounter');
+    if (counter) counter.style.display = count > 0 ? 'inline-flex' : 'none';
+  }
+
+  function showToast(text, icon) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toastText').textContent = text;
+    const iconEl = toast.querySelector('.material-icons');
+    iconEl.textContent = icon || 'check_circle';
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // Initialize saved counter as hidden
+  document.addEventListener('DOMContentLoaded', () => {
+    renderSuggestedQuestions();
+    updateSavedCount();
+    renderCalendar();
+  });
+
+  // ---------- Calendar ----------
+  // "Today" in the app context
+  const TODAY = new Date(2026, 3, 19); // April 19, 2026
+
+  // Appointment data (month is 0-indexed)
+  // recorded: true means the visit has been recorded and AI-processed
+  const APPOINTMENTS = {
+    '2026-0-11':  { name: 'Week 8 — First Visit',     duration: '45 min', provider: 'Dr. Patel', recorded: true },
+    '2026-1-8':   { name: 'Week 12 Checkup',          duration: '18 min', provider: 'Dr. Patel', recorded: true },
+    '2026-2-22':  { name: 'Week 18 Anatomy Scan',     duration: '35 min', provider: 'Dr. Patel', recorded: true },
+    '2026-3-19':  { name: 'Week 22 Checkup',          duration: '22 min', provider: 'Dr. Patel', recorded: false },
+    '2026-4-17':  { name: 'Week 26 Checkup',          duration: '30 min', provider: 'Dr. Patel' },
+    '2026-4-30':  { name: 'Glucose Screening',        duration: '60 min', provider: 'Bloom OB/GYN' },
+    '2026-5-14':  { name: 'Week 30 Checkup',          duration: '30 min', provider: 'Dr. Patel' },
+    '2026-5-28':  { name: 'Growth Scan',              duration: '30 min', provider: 'Dr. Patel' },
+    '2026-6-12':  { name: 'Week 34 Checkup',          duration: '30 min', provider: 'Dr. Patel' },
+    '2026-7-2':   { name: 'Week 37 Checkup',          duration: '30 min', provider: 'Dr. Patel' },
+    '2026-7-16':  { name: 'Week 39 Checkup',          duration: '30 min', provider: 'Dr. Patel' },
+  };
+
+  let viewYear = TODAY.getFullYear();
+  let viewMonth = TODAY.getMonth();
+  let selectedKey = `${TODAY.getFullYear()}-${TODAY.getMonth()}-${TODAY.getDate()}`;
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function apptKey(y, m, d) { return `${y}-${m}-${d}`; }
+
+  function changeMonth(delta) {
+    viewMonth += delta;
+    if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+    if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    document.getElementById('calTitle').textContent = `${MONTHS[viewMonth]} ${viewYear}`;
+
+    const firstDay = new Date(viewYear, viewMonth, 1).getDay(); // 0 = Sunday
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+
+    // Leading days (previous month)
+    for (let i = firstDay - 1; i >= 0; i--) {
+      const d = daysInPrevMonth - i;
+      const cell = document.createElement('div');
+      cell.className = 'cal-day other-month';
+      cell.innerHTML = `<div class="num">${d}</div><div class="dots"></div>`;
+      grid.appendChild(cell);
+    }
+
+    // Current month
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = apptKey(viewYear, viewMonth, d);
+      const appt = APPOINTMENTS[key];
+      const cellDate = new Date(viewYear, viewMonth, d);
+      const isToday = cellDate.toDateString() === TODAY.toDateString();
+      const isPast = cellDate < TODAY;
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-day';
+      if (isToday) cell.classList.add('today');
+      if (appt) cell.classList.add('has-appointment');
+      if (key === selectedKey) cell.classList.add('selected');
+
+      let dotHtml = '';
+      if (appt) {
+        // Show filled dot only for recorded past visits; outlined for upcoming or not-yet-recorded
+        const dotClass = (appt.recorded === true) ? 'past' : 'upcoming';
+        dotHtml = `<span class="${dotClass}"></span>`;
+      }
+
+      cell.innerHTML = `<div class="num">${d}</div><div class="dots">${dotHtml}</div>`;
+      cell.onclick = () => selectDay(viewYear, viewMonth, d);
+      grid.appendChild(cell);
+    }
+
+    // Trailing days (next month) to fill 6 rows = 42 cells
+    const total = firstDay + daysInMonth;
+    const trailing = (7 - (total % 7)) % 7;
+    for (let d = 1; d <= trailing; d++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-day other-month';
+      cell.innerHTML = `<div class="num">${d}</div><div class="dots"></div>`;
+      grid.appendChild(cell);
+    }
+
+    renderDetails();
+  }
+
+  function selectDay(y, m, d) {
+    selectedKey = apptKey(y, m, d);
+    renderCalendar();
+  }
+
+  function renderDetails() {
+    const [y, m, d] = selectedKey.split('-').map(Number);
+    const date = new Date(y, m, d);
+    const isPast = date < TODAY;
+    const isToday = date.toDateString() === TODAY.toDateString();
+
+    document.getElementById('detailsTitle').textContent =
+      `${MONTHS[m]} ${d}, ${y}${isToday ? ' · Today' : ''}`;
+
+    const list = document.getElementById('detailsList');
+    const appt = APPOINTMENTS[selectedKey];
+
+    if (!appt) {
+      list.innerHTML = `
+        <div class="empty-day">
+          <span class="material-icons">event_busy</span>
+          No appointments on this day
+        </div>`;
+      return;
+    }
+
+    const isRecorded = appt.recorded === true;
+    let badge = '';
+    if (!isPast && !isToday) {
+      badge = `<span class="upcoming-badge"><span class="material-icons" style="font-size:10px;">schedule</span>Upcoming</span>`;
+    } else if (!isRecorded) {
+      // Past/today but not yet recorded
+      badge = `<span class="upcoming-badge" style="background:#e6f2ea; color:#3f8a5e;"><span class="material-icons" style="font-size:10px;">mic_none</span>Ready to record</span>`;
+    }
+    // Past + recorded → open results; otherwise open the upcoming/ready-to-record screen
+    const action = isRecorded
+      ? `onclick="go('page-results')"`
+      : `onclick="openUpcomingAppointment('${selectedKey}')"`;
+
+    list.innerHTML = `
+      <div class="recording-item" ${action}>
+        <div class="icon"><span class="material-icons">${isRecorded ? 'mic' : (isToday || isPast ? 'mic_none' : 'event')}</span></div>
+        <div class="info">
+          <h4>${appt.name}${badge}</h4>
+          <div class="meta-line">${MONTHS[m]} ${d}, ${y} · ${appt.duration} · ${appt.provider}</div>
+        </div>
+        <span class="chev"><span class="material-icons">chevron_right</span></span>
+      </div>
+    `;
+  }
+
+  // ---------- Create appointment ----------
+  function openCreateAppointment() {
+    // Pre-fill date with selected calendar day (if in the future) otherwise first upcoming day
+    const [y, m, d] = selectedKey.split('-').map(Number);
+    const sel = new Date(y, m, d);
+    let preDate;
+    if (sel > TODAY) {
+      preDate = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    } else {
+      const next = new Date(TODAY);
+      next.setDate(next.getDate() + 7);
+      preDate = next.toISOString().slice(0, 10);
+    }
+    document.getElementById('newApptDate').value = preDate;
+    document.getElementById('newApptName').value = '';
+    document.getElementById('newApptProvider').value = 'Dr. Patel';
+
+    renderCarryOverQuestions();
+    go('page-create-appt');
+  }
+
+  function setNewApptName(name) {
+    document.getElementById('newApptName').value = name;
+  }
+
+  function renderCarryOverQuestions() {
+    const container = document.getElementById('carryOverQuestions');
+    if (SAVED_QUESTIONS.length === 0) {
+      container.innerHTML = `
+        <div class="preview-q-empty">
+          <span class="material-icons" style="font-size:22px; color:#c9b8d1; display:block; margin-bottom:4px;">bookmark_border</span>
+          No saved questions yet. Save questions from a past visit and they'll appear here.
+        </div>`;
+      return;
+    }
+    container.innerHTML = SAVED_QUESTIONS.map(q =>
+      `<div class="preview-q"><span class="material-icons">check_circle</span><span>${q}</span></div>`
+    ).join('');
+  }
+
+  function createAppointment() {
+    const name = (document.getElementById('newApptName').value || '').trim();
+    const dateStr = document.getElementById('newApptDate').value;
+    const provider = document.getElementById('newApptProvider').value || 'Provider';
+    const duration = document.getElementById('newApptDuration').value;
+
+    if (!name) { showToast('Please add a name for this visit', 'error_outline'); return; }
+    if (!dateStr) { showToast('Please pick a date', 'error_outline'); return; }
+
+    const [yy, mm, dd] = dateStr.split('-').map(Number);
+    const key = `${yy}-${mm - 1}-${dd}`;
+    APPOINTMENTS[key] = {
+      name,
+      duration,
+      provider,
+      questions: [...SAVED_QUESTIONS],
+    };
+
+    viewYear = yy;
+    viewMonth = mm - 1;
+    selectedKey = key;
+    go('page-library');
+    renderCalendar();
+    showToast('Appointment scheduled', 'event_available');
+  }
+
+  // ---------- Upcoming appointment details ----------
+  let currentUpcomingKey = null;
+
+  function openUpcomingAppointment(key) {
+    currentUpcomingKey = key;
+    const appt = APPOINTMENTS[key];
+    if (!appt) return;
+    const [y, m, d] = key.split('-').map(Number);
+
+    document.getElementById('upcomingName').textContent = appt.name;
+    document.getElementById('upcomingDate').textContent = `${MONTHS[m]} ${d}, ${y}`;
+    document.getElementById('upcomingDuration').textContent = appt.duration;
+    document.getElementById('upcomingProvider').textContent = appt.provider;
+
+    // Seed the appointment's question lists the first time it's opened,
+    // then merge in any questions saved since the appointment was created so
+    // questions saved from a recent past visit always appear here.
+    if (!appt.questions) appt.questions = [...SAVED_QUESTIONS];
+    else {
+      SAVED_QUESTIONS.forEach(q => {
+        if (!appt.questions.includes(q)) appt.questions.push(q);
+      });
+    }
+    if (!appt.customQuestions) appt.customQuestions = [];
+
+    // Close composer if it was left open from previous visit
+    toggleQuestionComposer(false);
+
+    renderUpcomingQuestions();
+    go('page-upcoming');
+  }
+
+  function renderUpcomingQuestions() {
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (!appt) return;
+    const list = document.getElementById('upcomingQuestionsList');
+    const carried = appt.questions || [];
+    const custom = appt.customQuestions || [];
+    const total = carried.length + custom.length;
+
+    if (total === 0) {
+      list.innerHTML = `
+        <div class="preview-q-empty">
+          <span class="material-icons" style="font-size:22px; color:#c9b8d1; display:block; margin-bottom:4px;">add_circle_outline</span>
+          Tap the + button to add your first question.
+        </div>`;
+      return;
+    }
+
+    let html = '';
+    carried.forEach((q, i) => {
+      html += `
+        <div class="q-card saved" style="margin-bottom:8px;" data-type="carried" data-index="${i}">
+          <div class="q-num">${i + 1}</div>
+          <div class="q-body"><p>${escapeHtml(q)}</p></div>
+          <div class="q-actions">
+            <button class="edit-q" onclick="startEditQuestion(this)" aria-label="Edit question">
+              <span class="material-icons">edit</span>
+            </button>
+            <div class="bookmark"><span class="material-icons">bookmark</span></div>
+          </div>
+        </div>`;
+    });
+    custom.forEach((q, i) => {
+      const num = carried.length + i + 1;
+      html += `
+        <div class="q-card custom" style="margin-bottom:8px;" data-type="custom" data-index="${i}">
+          <div class="q-num">${num}</div>
+          <div class="q-body"><p>${escapeHtml(q)}</p></div>
+          <div class="q-actions">
+            <button class="edit-q" onclick="startEditQuestion(this)" aria-label="Edit question">
+              <span class="material-icons">edit</span>
+            </button>
+            <button class="remove-q" onclick="removeCustomQuestion(${i})" aria-label="Remove question">
+              <span class="material-icons">close</span>
+            </button>
+          </div>
+        </div>`;
+    });
+    list.innerHTML = html;
+  }
+
+  // ---------- Edit question ----------
+  function startEditQuestion(btn) {
+    const card = btn.closest('.q-card');
+    if (!card || card.classList.contains('editing')) return;
+
+    const type = card.dataset.type;
+    const index = parseInt(card.dataset.index, 10);
+    const num = card.querySelector('.q-num').textContent;
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (!appt) return;
+    const current = (type === 'carried' ? appt.questions : appt.customQuestions)[index] || '';
+
+    card.classList.add('editing');
+    card.innerHTML = `
+      <div class="q-top-row">
+        <div class="q-num">${num}</div>
+        <textarea class="edit-textarea">${escapeHtml(current)}</textarea>
+      </div>
+      <div class="edit-actions">
+        <button class="cancel-edit" onclick="cancelEditQuestion()">Cancel</button>
+        <button class="save-edit" onclick="saveEditQuestion('${type}', ${index}, this)">
+          <span class="material-icons">check</span>Save
+        </button>
+      </div>`;
+    const ta = card.querySelector('textarea');
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  }
+
+  function saveEditQuestion(type, index, btn) {
+    const card = btn.closest('.q-card');
+    const ta = card.querySelector('textarea');
+    const text = ta.value.trim();
+    if (!text) {
+      showToast('Question can\u2019t be empty', 'error_outline');
+      return;
+    }
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (!appt) return;
+    if (type === 'carried') appt.questions[index] = text;
+    else appt.customQuestions[index] = text;
+    renderUpcomingQuestions();
+    showToast('Question updated', 'check_circle');
+  }
+
+  function cancelEditQuestion() {
+    renderUpcomingQuestions();
+  }
+
+  function toggleQuestionComposer(forceState) {
+    const c = document.getElementById('qComposer');
+    const shouldOpen = typeof forceState === 'boolean' ? forceState : !c.classList.contains('open');
+    c.classList.toggle('open', shouldOpen);
+    if (shouldOpen) {
+      const input = document.getElementById('customQInput');
+      input.value = '';
+      setTimeout(() => input.focus(), 100);
+    }
+  }
+
+  function addCustomQuestion() {
+    const input = document.getElementById('customQInput');
+    const text = input.value.trim();
+    if (!text) {
+      showToast('Please type a question first', 'error_outline');
+      return;
+    }
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (!appt) return;
+    if (!appt.customQuestions) appt.customQuestions = [];
+    appt.customQuestions.push(text);
+    input.value = '';
+    toggleQuestionComposer(false);
+    renderUpcomingQuestions();
+    showToast('Question added', 'check_circle');
+  }
+
+  function removeCustomQuestion(index) {
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (!appt || !appt.customQuestions) return;
+    appt.customQuestions.splice(index, 1);
+    renderUpcomingQuestions();
+    showToast('Question removed', 'remove_circle_outline');
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+  }
+
+  function startRecordingFromAppointment() {
+    const appt = APPOINTMENTS[currentUpcomingKey];
+    if (appt) {
+      // Pre-fill the visit name input so saving keeps the scheduled name
+      const nameInput = document.getElementById('visitNameInput');
+      if (nameInput) nameInput.value = appt.name;
+    }
+    startRecording();
+  }
+
+  // ---------- Settings ----------
+  function toggleEditRow(btn) {
+    const row = btn.closest('.settings-row');
+    if (!row) return;
+    const isEditing = row.classList.toggle('editing');
+    const icon = btn.querySelector('.material-icons');
+    const valueEl = row.querySelector('.value');
+    const inputEl = row.querySelector('.value-input');
+
+    if (isEditing) {
+      if (icon) icon.textContent = 'check';
+      if (inputEl) {
+        inputEl.focus();
+        if (inputEl.type === 'text' || inputEl.type === 'email') {
+          inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length);
+        }
+      }
+    } else {
+      if (icon) icon.textContent = 'edit';
+      if (inputEl && valueEl) {
+        let displayValue = inputEl.value;
+        if (inputEl.type === 'date') {
+          const [yy, mm, dd] = displayValue.split('-');
+          if (yy && mm && dd) displayValue = `${mm}/${dd}/${yy}`;
+        }
+        if (row.dataset.type === 'password') {
+          document.getElementById('passwordValue').textContent = '\u2022'.repeat(Math.min(inputEl.value.length, 12));
+        } else {
+          valueEl.textContent = displayValue;
+        }
+      }
+      if (row.dataset.key === 'firstName') {
+        const nameDisplay = document.getElementById('settingsDisplayName');
+        if (nameDisplay) nameDisplay.textContent = inputEl.value || 'User';
+      }
+      showToast('Updated', 'check_circle');
+    }
+  }
+
+  function togglePasswordVisibility(btn) {
+    const row = btn.closest('.settings-row');
+    const valueEl = row.querySelector('.value');
+    const inputEl = row.querySelector('.value-input');
+    const icon = btn.querySelector('.material-icons');
+    const isHidden = icon.textContent === 'visibility_off';
+
+    if (isHidden) {
+      icon.textContent = 'visibility';
+      valueEl.textContent = inputEl.value;
+      inputEl.type = 'text';
+    } else {
+      icon.textContent = 'visibility_off';
+      valueEl.textContent = '\u2022'.repeat(Math.min(inputEl.value.length, 12));
+      inputEl.type = 'password';
+    }
+  }
+
+  // ---------- Info Page ----------
+  const CURRENT_WEEK = 22;
+  const TOTAL_WEEKS = 40;
+
+  const GENERAL_QUESTIONS = [
+    { label: 'B \u2014 Benefits',     text: 'What are the pros, and how likely are they?' },
+    { label: 'R \u2014 Risks',        text: 'What are the cons or possible complications?' },
+    { label: 'A \u2014 Alternatives', text: 'What other options are available?' },
+    { label: 'N \u2014 Nothing',      text: 'What if we do nothing right now?' },
+  ];
+
+  // Week-specific "what to expect" content
+  const WEEK_INFO = {
+    22: {
+      heading: '22 weeks',
+      body1: "You're more than halfway through your second trimester. Baby is the size of a papaya and weighs about a pound.",
+      body2: "You may now be feeling regular movement, and your baby's senses \u2014 taste, touch, sight, and hearing \u2014 are quickly developing.",
+      expect: [
+        { icon: 'monitor_heart', title: 'Body Changes',     desc: 'You may notice swelling in your feet, hips, and stretch marks. Your bump is becoming more visible.' },
+        { icon: 'child_care',    title: 'Baby Development', desc: 'Baby weighs ~1 lb and is developing taste buds, sleep cycles, and grasping reflexes.' },
+        { icon: 'restaurant',    title: 'Nutrition',        desc: 'Focus on iron-rich foods, calcium, and staying hydrated. Aim for ~340 extra calories per day.' },
+        { icon: 'directions_walk', title: 'Movement',       desc: 'Gentle exercise like walking, swimming, or prenatal yoga is encouraged.' },
+        { icon: 'warning',       title: 'Watch For',        desc: 'Severe headaches, vision changes, or sudden swelling can signal preeclampsia \u2014 contact your provider.' },
+        { icon: 'event',         title: 'Coming Up',        desc: 'Glucose screening between weeks 24\u201328 to check for gestational diabetes.' },
+      ],
+    },
+  };
+
+  function renderInfo() {
+    // Trimester bar fills
+    // Trimester 1: weeks 1-13, Trimester 2: weeks 14-26, Trimester 3: weeks 27-40
+    const w = CURRENT_WEEK;
+    const fill1 = w >= 13 ? 100 : (w / 13) * 100;
+    const fill2 = w <= 13 ? 0 : w >= 26 ? 100 : ((w - 13) / 13) * 100;
+    const fill3 = w <= 26 ? 0 : ((w - 26) / 14) * 100;
+    document.getElementById('fill1').style.width = fill1 + '%';
+    document.getElementById('fill2').style.width = fill2 + '%';
+    document.getElementById('fill3').style.width = fill3 + '%';
+
+    // Marker position across the full bar (3 blocks = total weeks 40)
+    const markerPct = (w / TOTAL_WEEKS) * 100;
+    document.getElementById('weekMarker').style.left = markerPct + '%';
+    document.getElementById('weekMarker').textContent = `${w} weeks`;
+
+    // Week info card
+    const info = WEEK_INFO[w] || WEEK_INFO[22];
+    document.getElementById('infoWeekHeading').textContent = info.heading;
+    document.getElementById('infoWeekBody1').textContent = info.body1;
+    document.getElementById('infoWeekBody2').textContent = info.body2;
+
+    // BRAN method list (informational only, no saving)
+    const gqList = document.getElementById('generalQuestionsList');
+    gqList.innerHTML = GENERAL_QUESTIONS.map(q => `
+      <div class="general-q static">
+        <div class="q-label">${q.label}:</div>
+        <div class="q-text">${q.text}</div>
+      </div>
+    `).join('');
+
+    // What to expect
+    const expectEl = document.getElementById('expectList');
+    expectEl.innerHTML = info.expect.map(item => `
+      <div class="expect-item">
+        <div class="ex-icon"><span class="material-icons">${item.icon}</span></div>
+        <div>
+          <h4>${item.title}</h4>
+          <p>${item.desc}</p>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function toggleSaveGeneralQuestion(card, index) {
+    const q = GENERAL_QUESTIONS[index];
+    const fullText = `${q.label}: ${q.text}`;
+    const isSaved = card.classList.toggle('saved');
+    const icon = card.querySelector('.q-bookmark .material-icons');
+    icon.textContent = isSaved ? 'bookmark' : 'bookmark_border';
+
+    if (isSaved) {
+      if (!SAVED_QUESTIONS.includes(fullText)) SAVED_QUESTIONS.push(fullText);
+      syncSavedQuestionToUpcoming(fullText, 'add');
+      showToast('Added to your next visit', 'check_circle');
+    } else {
+      SAVED_QUESTIONS = SAVED_QUESTIONS.filter(s => s !== fullText);
+      syncSavedQuestionToUpcoming(fullText, 'remove');
+      showToast('Removed from your saved questions', 'remove_circle_outline');
+    }
+  }
+
+  function confirmDeleteAccount() {
+    if (confirm('Are you sure you want to delete your account? This cannot be undone — all your recordings, transcripts, and saved questions will be permanently removed.')) {
+      showToast('Account deletion requested', 'delete_forever');
+      setTimeout(() => go('page-welcome'), 800);
+    }
   }
 </script>
 
