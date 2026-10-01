@@ -125,9 +125,24 @@ dialog[open] { animation: rise .35s cubic-bezier(.2,.8,.3,1); }
   border: 0; background: var(--page); font-size: 1rem; cursor: pointer; color: var(--ink);
 }
 
+.dlg-role { font-size: .95rem; font-weight: 600; margin: -.75rem 0 1.25rem !important; }
+.highlights { margin: 0 0 1.5rem; padding: 0; list-style: none; }
+.highlights li { padding: .5rem 0 .5rem 1.4rem; border-top: 1px solid var(--line); position: relative; font-size: .975rem; }
+.highlights li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+dialog { max-height: calc(100vh - 2rem); overflow-y: auto; }
+
+.gallery { display: grid; gap: 1.75rem; margin: 0 0 1.75rem; }
+.gallery figure { margin: 0; }
+.gallery img, .gallery video { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--line); }
+.gallery video { max-height: 75vh; width: auto; max-width: 100%; margin: 0 auto; }
+.gallery figcaption { font-size: .875rem; color: var(--muted); margin-top: .5rem; }
+dialog.has-gallery { max-width: 760px; }
+
 /* about */
 .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-top: 2rem; }
 .about-grid p { margin: 0 0 1rem; max-width: 60ch; }
+.skills { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: 1.75rem 0 0; }
+.skills li { border: 1px solid var(--line); border-radius: 999px; padding: .15rem .8rem; font-size: .9rem; }
 .now h3 { font-size: 1rem; font-weight: 600; margin: 0 0 .75rem; }
 .now ul { list-style: none; margin: 0; padding: 0; }
 .now li { padding: .6rem 0; border-top: 1px solid var(--line); color: var(--muted); }
@@ -220,89 +235,202 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
    Keep the quotes, commas, and brackets as they are.
    ========================================================== */
 const CONTENT = {
-  name: "Your Name",
-  tagline: "Student, designer, and maker of slightly unusual things.",
-  intro: "I study [your major] at [your school]. I like projects that mix design and code, and I'm always up for a new challenge.",
+  name: "Sruthi Manivannan",
+  tagline: "Engineering designer working where people, products, and data meet.",
+  intro: "I'm a Human Factors Engineering grad student at Tufts with a background in Industrial Engineering and product consulting. I design physical products and digital tools that make complex things feel simple.",
 
   about: [
-    "Write a paragraph or two about yourself here: what you study, what you care about, and what kind of work you want to do next.",
-    "A second paragraph is a nice spot for something personal, like a hobby or what got you into your field."
+    "I'm Sruthi, a Human Factors Engineering graduate student at Tufts University with a background in Industrial Engineering and product consulting.",
+    "My work bridges human-centered design, data-driven problem solving, and systems thinking to create intuitive experiences that make complex workflows simpler and more efficient. I care about designing products that balance usability, business value, and technical feasibility, helping people work smarter through thoughtful design.",
+    "When I'm not designing, you'll probably find me out on a hike."
   ],
+  skills: ["User research", "Usability testing", "Human factors", "Ergonomics", "Product design", "Inclusive design", "UI / UX", "Wireframing", "Visual design", "CAD", "Figma", "R"],
   now: [
-    "Taking [a class you like]",
-    "Learning [a new skill]",
-    "Looking for [internships / roles]"
+    "Studying Human Factors Engineering at Tufts",
+    "Building Matcha Luxe toward an MVP",
+    "Developing a stroke recovery toolkit with the Applied Cognition Lab"
   ],
 
-  email: "you@example.com",
+  email: "sruthimani01@gmail.com",
   socials: [
-    { label: "LinkedIn", url: "https://linkedin.com/in/yourname" },
-    { label: "GitHub",   url: "https://github.com/yourname" },
-    { label: "Resume",   url: "resume.pdf" }
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/sruthi-m-9b3066174/" },
+    { label: "GitHub",   url: "https://github.com/sruthimani01-ui" },
+    { label: "Resume",   url: "https://sruthimani.framer.website/resume" }
   ],
 
   /* ---- PROJECTS ----
      To add one: copy a whole { ... }, block, paste it, and edit.
-     type:  "School" or "Personal" (or any word; filters update by themselves)
+     type:  School, Industry, Research, Competition (or any word; filters update by themselves)
      color: tomato, sun, mint, pink, or sky
-     image: "images/myproject.jpg" (upload the image to an images folder),
-            or leave as "" to show the emoji instead
+     image: a web link, or "images/myproject.jpg" if you upload it to an images folder
+     gallery: extra images/videos shown in the popup (optional), each as
+            { src: "images/file.jpg", caption: "what it shows" }
+     highlights: key results shown as a short list (optional, can be [])
      link:  a URL, or "" if there isn't one                           */
   projects: [
     {
-      title: "School Project One",
-      type: "School",
-      course: "Course name",
-      year: "2026",
-      emoji: "🧪",
+      title: "Matcha Luxe",
+      type: "Competition",
+      course: "SharkNinja x MassChallenge",
+      year: "2025",
+      role: "UX Research Lead, Human Factors Strategist, Concept Development",
+      emoji: "🍵",
       color: "mint",
-      image: "",
-      blurb: "One sentence about what this project is.",
-      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
-      tools: ["Figma", "Python"],
-      link: ""
+      image: "images/matcha-cover.jpg",
+      gallery: [
+        { src: "images/matcha-affinity-diagram.jpg", caption: "Affinity diagram of insights from interviews and surveys" },
+        { src: "images/matcha-personas.jpg", caption: "Personas built from interview and survey data" },
+        { src: "images/matcha-journey-map.jpg", caption: "User journey map: making matcha from scratch" },
+        { src: "images/matcha-ai-ideation.jpg", caption: "AI-generated concept render used for early ideation" },
+        { src: "images/matcha-sketch.jpg", caption: "Form sketch" },
+        { src: "images/matcha-cardboard-prototype.jpg", caption: "Cardboard prototype of the controls and whisk" },
+        { src: "images/matcha-prototype.mp4", poster: "images/matcha-prototype-poster.jpg", caption: "Working prototype whisking matcha" },
+        { src: "images/matcha-winning-photo.jpg", caption: "Our team at the SharkNinja Innovation Challenge" }
+      ],
+      blurb: "An at-home system that grinds whole tea leaves and brews fresh matcha automatically.",
+      details: "Making real matcha at home either takes practiced whisking technique or relies on pre-ground powder that goes stale fast. Our team designed an integrated countertop machine that grinds whole leaves and brews on demand. I led research with a survey of frequent matcha drinkers, 30 structured interviews, competitive benchmarking, and concept testing, then helped turn insights into personas, journey maps, sketches, cardboard prototypes, and a CAD model.",
+      highlights: ["2nd place in the SharkNinja Innovation Challenge, earning $20,000 total toward prototyping ($5K for advancing past round 2, plus $15K for 2nd place)", "Building the product with a Northeastern lab", "Currently in the MVP phase"],
+      tools: ["User interviews", "Surveys", "Journey mapping", "Prototyping", "CAD"],
+      link: "https://www.matchaluxe.co"
     },
     {
-      title: "School Project Two",
-      type: "School",
-      course: "Course name",
-      year: "2025",
-      emoji: "📐",
+      title: "Stroke Recovery Toolkit",
+      type: "Research",
+      course: "Applied Cognition Lab",
+      year: "2026",
+      role: "Human Factors Researcher, UX Designer, Front-End Developer",
+      emoji: "🧠",
       color: "sky",
-      image: "",
-      blurb: "One sentence about what this project is.",
-      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
-      tools: ["Tool one", "Tool two"],
-      link: ""
+      image: "https://framerusercontent.com/images/UPDnNLfR6MFyY51VOyvobw50sQg.png",
+      blurb: "A web toolkit supporting stroke survivors with mental wellbeing, cognition, and self-management.",
+      details: "After formal rehab ends, stroke survivors get little structured support for fatigue, identity shifts, and returning to daily life. I benchmarked stroke-specific and wellness tools to find the gaps, then built a working web prototype using Claude as a coding assistant while I directed the feature logic, UX flow, and human factors decisions. I also wrote interview scripts for survivors and caregivers to guide the next round of iteration.",
+      highlights: ["Fatigue-aware mode with adaptive daily recommendations", "Caregiver hub with shared goal tracking", "Mental wellbeing module with mood tracking and guided journaling"],
+      tools: ["Gap analysis", "HTML / JS", "Claude", "Interview design"],
+      link: "https://sruthimani01-ui.github.io/stroke-toolkit/"
     },
     {
-      title: "A Framer-era Project",
-      type: "Personal",
-      course: "Side project",
+      title: "Wearable Cello Holder",
+      type: "School",
+      course: "Tufts, ENP 0161 Human Factors Product Design",
       year: "2025",
-      emoji: "🎨",
-      color: "pink",
-      image: "",
-      blurb: "One sentence about what this project is.",
-      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
-      tools: ["Framer"],
-      link: ""
+      role: "Human Factors Designer, Research Lead, Prototyping & Evaluation",
+      emoji: "🎻",
+      color: "tomato",
+      image: "https://framerusercontent.com/images/BclxTaPbomQZnHuFGcGWtZE4wPA.gif",
+      blurb: "A wearable, endpin-free cello support that lets cellists sit, stand, and move while playing.",
+      details: "The cello's size and traditional seated posture lead to a lot of musculoskeletal strain. Through expert interviews, a survey of 32 cellists (87.5% reported pain), and market analysis, we designed a modular harness: a load-bearing vest, a cello-mounted strap, and an adjustable bracket we fabricated with CAD and water-jet cutting. We tested it with Tufts Orchestra students and professional cellists.",
+      highlights: ["Users could put it on independently after one demo", "Setup time dropped to about 30 seconds with practice", "No measurable effect on sound quality (under 2 Hz variance)"],
+      tools: ["Expert interviews", "Surveys", "Task analysis", "CAD", "Usability testing"],
+      link: "https://sruthimani.framer.website/works/wearable-cello-holder"
     },
     {
-      title: "Another Project",
-      type: "Personal",
-      course: "Side project",
-      year: "2024",
-      emoji: "🛠️",
+      title: "RF UI Usability Testing",
+      type: "Industry",
+      course: "Manhattan Associates",
+      year: "2025",
+      role: "Lead UX Researcher",
+      emoji: "📦",
       color: "sun",
-      image: "",
-      blurb: "One sentence about what this project is.",
-      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
-      tools: ["HTML", "CSS"],
-      link: ""
+      image: "https://framerusercontent.com/images/MRDwR4035YP4jMHpT3nWTnZ5rbk.png",
+      blurb: "Comparing two RF picking screen designs for a warehouse management system.",
+      details: "For Manhattan's warehouse management solution at Cardinal Health, I evaluated two picking screen designs: one with the quantity pre-filled and one that opened the keyboard automatically. I mapped the client's workflow, interviewed warehouse management, gathered KPI data, and recreated both flows in a dev environment to time them. Workers ended up preferring the original design, a good reminder that simpler is sometimes better.",
+      highlights: ["Measured 2.8s vs 2.1s per pick across 10,000 lines a day", "Built the business case for an expedited release with R&D"],
+      tools: ["Usability testing", "Task analysis", "KPI analysis"],
+      link: "https://sruthimani.framer.website/works/rf"
+    },
+    {
+      title: "Quantitative Modeling in R",
+      type: "School",
+      course: "Statistics & machine learning",
+      year: "2025",
+      role: "Quantitative UX Researcher",
+      emoji: "📊",
+      color: "pink",
+      image: "https://framerusercontent.com/images/1MAVh9RMv7mfBhnKMVqDvTeZSjg.png",
+      blurb: "Predicting stress and testing group differences with statistical and ML methods.",
+      details: "I used a two-sample t-test to compare independent groups (like comparing two user segments or design conditions), then built linear regression and random forest models to predict stress from variables like hours worked and job complexity. I evaluated them with RMSE, train/test splits, variable importance, and partial dependence plots.",
+      highlights: ["Significant group difference (t = 5.70, p < 0.000001)", "Random forest fit better overall but showed slight overfitting on test data"],
+      tools: ["R", "tidyverse", "caret", "randomForest", "ggplot2"],
+      link: "https://sruthimani.framer.website/works/statistical-analysis-case-studios"
+    },
+    {
+      title: "Apple Watch Keyboard Redesign",
+      type: "School",
+      course: "Human Factors Engineering",
+      year: "2025",
+      role: "UX Designer & Prototyper",
+      emoji: "⌚",
+      color: "sky",
+      image: "https://framerusercontent.com/images/JBpkVRnZgsTPFn8d3toNZHexyFc.png",
+      blurb: "Rethinking text entry on a tiny screen with an interactive Figma prototype.",
+      details: "I analyzed existing smartwatch input methods to pin down problems with accuracy, finger size, and visual clarity, sketched layout variations, and built a low-fidelity interactive prototype with micro-interactions and haptic cues.",
+      highlights: ["Fastest keyboard in the class at 0.8 characters per second"],
+      tools: ["Figma", "Sketching", "Prototyping"],
+      link: "https://sruthimani.framer.website/works/apple-watch-keyboard-redesign"
+    },
+    {
+      title: "Pocket Smarts",
+      type: "School",
+      course: "UX/UI design",
+      year: "2025",
+      role: "UX Designer",
+      emoji: "🐷",
+      color: "pink",
+      image: "https://framerusercontent.com/images/RoAZaUOMfet3AcNp0yijIsnmvJs.png",
+      blurb: "A money management app that teaches kids saving, spending, and budgeting.",
+      details: "In two weeks I took this from concept to interactive prototype: a user flow in Miro, user-tested paper prototypes, low and mid-fidelity wireframes, moodboards for an age-appropriate visual language, a rapid design review, and a final Figma prototype built with components and variants.",
+      highlights: [],
+      tools: ["Figma", "Miro", "Paper prototyping"],
+      link: "https://sruthimani.framer.website/works/pocket-smarts-a-financial-app-for-young-learners"
+    },
+    {
+      title: "Ergonomic Analysis at Andritz",
+      type: "Industry",
+      course: "Andritz Inc.",
+      year: "2023",
+      role: "Ergonomic Analyst",
+      emoji: "🏭",
+      color: "sun",
+      image: "https://framerusercontent.com/images/i236fGKWLhesGWdNYLwAcDEziw.png",
+      blurb: "Reducing back injury risk for workers carrying metal casting molds.",
+      details: "Workers at Andritz's Pennsylvania facility had high rates of back injuries from carrying casting molds between lines. Using the NIOSH lifting equation, our team found lifting height and horizontal distance drove most of the risk, then modeled layout changes to bring the lifting index below 1.",
+      highlights: ["Proposed a new layout for mold and gate removal", "Reduced the lifting index below 1"],
+      tools: ["NIOSH lifting equation", "Workflow analysis"],
+      link: "https://sruthimani.framer.website/works/niosh"
+    },
+    {
+      title: "Roto Rack",
+      type: "Competition",
+      course: "Whirlpool Innovation Competition",
+      year: "2022",
+      role: "Lead Product Designer",
+      emoji: "🍽️",
+      color: "mint",
+      image: "https://framerusercontent.com/images/kTjuwtOzU93kYixhch2P1UHzFY.png",
+      blurb: "A rotating dishwasher insert that makes loading easier for people with limited mobility.",
+      details: "Whirlpool challenged participants to solve everyday appliance problems for people with disabilities. In one week I designed the Roto Rack, a dishwasher insert that rotates so users can reach every corner without overreaching, modeled it in CAD, and calculated how much space it saved.",
+      highlights: ["1st place overall in Whirlpool's Innovation Competition"],
+      tools: ["CAD", "Inclusive design"],
+      link: "https://sruthimani.framer.website/works/rotorack"
+    },
+    {
+      title: "Hair Dryer CAD Model",
+      type: "School",
+      course: "Engineering",
+      year: "2022",
+      role: "CAD Designer",
+      emoji: "💨",
+      color: "tomato",
+      image: "https://framerusercontent.com/images/4oZMSewHn50qlFfMoXziFKYO6V8.png",
+      blurb: "A full-size, fully reassemblable CAD model of every part of a hair dryer.",
+      details: "I took apart a hair dryer, measured every component, modeled each one in CAD, and assembled them into a complete digital mockup that can be used for product analysis or redesign.",
+      highlights: [],
+      tools: ["CAD", "Reverse engineering"],
+      link: "https://sruthimani.framer.website/works/hairdryer"
     }
   ]
 };
+
 /* ============ end of content, the rest builds the page ============ */
 
 const $ = id => document.getElementById(id);
@@ -389,22 +517,47 @@ function openProject(p) {
   const art = el("div", "dlg-art"); fillArt(art, p);
   const body = el("div", "dlg-body");
   const h = el("h3", null, p.title); h.id = "dlgTitle";
-  body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`), el("p", null, p.details));
+  body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`));
+  if (p.role) body.append(el("p", "dlg-role", p.role));
+  body.append(el("p", null, p.details));
+  if (p.highlights && p.highlights.length) {
+    const hl = el("ul", "highlights"); p.highlights.forEach(t => hl.append(el("li", null, t))); body.append(hl);
+  }
   if (p.tools && p.tools.length) {
     const ul = el("ul", "tools"); p.tools.forEach(t => ul.append(el("li", null, t))); body.append(ul);
   }
+  if (p.gallery && p.gallery.length) {
+    const g = el("div", "gallery");
+    p.gallery.forEach(item => {
+      const fig = el("figure");
+      let media;
+      if (/\.(mp4|webm|mov)$/i.test(item.src)) {
+        media = el("video"); media.src = item.src; media.controls = true; media.playsInline = true;
+        media.preload = "metadata"; if (item.poster) media.poster = item.poster;
+      } else {
+        media = el("img"); media.src = item.src; media.alt = item.caption || ""; media.loading = "lazy";
+      }
+      fig.append(media);
+      if (item.caption) fig.append(el("figcaption", null, item.caption));
+      g.append(fig);
+    });
+    body.append(g);
+  }
   if (p.link) {
-    const a = el("a", "link", "View project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
+    const a = el("a", "link", "See the full project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
   }
   box.append(art, body);
+  $("dlg").classList.toggle("has-gallery", !!(p.gallery && p.gallery.length));
   $("dlg").showModal();
 }
 $("dlgClose").addEventListener("click", () => $("dlg").close());
+$("dlg").addEventListener("close", () => $("dlgContent").querySelectorAll("video").forEach(v => v.pause()));
 $("dlg").addEventListener("click", e => { if (e.target === $("dlg")) $("dlg").close(); });
 renderProjects();
 
 /* about + contact */
 CONTENT.about.forEach(t => $("aboutText").append(el("p", null, t)));
+if (CONTENT.skills) { const sk = el("ul", "skills"); CONTENT.skills.forEach(t => sk.append(el("li", null, t))); $("aboutText").append(sk); }
 CONTENT.now.forEach(t => $("nowList").append(el("li", null, t)));
 $("email").textContent = CONTENT.email;
 $("email").href = "mailto:" + CONTENT.email;
