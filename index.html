@@ -189,6 +189,33 @@ table.data td.flag { color: #C2410C; font-weight: 700; }
 .diagram { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: .5rem; }
 .diagram svg { display: block; width: 100%; min-width: 560px; height: auto; }
 .drawn svg { width: 100%; height: 100%; display: block; }
+.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: .25rem 0 1.25rem; padding: .9rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.facts dt { font-size: .8rem; color: var(--muted); margin-bottom: .2rem; }
+.facts dd { margin: 0; font-size: .9rem; font-weight: 600; line-height: 1.35; }
+@media (max-width: 560px) { .facts { grid-template-columns: 1fr 1fr; } }
+.methods { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.method { border: 1px solid var(--line); border-radius: 12px; padding: .9rem 1rem; }
+.method strong { display: block; font-size: .95rem; margin-bottom: .2rem; }
+.method p { margin: 0 !important; font-size: .9rem; color: var(--muted); line-height: 1.45; }
+@media (max-width: 560px) { .methods { grid-template-columns: 1fr; } }
+.bizcase { border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem; margin-bottom: 2rem; }
+.bars-title { font-size: .85rem; color: var(--muted); margin: 0 0 .75rem !important; }
+.bars { display: grid; gap: .7rem; margin-bottom: 1.25rem; }
+.bar { display: grid; grid-template-columns: 15rem 1fr 3rem; align-items: center; gap: .75rem; font-size: .9rem; }
+.bar-label { color: var(--muted); }
+.bar.best .bar-label { color: var(--ink); font-weight: 600; }
+.track { height: 12px; background: #F1F1F5; border-radius: 999px; overflow: hidden; }
+.fill { height: 100%; border-radius: 999px; background: #C9CAD6; }
+.bar.best .fill { background: var(--accent); }
+.bar-val { text-align: right; font-variant-numeric: tabular-nums; }
+.bar.best .bar-val { font-weight: 700; color: var(--accent); }
+@media (max-width: 560px) { .bar { grid-template-columns: 1fr auto; } .bar .track { grid-column: 1 / -1; grid-row: 2; } }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; padding-top: 1.1rem; border-top: 1px solid var(--line); }
+.stat strong { display: block; font-size: 1.6rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.stat span { font-size: .85rem; color: var(--muted); line-height: 1.4; display: block; }
+@media (max-width: 560px) { .stats { grid-template-columns: 1fr; gap: .9rem; } .stat strong { font-size: 1.4rem; } }
+.stat:last-child strong { color: var(--accent); }
+.biz-note { font-size: .9rem; color: var(--muted); margin: 1rem 0 0 !important; }
 .links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1rem; }
 
 /* about */
@@ -301,8 +328,7 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
         <ul id="nowList"></ul>
       </div>
     </div>
-    <div class="offduty">
-      <h3>Outside of work</h3>
+    <div class="offduty" aria-label="Photos outside of work">
       <ul class="snaps" id="snaps"></ul>
     </div>
   </div></section>
@@ -335,8 +361,7 @@ const CONTENT = {
 
   about: [
     "I'm Sruthi, a Human Factors Engineering graduate student at Tufts University with a background in Industrial Engineering and product consulting.",
-    "My work bridges human-centered design, data-driven problem solving, and systems thinking to create intuitive experiences that make complex workflows simpler and more efficient. I care about designing products that balance usability, business value, and technical feasibility, helping people work smarter through thoughtful design.",
-    "When I'm not designing, you'll probably find me out on a hike."
+    "My work bridges human-centered design, data-driven problem solving, and systems thinking to create intuitive experiences that make complex workflows simpler and more efficient. I care about designing products that balance usability, business value, and technical feasibility, helping people work smarter through thoughtful design."
   ],
   /* SKILLS: each skill has a color. Projects show a dot for each skill they're
      tagged with (see "skills" inside each project). Change any color here and
@@ -358,10 +383,10 @@ const CONTENT = {
   /* PHOTOS for "Outside of work": upload them to the images folder.
      Portrait (3:4) photos look best. 4 is a nice number, but any amount works. */
   photos: [
-    { src: "images/me-graduation.jpg", caption: "Penn State grad, with the Nittany Lion" },
-    { src: "images/me-hiking.jpg",     caption: "Happiest on a trail" },
-    { src: "images/me-matcha.jpg",     caption: "Matcha research, field edition" },
-    { src: "images/me-travel.jpg",     caption: "Street snacks while traveling" }
+    { src: "images/me-graduation.jpg", caption: "Graduation at Penn State" },
+    { src: "images/me-hiking.jpg",     caption: "Hiking in Guatemala" },
+    { src: "images/me-matcha.jpg",     caption: "Matcha field research" },
+    { src: "images/me-travel.jpg",     caption: "Snacking on street food in Japan" }
   ],
   now: [
     "Studying Human Factors Engineering at Tufts",
@@ -492,18 +517,52 @@ const CONTENT = {
       course: "Manhattan Associates",
       year: "2025",
       role: "Lead UX Researcher",
+      facts: [
+        { label: "Client", value: "Manhattan Associates, for Cardinal Health" },
+        { label: "Industry", value: "SaaS, supply chain" },
+        { label: "Timeline", value: "12 weeks, 2025" },
+        { label: "My role", value: "Lead UX Researcher" }
+      ],
       emoji: "📦",
       skills: ["Usability testing", "User research", "UI / UX"],
       image: "images/rf-cover.jpg",
+      blurb: "Comparing two RF picking screen designs for a warehouse management system.",
+      details: "Manhattan Associates builds SaaS supply chain software. On their warehouse management system for Cardinal Health, my goal was to decide which of two RF picking screens to move forward with: a new design that pre-filled the pick quantity and opened the keyboard automatically, or the original, which left the field empty. I combined interviews with KPI data on scans per minute before and after the change.",
+      highlights: [
+        "The data favored the original screen: 2.1 seconds per pick versus 2.8 with the pre-filled quantity",
+        "Workers preferred it too, since the auto-opened keyboard covered much of the screen and pre-filled quantities rarely needed editing",
+        "Turned the findings into a business case that got the change an expedited release with R&D",
+        "A reminder that simpler is sometimes better: changing a design isn't always an improvement"
+      ],
+      tools: ["Usability testing", "Task analysis", "Interviews", "KPI analysis", "Timed task comparison"],
+      methods: {
+        title: "Research methods",
+        items: [
+          { title: "Task analysis", text: "Met with the client to understand their picking workflow and map it step by step." },
+          { title: "Management interviews", text: "Interviewed warehouse management about how workers actually move through the flow." },
+          { title: "KPI baseline", text: "Gathered key KPIs to set how many picks they expect from this screen flow." },
+          { title: "Timed comparison", text: "Recreated the picking flow in a dev environment with both screens and timed each pick." }
+        ]
+      },
+      businessCase: {
+        title: "The business case",
+        bars: [
+          { label: "Design 1: pre-filled quantity", value: 2.8 },
+          { label: "Design 2: original, empty field", value: 2.1, best: true }
+        ],
+        unit: "s",
+        barsTitle: "Average time per pick",
+        stats: [
+          { value: "10,000", label: "lines picked per day" },
+          { value: "0.7 s", label: "saved on every pick" },
+          { value: "117 min", label: "saved per day, about 1.94 hours" }
+        ],
+        note: "I consolidated the research for R&D and used these numbers to justify prioritizing an expedited release."
+      },
       gallery: [
         { src: "images/rf-design-1-prepopulated.jpg", caption: "Design 1: quantity pre-filled, with the keyboard opening automatically" },
         { src: "images/rf-design-2-empty.jpg", caption: "Design 2: quantity left empty, keeping the screen clear" }
-      ],
-      blurb: "Comparing two RF picking screen designs for a warehouse management system.",
-      details: "For Manhattan's warehouse management solution at Cardinal Health, I evaluated two picking screen designs: a new one that pre-filled the quantity and opened the keyboard automatically, and the original, which left the field empty. I mapped the client's workflow, interviewed warehouse management, gathered KPI data, and recreated both flows in a dev environment to time them. Workers ended up preferring the original design, since the keyboard covered much of the screen and they rarely needed to change a pre-filled quantity. A good reminder that simpler is sometimes better.",
-      highlights: ["Measured 2.8s vs 2.1s per pick across 10,000 lines a day", "Built the business case for an expedited release with R&D"],
-      tools: ["Usability testing", "Task analysis", "KPI analysis"],
-      link: "https://sruthimani.framer.website/works/rf"
+      ]
     },
     {
       title: "Statistical Methods for UX Research",
@@ -805,7 +864,11 @@ function openProject(p) {
   const body = el("div", "dlg-body");
   const h = el("h3", null, p.title); h.id = "dlgTitle";
   body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`));
-  if (p.role) body.append(el("p", "dlg-role", p.role));
+  if (p.facts && p.facts.length) {
+    const dl = el("dl", "facts");
+    p.facts.forEach(f => { const d = el("div"); d.append(el("dt", null, f.label), el("dd", null, f.value)); dl.append(d); });
+    body.append(dl);
+  } else if (p.role) body.append(el("p", "dlg-role", p.role));
   if (projSkills(p).length) {
     const ul = el("ul", "dlg-skills");
     projSkills(p).forEach(n => { const li = el("li"); li.append(dots([n]), document.createTextNode(n)); ul.append(li); });
@@ -879,6 +942,33 @@ function openProject(p) {
       } else { pair = null; body.append(block); }
     });
   }
+  if (p.methods && p.methods.items) {
+    body.append(el("h4", "dlg-sub", p.methods.title || "Methods"));
+    const grid = el("div", "methods");
+    p.methods.items.forEach(m => { const c = el("div", "method"); c.append(el("strong", null, m.title), el("p", null, m.text)); grid.append(c); });
+    body.append(grid);
+  }
+  if (p.businessCase) {
+    const bc = p.businessCase;
+    body.append(el("h4", "dlg-sub", bc.title || "Impact"));
+    const card = el("div", "bizcase");
+    const max = Math.max(...bc.bars.map(b => b.value));
+    if (bc.barsTitle) card.append(el("p", "bars-title", bc.barsTitle));
+    const bars = el("div", "bars");
+    bc.bars.forEach(b => {
+      const row = el("div", b.best ? "bar best" : "bar");
+      const track = el("div", "track"); const fill = el("div", "fill"); fill.style.width = (b.value / max * 100) + "%";
+      track.append(fill);
+      row.append(el("span", "bar-label", b.label), track, el("span", "bar-val", b.value + (bc.unit || "")));
+      bars.append(row);
+    });
+    card.append(bars);
+    const st = el("div", "stats");
+    bc.stats.forEach(x => { const d = el("div", "stat"); d.append(el("strong", null, x.value), el("span", null, x.label)); st.append(d); });
+    card.append(st);
+    if (bc.note) card.append(el("p", "biz-note", bc.note));
+    body.append(card);
+  }
   if (p.gallery && p.gallery.length) {
     const g = el("div", "gallery");
     p.gallery.forEach(item => {
@@ -919,7 +1009,7 @@ function openProject(p) {
     const a = el("a", "link", "See the full project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
   }
   box.append(art, body);
-  $("dlg").classList.toggle("has-gallery", !!((p.gallery && p.gallery.length) || p.tables || p.diagram || p.riskTable));
+  $("dlg").classList.toggle("has-gallery", !!((p.gallery && p.gallery.length) || p.tables || p.diagram || p.riskTable || p.businessCase));
   $("dlg").showModal();
 }
 $("dlgClose").addEventListener("click", () => $("dlg").close());
