@@ -88,15 +88,17 @@ h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 500; letter-spacing: -0
 /* project list */
 .list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
 .row {
-  width: 100%; display: grid; grid-template-columns: 14px 1fr auto auto; gap: 1.25rem; align-items: center;
+  width: 100%; display: grid; grid-template-columns: 38px 1fr auto auto; gap: 1.25rem; align-items: center;
   padding: 1.4rem .25rem; border: 0; border-bottom: 1px solid var(--line); background: none;
   font: inherit; color: inherit; text-align: left; cursor: pointer;
 }
-.swatch { width: 12px; height: 12px; border-radius: 50%; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.dots { display: inline-flex; gap: 4px; align-items: center; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.row .dots { width: 38px; }
 .row-title { font-size: clamp(1.25rem, 2.6vw, 1.75rem); font-weight: 450; letter-spacing: -0.01em; transition: transform .3s cubic-bezier(.2,.8,.3,1); }
 .row-blurb { display: block; font-size: .95rem; color: var(--muted); font-weight: 400; letter-spacing: 0; }
 .row-course, .row-year { color: var(--muted); font-size: .95rem; white-space: nowrap; }
-.row:hover .swatch, .row:focus-visible .swatch { transform: scale(1.8); }
+.row:hover .dot, .row:focus-visible .dot { transform: scale(1.35); }
 .row:hover .row-title, .row:focus-visible .row-title { transform: translateX(6px); }
 .empty { color: var(--muted); padding: 1.5rem 0; }
 
@@ -174,13 +176,40 @@ table.risk td { padding: .7rem .8rem; border-bottom: 1px solid var(--line); vert
 table.risk tr:last-child td { border-bottom: 0; }
 table.risk td.score { white-space: nowrap; font-variant-numeric: tabular-nums; }
 table.risk td.score.high { color: #C2410C; font-weight: 700; }
+table.data { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .875rem; line-height: 1.4; }
+table.data.compact { min-width: 0; }
+table.data th { text-align: left; font-weight: 600; padding: .6rem .8rem; border-bottom: 1px solid var(--line); background: #FAFAFC; }
+table.data td { padding: .55rem .8rem; border-bottom: 1px solid var(--line); }
+table.data tr:last-child td { border-bottom: 0; }
+table.data td.num, table.data th:not(:first-child) { font-variant-numeric: tabular-nums; }
+table.data tr.total td { font-weight: 700; background: #FAFAFC; }
+table.data td.flag { color: #C2410C; font-weight: 700; }
+.tbl-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+@media (max-width: 560px) { .tbl-pair { grid-template-columns: 1fr; } }
+.diagram { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; padding: 1rem; margin-bottom: .5rem; }
+.diagram svg { display: block; width: 100%; min-width: 560px; height: auto; }
+.drawn svg { width: 100%; height: 100%; display: block; }
 .links { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 1rem; }
 
 /* about */
 .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-top: 2rem; }
 .about-grid p { margin: 0 0 1rem; max-width: 60ch; }
-.skills { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: 1.75rem 0 0; }
-.skills li { border: 1px solid var(--line); border-radius: 999px; padding: .15rem .8rem; font-size: .9rem; }
+.key { display: flex; align-items: baseline; gap: .5rem 1rem; flex-wrap: wrap; margin: -0.75rem 0 1.5rem; }
+.key-label { font-size: .875rem; color: var(--muted); }
+.skills { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; flex: 1; }
+.key .clear { font: inherit; font-size: .875rem; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.key .clear[hidden] { display: none; }
+.skill {
+  display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--line); border-radius: 999px;
+  padding: .1rem .7rem .1rem .55rem; font: inherit; font-size: .825rem; color: var(--ink); background: var(--page);
+}
+button.skill { cursor: pointer; transition: border-color .2s, background .2s; }
+button.skill:hover { border-color: var(--muted); }
+button.skill[aria-pressed="true"] { border-color: var(--ink); background: #F6F6F9; }
+.skill.unused { color: var(--muted); }
+.skill .dots .dot, .dlg-skills .dot { width: 9px; height: 9px; }
+.dlg-skills { display: flex; flex-wrap: wrap; gap: .5rem 1rem; list-style: none; padding: 0; margin: -.5rem 0 1.25rem; font-size: .9rem; }
+.dlg-skills li { display: inline-flex; align-items: center; gap: .4rem; }
 .now h3 { font-size: 1rem; font-weight: 600; margin: 0 0 .75rem; }
 .now ul { list-style: none; margin: 0; padding: 0; }
 .now li { padding: .6rem 0; border-top: 1px solid var(--line); color: var(--muted); }
@@ -203,8 +232,10 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
 @media (max-width: 760px) {
   .hero { padding: 4rem 0 3rem; }
   .hero-text, .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .row { grid-template-columns: 12px 1fr auto; }
+  .row { grid-template-columns: 38px 1fr auto; }
   .row-course { display: none; }
+  .key { display: grid; grid-template-columns: 1fr auto; gap: .5rem; }
+  .key .skills { grid-column: 1 / -1; grid-row: 2; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -236,6 +267,11 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
     <div class="sec-head">
       <h2>Selected work</h2>
       <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+    </div>
+    <div class="key" id="skillKey" role="group" aria-label="Skill key: filter projects by skill">
+      <span class="key-label">Skills</span>
+      <ul class="skills" id="skillList"></ul>
+      <button type="button" class="clear" id="clearSkill" hidden>Clear</button>
     </div>
     <ul class="list" id="list"></ul>
   </div></section>
@@ -282,11 +318,27 @@ const CONTENT = {
     "My work bridges human-centered design, data-driven problem solving, and systems thinking to create intuitive experiences that make complex workflows simpler and more efficient. I care about designing products that balance usability, business value, and technical feasibility, helping people work smarter through thoughtful design.",
     "When I'm not designing, you'll probably find me out on a hike."
   ],
-  skills: ["User research", "Usability testing", "Human factors", "Ergonomics", "Product design", "Inclusive design", "UI / UX", "Wireframing", "Visual design", "CAD", "Figma", "R"],
+  /* SKILLS: each skill has a color. Projects show a dot for each skill they're
+     tagged with (see "skills" inside each project). Change any color here and
+     every matching dot updates. */
+  skills: [
+    { name: "User research",     color: "#4E79A7" },
+    { name: "Usability testing", color: "#F28E2B" },
+    { name: "Human factors",     color: "#E15759" },
+    { name: "Ergonomics",        color: "#76B7B2" },
+    { name: "Product design",    color: "#59A14F" },
+    { name: "Inclusive design",  color: "#EDC948" },
+    { name: "UI / UX",           color: "#B07AA1" },
+    { name: "Wireframing",       color: "#FF9DA7" },
+    { name: "Visual design",     color: "#9C755F" },
+    { name: "CAD",               color: "#BAB0AC" },
+    { name: "Figma",             color: "#A0CBE8" },
+    { name: "R",                 color: "#2F4B7C" }
+  ],
   now: [
     "Studying Human Factors Engineering at Tufts",
     "Building Matcha Luxe toward an MVP",
-    "Developing a stroke recovery toolkit with the Applied Cognition Lab"
+    "Working as a Human Factors Intern at MITRE"
   ],
 
   email: "sruthimani01@gmail.com",
@@ -299,7 +351,7 @@ const CONTENT = {
   /* ---- PROJECTS ----
      To add one: copy a whole { ... }, block, paste it, and edit.
      type:  School, Industry, Research, Competition (or any word; filters update by themselves)
-     color: tomato, sun, mint, pink, or sky
+     skills: up to 3 skill names, spelled exactly as in the SKILLS list above
      image: a web link, or "images/myproject.jpg" if you upload it to an images folder
      gallery: extra images/videos shown in the popup (optional), each as
             { src: "images/file.jpg", caption: "what it shows" }
@@ -316,7 +368,7 @@ const CONTENT = {
       year: "2025",
       role: "UX Research Lead, Human Factors Strategist, Concept Development",
       emoji: "🍵",
-      color: "mint",
+      skills: ["User research", "Product design", "CAD"],
       image: "images/matcha-cover.jpg",
       gallery: [
         { src: "images/matcha-affinity-diagram.jpg", caption: "Affinity diagram of insights from interviews and surveys", wide: true },
@@ -341,7 +393,7 @@ const CONTENT = {
       year: "2026",
       role: "Team project with Sydney Dijkstra, Sahir Surani, and Deelia Wang",
       emoji: "🌸",
-      color: "pink",
+      skills: ["Human factors", "Usability testing", "UI / UX"],
       image: "images/bloom-cover.jpg",
       blurb: "An end-to-end human factors study, from user research through risk analysis and usability testing, for an app that helps pregnant patients advocate for themselves.",
       details: "Our research found that pregnant patients often leave short, rushed appointments without asking what they meant to, and the CDC reports 44.7% of patients hold back questions from their providers. We designed Bloom, a mobile companion that records prenatal visits, uses AI to summarize them, suggests questions for the next appointment, and gives week-by-week information. Then we took it through a full human factors process: task analysis, a use-related risk analysis (URRA), and formative usability testing with real parents.",
@@ -384,28 +436,13 @@ const CONTENT = {
       ]
     },
     {
-      title: "Stroke Recovery Toolkit",
-      type: "Research",
-      course: "Applied Cognition Lab",
-      year: "2026",
-      role: "Human Factors Researcher, UX Designer, Front-End Developer",
-      emoji: "🧠",
-      color: "sky",
-      image: "https://framerusercontent.com/images/UPDnNLfR6MFyY51VOyvobw50sQg.png",
-      blurb: "A web toolkit supporting stroke survivors with mental wellbeing, cognition, and self-management.",
-      details: "After formal rehab ends, stroke survivors get little structured support for fatigue, identity shifts, and returning to daily life. I benchmarked stroke-specific and wellness tools to find the gaps, then built a working web prototype using Claude as a coding assistant while I directed the feature logic, UX flow, and human factors decisions. I also wrote interview scripts for survivors and caregivers to guide the next round of iteration.",
-      highlights: ["Fatigue-aware mode with adaptive daily recommendations", "Caregiver hub with shared goal tracking", "Mental wellbeing module with mood tracking and guided journaling"],
-      tools: ["Gap analysis", "HTML / JS", "Claude", "Interview design"],
-      link: "https://sruthimani01-ui.github.io/stroke-toolkit/"
-    },
-    {
       title: "Wearable Cello Holder",
       type: "School",
       course: "Tufts, ENP 0161 Human Factors Product Design",
       year: "2025",
       role: "Human Factors Designer, Research Lead, Prototyping & Evaluation",
       emoji: "🎻",
-      color: "tomato",
+      skills: ["Ergonomics", "Product design", "Usability testing"],
       image: "images/cello-cover.jpg",
       gallery: [
         { src: "images/cello-pain-survey.jpg", caption: "Survey of 32 cellists: 87.5% reported discomfort or pain during or after playing", wide: true },
@@ -428,7 +465,7 @@ const CONTENT = {
       year: "2025",
       role: "Lead UX Researcher",
       emoji: "📦",
-      color: "sun",
+      skills: ["Usability testing", "User research", "UI / UX"],
       image: "images/rf-cover.jpg",
       gallery: [
         { src: "images/rf-design-1-prepopulated.jpg", caption: "Design 1: quantity pre-filled, with the keyboard opening automatically" },
@@ -447,7 +484,7 @@ const CONTENT = {
       year: "2025",
       role: "Quantitative UX Researcher",
       emoji: "📊",
-      color: "pink",
+      skills: ["R", "User research"],
       image: "images/r-cover.jpg",
       gallery: [
         { src: "images/r-mens-points.jpg", caption: "Group A: distribution of points per game, Tufts men's basketball" },
@@ -475,7 +512,7 @@ const CONTENT = {
       year: "2025",
       role: "UX Designer & Prototyper",
       emoji: "⌚",
-      color: "sky",
+      skills: ["UI / UX", "Figma", "Wireframing"],
       image: "images/watch-cover.jpg",
       gallery: [
         { youtube: "pAsoQNeDL-o", caption: "Prototype walkthrough: typing with the circular keyboard", wide: true }
@@ -493,13 +530,46 @@ const CONTENT = {
       year: "2023",
       role: "Ergonomic Analyst",
       emoji: "🏭",
-      color: "sun",
-      image: "https://framerusercontent.com/images/i236fGKWLhesGWdNYLwAcDEziw.png",
+      skills: ["Ergonomics", "Human factors"],
+      cover: "liChart",
       blurb: "Reducing back injury risk for workers carrying metal casting molds.",
-      details: "Workers at Andritz's Pennsylvania facility had high rates of back injuries from carrying casting molds between lines. Using the NIOSH lifting equation, our team found lifting height and horizontal distance drove most of the risk, then modeled layout changes to bring the lifting index below 1.",
-      highlights: ["Proposed a new layout for mold and gate removal", "Reduced the lifting index below 1"],
-      tools: ["NIOSH lifting equation", "Workflow analysis"],
-      link: "https://sruthimani.framer.website/works/niosh"
+      details: "Workers at Andritz's Pennsylvania casting facility had high rates of back injuries from lifting molds and removing gates from castings. Using the NIOSH lifting equation, our team found that horizontal distance (H) and vertical travel distance (D) drove most of the risk. We modeled a new layout that brings both to their ideal values, then calculated the recommended weight limit (RWL) and lifting index (LI) for each process. A lifting index under 1 means most healthy workers can do the lift safely.",
+      diagram: "andritzProcess",
+      tables: [
+        {
+          title: "NIOSH lifting equation after the layout change",
+          columns: ["Variable", "Mold line", "Multiplier", "Gate removal", "Multiplier"],
+          rows: [
+            ["H, horizontal distance", "10 in", "1.00", "10 in", "1.00"],
+            ["V, vertical height", "31 in", "0.99", "48.5 in", "0.865"],
+            ["D, vertical travel", "2 in", "1.00", "1 in", "1.00"],
+            ["A, asymmetry angle", "90°", "0.71", "90°", "0.712"],
+            ["FM, frequency", "1 per min", "1.00", "50 per day", "0.85"],
+            ["CM, coupling", "", "0.90", "", "0.90"],
+            ["RWL, recommended weight limit", "55.79 lbs", "", "62.68 lbs", ""]
+          ],
+          lastRowBold: true
+        },
+        {
+          title: "Mold lifting index",
+          columns: ["Load", "Lifting index"],
+          rows: [["25 lbs", "0.45"], ["50 lbs", "0.90"], ["75 lbs", "1.34"]],
+          flagOver: 1, half: true
+        },
+        {
+          title: "Gate lifting index",
+          columns: ["Load", "Lifting index"],
+          rows: [["40 lbs", "0.64"], ["45 lbs", "0.72"], ["50 lbs", "0.80"]],
+          flagOver: 1, half: true
+        }
+      ],
+      highlights: [
+        "The new layout brought horizontal distance and vertical travel to their ideal multipliers of 1.0",
+        "Gate removal stays under a lifting index of 1 across every tested load (40 to 50 lbs)",
+        "Molds up to 50 lbs stay under the limit, while 75 lb molds still exceed it (1.34), showing where risk remains",
+        "Proposed a new layout for the mold line and gate removal process to cut back injury risk"
+      ],
+      tools: ["NIOSH lifting equation", "Workflow analysis", "Process mapping"]
     },
     {
       title: "Roto Rack",
@@ -508,7 +578,7 @@ const CONTENT = {
       year: "2022",
       role: "Lead Product Designer",
       emoji: "🍽️",
-      color: "mint",
+      skills: ["Inclusive design", "Product design", "CAD"],
       image: "images/roto-cover.jpg",
       gallery: [
         { src: "images/roto-seated-reach.jpg", caption: "The problem: loading from a seated position means overreaching to get to the back of the rack" },
@@ -528,7 +598,89 @@ const CONTENT = {
 
 const $ = id => document.getElementById(id);
 const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-const col = p => `var(--${p.color || "sky"})`;
+/* ---- built-in visuals (drawn in code so they match the site) ---- */
+const VISUALS = {
+  andritzProcess: {
+    title: "How we approached it",
+    width: 900, height: 540,
+    nodes: {
+      challenge: { x: 330, y: 20,  w: 240, h: 96, text: "Andritz challenge: back injuries on the casting floor", hub: true },
+      mold:      { x: 30,  y: 20,  w: 240, h: 96, text: "Reduce injuries when changing casting patterns" },
+      gate:      { x: 630, y: 20,  w: 240, h: 96, text: "Reduce injuries when removing gates from castings" },
+      evidence:  { x: 30,  y: 210, w: 240, h: 96, text: "Show evidence the change will reduce injuries" },
+      research:  { x: 330, y: 210, w: 240, h: 96, text: "Research ways to automate the process", hub: true },
+      theory:    { x: 630, y: 210, w: 240, h: 96, text: "Experiment with the data and form a theory" },
+      analyze:   { x: 30,  y: 410, w: 190, h: 116, text: "Analyze Andritz data to find the biggest cause of injury" },
+      apply:     { x: 250, y: 410, w: 190, h: 116, text: "Apply data from our site visit to automation" },
+      test:      { x: 470, y: 410, w: 190, h: 116, text: "Test alternative ways to remove gates" },
+      solutions: { x: 690, y: 410, w: 190, h: 116, text: "Develop multiple solutions, each with a different approach" }
+    },
+    arrows: [
+      { d: "M330 68 H270" }, { d: "M570 68 H630" },
+      { d: "M150 116 V210" }, { d: "M750 116 V210" },
+      { d: "M276 258 H324", both: true }, { d: "M576 258 H624", both: true },
+      { d: "M410 306 L355 410" }, { d: "M490 306 L555 410" },
+      { d: "M770 306 L780 410" },
+      { d: "M30 86 H12 V468 H30" }, { d: "M880 468 H892 V86 H870" },
+      { d: "M224 468 H246", both: true }, { d: "M664 468 H686", both: true }
+    ]
+  }
+};
+function wrapText(text, max) {
+  const words = text.split(" "), lines = []; let line = "";
+  words.forEach(w => { if ((line + " " + w).trim().length > max) { lines.push(line); line = w; } else line = (line + " " + w).trim(); });
+  if (line) lines.push(line); return lines;
+}
+function flowSvg(v) {
+  const NS = "http://www.w3.org/2000/svg";
+  let out = `<svg viewBox="0 0 ${v.width} ${v.height}" xmlns="${NS}" role="img" aria-label="${v.title}">
+    <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>`;
+  v.arrows.forEach(a => {
+    out += `<path d="${a.d}" fill="none" stroke="var(--muted)" stroke-width="1.6" marker-end="url(#ah)"${a.both ? ' marker-start="url(#ah)"' : ""}/>`;
+  });
+  Object.values(v.nodes).forEach(n => {
+    const lines = wrapText(n.text, n.w > 200 ? 22 : 17), lh = 23;
+    const y0 = n.y + n.h / 2 - (lines.length - 1) * lh / 2;
+    out += `<rect x="${n.x}" y="${n.y}" width="${n.w}" height="${n.h}" rx="14" fill="${n.hub ? "var(--accent)" : "var(--page)"}" stroke="${n.hub ? "var(--accent)" : "#D5D6E0"}" stroke-width="1.5"/>`;
+    out += `<text text-anchor="middle" font-size="18" font-family="inherit" fill="${n.hub ? "#fff" : "var(--ink)"}" font-weight="${n.hub ? 600 : 450}">`;
+    lines.forEach((l, i) => out += `<tspan x="${n.x + n.w / 2}" y="${y0 + i * lh + 5}">${l}</tspan>`);
+    out += `</text>`;
+  });
+  return out + `</svg>`;
+}
+/* cover for Andritz: lifting index dot plot */
+function liChartSvg() {
+  const X = v => 120 + v / 1.6 * 640, rows = [
+    { label: "Molds", y: 175, pts: [[0.45, "25 lb", -1], [0.90, "50 lb", -1], [1.34, "75 lb", -1]] },
+    { label: "Gates", y: 300, pts: [[0.64, "40 lb", -1], [0.72, "45 lb", 1], [0.80, "50 lb", -1]] }];
+  let o = `<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Lifting index by load: molds and gates" preserveAspectRatio="xMidYMid meet">`;
+  o += `<rect x="${X(1)}" y="50" width="${X(1.6) - X(1)}" height="320" rx="8" fill="#FDE8DF"/>`;
+  o += `<line x1="${X(1)}" y1="50" x2="${X(1)}" y2="370" stroke="#C2410C" stroke-width="2" stroke-dasharray="6 6"/>`;
+  o += `<text x="${(X(1) + X(1.6)) / 2}" y="92" text-anchor="middle" font-size="22" fill="#C2410C" font-family="inherit" font-weight="600">Over 1: at risk</text>`;
+  rows.forEach(r => {
+    o += `<text x="24" y="${r.y + 8}" font-size="24" fill="var(--ink)" font-family="inherit" font-weight="600">${r.label}</text>`;
+    o += `<line x1="${X(0)}" y1="${r.y}" x2="${X(1.5)}" y2="${r.y}" stroke="#D5D6E0" stroke-width="2"/>`;
+    r.pts.forEach(([v, lab, side]) => {
+      const bad = v > 1;
+      o += `<circle cx="${X(v)}" cy="${r.y}" r="13" fill="${bad ? "#C2410C" : "var(--accent)"}" stroke="var(--page)" stroke-width="3"/>`;
+      o += `<text x="${X(v)}" y="${side < 0 ? r.y - 26 : r.y + 42}" text-anchor="middle" font-size="19" fill="var(--muted)" font-family="inherit">${lab}</text>`;
+    });
+  });
+  [0, 0.5, 1, 1.5].forEach(t => o += `<text x="${X(t)}" y="405" text-anchor="middle" font-size="19" fill="var(--muted)" font-family="inherit">${t.toFixed(1)}</text>`);
+  o += `<text x="${X(0.8)}" y="438" text-anchor="middle" font-size="19" fill="var(--muted)" font-family="inherit">Lifting index</text>`;
+  return o + `</svg>`;
+}
+const COVERS = { liChart: liChartSvg };
+
+const skillColor = name => (CONTENT.skills.find(k => k.name === name) || {}).color || "#BAB0AC";
+const projSkills = p => (p.skills || []).slice(0, 3);
+const artBg = p => projSkills(p).length ? `color-mix(in srgb, ${skillColor(projSkills(p)[0])} 22%, white)` : "var(--frame)";
+function dots(names, cls) {
+  const wrap = el("span", cls || "dots");
+  names.forEach(n => { const d = el("span", "dot"); d.style.background = skillColor(n); d.title = n; wrap.append(d); });
+  return wrap;
+}
 
 document.title = CONTENT.name + " | Portfolio";
 $("navName").textContent = CONTENT.name;
@@ -560,20 +712,31 @@ nameEl.addEventListener("pointerleave", () => letters.forEach(l => l.style.fontW
 /* filters */
 const types = ["All", ...new Set(CONTENT.projects.map(p => p.type))];
 let current = "All";
+let skillFilter = null;
+function setType(t) {
+  current = t; skillFilter = null;
+  document.querySelectorAll(".tab").forEach(c => c.setAttribute("aria-pressed", c.textContent === t));
+  document.querySelectorAll(".skills button").forEach(c => c.setAttribute("aria-pressed", "false"));
+  renderProjects();
+}
+function setSkill(name) {
+  if (skillFilter === name) { setType("All"); return; }
+  current = "All"; skillFilter = name;
+  document.querySelectorAll(".tab").forEach(c => c.setAttribute("aria-pressed", "false"));
+  document.querySelectorAll(".skills button").forEach(c => c.setAttribute("aria-pressed", c.dataset.skill === name));
+  renderProjects();
+}
 types.forEach(t => {
   const b = el("button", "tab", t); b.type = "button";
   b.setAttribute("aria-pressed", t === current);
-  b.addEventListener("click", () => {
-    current = t;
-    document.querySelectorAll(".tab").forEach(c => c.setAttribute("aria-pressed", c.textContent === t));
-    renderProjects();
-  });
+  b.addEventListener("click", () => setType(t));
   $("filters").append(b);
 });
 
 function fillArt(box, p) {
-  box.innerHTML = ""; box.style.background = col(p);
-  if (p.image) { const img = el("img"); img.src = p.image; img.alt = ""; box.append(img); }
+  box.innerHTML = ""; box.classList.remove("drawn"); box.style.background = artBg(p);
+  if (p.cover && COVERS[p.cover]) { box.style.background = "var(--page)"; box.innerHTML = COVERS[p.cover](); box.classList.add("drawn"); }
+  else if (p.image) { const img = el("img"); img.src = p.image; img.alt = ""; box.append(img); }
   else box.textContent = p.emoji || "✨";
 }
 
@@ -589,12 +752,15 @@ document.addEventListener("pointermove", e => { tx = e.clientX + 24; ty = e.clie
 
 function renderProjects() {
   const list = $("list"); list.innerHTML = "";
-  const items = CONTENT.projects.filter(p => current === "All" || p.type === current);
+  const items = CONTENT.projects.filter(p =>
+    (current === "All" || p.type === current) && (!skillFilter || projSkills(p).includes(skillFilter)));
+  $("clearSkill").hidden = !skillFilter;
   if (!items.length) { list.append(el("li", "empty", "No projects here yet.")); return; }
   items.forEach(p => {
     const li = el("li");
     const b = el("button", "row"); b.type = "button";
-    const sw = el("span", "swatch"); sw.style.background = col(p);
+    const sw = dots(projSkills(p));
+    sw.setAttribute("aria-label", "Skills: " + projSkills(p).join(", "));
     const title = el("span", "row-title", p.title);
     title.append(el("span", "row-blurb", p.blurb));
     b.append(sw, title, el("span", "row-course", p.course), el("span", "row-year", p.year));
@@ -612,6 +778,11 @@ function openProject(p) {
   const h = el("h3", null, p.title); h.id = "dlgTitle";
   body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`));
   if (p.role) body.append(el("p", "dlg-role", p.role));
+  if (projSkills(p).length) {
+    const ul = el("ul", "dlg-skills");
+    projSkills(p).forEach(n => { const li = el("li"); li.append(dots([n]), document.createTextNode(n)); ul.append(li); });
+    body.append(ul);
+  }
   body.append(el("p", null, p.details));
   if (p.process && p.process.length) {
     body.append(el("h4", "dlg-sub", "Process"));
@@ -642,8 +813,39 @@ function openProject(p) {
     });
     t.append(tb); wrap.append(t); body.append(wrap);
   }
+  if (p.diagram && VISUALS[p.diagram]) {
+    const v = VISUALS[p.diagram];
+    body.append(el("h4", "dlg-sub", v.title));
+    const d = el("div", "diagram"); d.innerHTML = flowSvg(v); body.append(d);
+  }
+  if (p.tables && p.tables.length) {
+    let pair = null;
+    p.tables.forEach(tb => {
+      const block = el("div", "tbl-block");
+      block.append(el("h4", "dlg-sub", tb.title));
+      const wrap = el("div", "table-wrap"); const t = el("table", tb.half ? "data compact" : "data");
+      const hr = el("tr"); tb.columns.forEach(c => hr.append(el("th", null, c)));
+      const thead = el("thead"); thead.append(hr); t.append(thead);
+      const tbody = el("tbody");
+      tb.rows.forEach((r, ri) => {
+        const tr = el("tr"); if (tb.lastRowBold && ri === tb.rows.length - 1) tr.className = "total";
+        r.forEach((cell, ci) => {
+          const td = el("td", null, cell);
+          if (ci > 0) td.classList.add("num");
+          if (tb.flagOver != null && ci === r.length - 1 && parseFloat(cell) > tb.flagOver) td.classList.add("flag");
+          tr.append(td);
+        });
+        tbody.append(tr);
+      });
+      t.append(tbody); wrap.append(t); block.append(wrap);
+      if (tb.half) {
+        if (!pair) { pair = el("div", "tbl-pair"); body.append(pair); }
+        pair.append(block);
+      } else { pair = null; body.append(block); }
+    });
+  }
   if (p.highlights && p.highlights.length) {
-    if (p.process) body.append(el("h4", "dlg-sub", "Key results"));
+    if (p.process || p.tables) body.append(el("h4", "dlg-sub", "Key results"));
     const hl = el("ul", "highlights"); p.highlights.forEach(t => hl.append(el("li", null, t))); body.append(hl);
   }
   if (p.tools && p.tools.length) {
@@ -689,7 +891,7 @@ function openProject(p) {
     const a = el("a", "link", "See the full project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
   }
   box.append(art, body);
-  $("dlg").classList.toggle("has-gallery", !!(p.gallery && p.gallery.length));
+  $("dlg").classList.toggle("has-gallery", !!((p.gallery && p.gallery.length) || p.tables || p.diagram || p.riskTable));
   $("dlg").showModal();
 }
 $("dlgClose").addEventListener("click", () => $("dlg").close());
@@ -702,7 +904,18 @@ renderProjects();
 
 /* about + contact */
 CONTENT.about.forEach(t => $("aboutText").append(el("p", null, t)));
-if (CONTENT.skills) { const sk = el("ul", "skills"); CONTENT.skills.forEach(t => sk.append(el("li", null, t))); $("aboutText").append(sk); }
+if (CONTENT.skills) {
+  CONTENT.skills.forEach(k => {
+    const li = el("li");
+    const used = CONTENT.projects.some(p => projSkills(p).includes(k.name));
+    const b = el(used ? "button" : "span", used ? "skill" : "skill unused");
+    if (used) { b.type = "button"; b.dataset.skill = k.name; b.setAttribute("aria-pressed", "false");
+      b.title = "Show projects using " + k.name; b.addEventListener("click", () => setSkill(k.name)); }
+    b.append(dots([k.name]), document.createTextNode(k.name));
+    li.append(b); $("skillList").append(li);
+  });
+  $("clearSkill").addEventListener("click", () => setType("All"));
+}
 CONTENT.now.forEach(t => $("nowList").append(el("li", null, t)));
 $("email").textContent = CONTENT.email;
 $("email").href = "mailto:" + CONTENT.email;
