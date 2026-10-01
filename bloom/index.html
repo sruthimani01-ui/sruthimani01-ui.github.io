@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bloom — Pregnancy Appointment Companion</title>
+<style>
+  /* ---------- Global ---------- */
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #f5e6ea 0%, #e8dff0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* ---------- iPhone 17 Frame (approx 402 x 874 CSS px) ---------- */
+  .phone {
+    width: 402px;
+    height: 874px;
+    background: #000;
+    border-radius: 55px;
+    padding: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.35), 0 10px 20px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  .screen {
+    width: 100%;
+    height: 100%;
+    background: #fdfaf7;
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Dynamic Island */
+  .island {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 34px;
+    background: #000;
+    border-radius: 20px;
+    z-index: 100;
+  }
+  /* Status Bar */
+  .status-bar {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 32px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    z-index: 99;
+  }
+  .status-right { display: flex; gap: 5px; align-items: center; }
+
+  /* ---------- Page System ---------- */
+  .page {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    padding: 60px 24px 24px;
+    animation: fadeIn 0.3s ease;
+  }
+  .page.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- Typography ---------- */
+  h1 { font-size: 28px; font-weight: 700; color: #2d1b3d; margin-bottom: 6px; letter-spacing: -0.5px; }
+  h2 { font-size: 22px; font-weight: 700; color: #2d1b3d; margin-bottom: 4px; }
+  h3 { font-size: 16px; font-weight: 600; color: #2d1b3d; margin-bottom: 8px; }
+  p  { font-size: 14px; color: #6b5b73; line-height: 1.5; }
+  .sub { font-size: 14px; color: #8b7c93; margin-bottom: 20px; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 18px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(184, 134, 201, 0.35);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-secondary {
+    background: #fff;
+    color: #2d1b3d;
+    border: 1.5px solid #e6dce8;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: #b886c9;
+    font-weight: 600;
+  }
+
+  /* ---------- Inputs ---------- */
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d1b3d;
+    margin-bottom: 6px;
+  }
+  .field input, .field select {
+    width: 100%;
+    padding: 14px 16px;
+    background: #fff;
+    border: 1.5px solid #e6dce8;
+    border-radius: 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #2d1b3d;
+    outline: none;
+    transition: border 0.15s ease;
+  }
+  .field input:focus, .field select:focus { border-color: #b886c9; }
+
+  /* ---------- Welcome Logo ---------- */
+  .welcome { justify-content: center; align-items: center; text-align: center; }
+  .logo {
+    width: 90px; height: 90px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #b886c9, #f5a9c0);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 28px rgba(184, 134, 201, 0.4);
+  }
+
+  /* ---------- Home (Record) ---------- */
+  .home-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 24px;
+  }
+  .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #f5a9c0, #b886c9);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700;
+  }
+  .week-card {
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+    color: #fff;
+    padding: 20px;
+    border-radius: 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(184, 134, 201, 0.3);
+  }
+  .week-card .week-num { font-size: 36px; font-weight: 800; letter-spacing: -1px; }
+  .week-card .week-label { font-size: 13px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+  .week-card .week-sub { font-size: 13px; opacity: 0.9; margin-top: 8px; }
+
+  /* Record UI */
+  .record-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .record-btn {
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f5a9c0, #b886c9);
+    border: 6px solid #fff;
+    box-shadow: 0 0 0 6px rgba(184, 134, 201, 0.2), 0 15px 35px rgba(184, 134, 201, 0.4);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.2s ease;
+  }
+  .record-btn:active { transform: scale(0.96); }
+  .record-btn .dot {
+    width: 60px; height: 60px;
+    background: #fff;
+    border-radius: 50%;
+    transition: all 0.25s ease;
+  }
+  .record-btn.recording .dot {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: #e85a7a;
+  }
+  .pulse-ring {
+    position: absolute;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    border: 3px solid rgba(184, 134, 201, 0.5);
+    animation: pulse 1.6s ease-out infinite;
+    pointer-events: none;
+    display: none;
+  }
+  .recording .pulse-ring { display: block; }
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .timer {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2d1b3d;
+    font-variant-numeric: tabular-nums;
+  }
+  .record-hint { color: #8b7c93; font-size: 14px; text-align: center; }
+
+  /* ---------- Recording Controls (end record / discard) ---------- */
+  .record-controls { display: flex; gap: 12px; width: 100%; margin-top: 12px; }
+  .record-controls button { flex: 1; }
+  .btn-discard {
+    background: #fff;
+    color: #d44a6a;
+    border: 1.5px solid #f4d4dc;
+  }
+  .btn-end {
+    background: linear-gradient(135deg, #b886c9, #d4a5c2);
+    color: #fff;
+  }
+  .btn-save {
+    background: linear-gradient(135deg, #7ac29d, #5ba884);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(122, 194, 157, 0.35);
+  }
+
+  /* ---------- Waveform ---------- */
+  .waveform {
+    display: flex; gap: 4px; align-items: center; height: 60px; margin: 8px 0;
+  }
+  .waveform span {
+    flex: 1;
+    background: linear-gradient(to top, #b886c9, #f5a9c0);
+    border-radius: 3px;
+    animation: wave 1s ease-in-out infinite;
+  }
+  .waveform span:nth-child(odd)  { animation-duration: 0.8s; }
+  .waveform span:nth-child(3n)   { animation-duration: 1.2s; }
+  .waveform span:nth-child(5n)   { animation-duration: 0.9s; }
+  @keyframes wave {
+    0%, 100% { height: 20%; }
+    50% { height: 90%; }
+  }
+
+  /* ---------- Transcription Page ---------- */
+  .scroll { overflow-y: auto; flex: 1; padding-right: 4px; }
+  .scroll::-webkit-scrollbar { width: 0; }
+
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 10px rgba(45, 27, 61, 0.05);
+    border: 1px solid #f0e6f2;
+  }
+  .meta { font-size: 12px; color: #8b7c93; margin-bottom: 6px; display: flex; gap: 8px; align-items: center; }
+  .pill {
+    display: inline-block; padding: 3px 10px;
+    background: #f0e6f2; color: #7a5a8a;
+    border-radius: 20px; font-size: 11px; font-weight: 600;
+  }
+  .transcript { font-size: 14px; line-height: 1.6; color: #3d2d4a; }
+  .highlight { background: #fde9a7; padding: 0 2px; border-radius: 3px; }
+
+  /* ---------- Resource cards ---------- */
+  .res-card {
+    background: linear-gradient(135deg, #fff8f1, #fef1ec);
+    border-left: 4px solid #e89a7c;
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+  }
+  .res-card h4 { color: #2d1b3d; font-size: 15px; margin-bottom: 4px; font-weight: 600; }
+  .res-card p { font-size: 13px; color: #6b5b73; }
+
+  .q-card {
+    background: linear-gradient(135deg, #f0f7f2, #e6f2ea);
+    border-left: 4px solid #7ac29d;
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .q-card .q-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #7ac29d; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px;
+    flex-shrink: 0;
+  }
+  .q-card p { font-size: 13px; color: #2d4a3d; }
+
+  /* ---------- Tabs ---------- */
+  .tabs {
+    display: flex; gap: 8px;
+    background: #f0e6f2;
+    padding: 4px;
+    border-radius: 14px;
+    margin-bottom: 16px;
+  }
+  .tab {
+    flex: 1; text-align: center;
+    padding: 10px; border-radius: 11px;
+    font-size: 13px; font-weight: 600;
+    color: #7a5a8a; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .tab.active { background: #fff; color: #2d1b3d; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+
+  /* ---------- Top Bar ---------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .back {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #fff; border: 1px solid #f0e6f2;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 18px; color: #2d1b3d;
+  }
+  .topbar h2 { font-size: 17px; }
+
+  /* ---------- Loader ---------- */
+  .loader {
+    text-align: center;
+    padding: 40px 0;
+  }
+  .spinner {
+    width: 50px; height: 50px;
+    border: 4px solid #f0e6f2;
+    border-top: 4px solid #b886c9;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ---------- Bottom Nav ---------- */
+  .bottomnav {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: space-around;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    padding: 10px 0 28px;
+    border-top: 1px solid #f0e6f2;
+  }
+  .navbtn {
+    background: none; border: none;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 2px;
+    color: #8b7c93; font-size: 10px; font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .navbtn .icon { font-size: 22px; }
+  .navbtn.active { color: #b886c9; }
+
+  /* ---------- List with Recordings ---------- */
+  .recording-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px;
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #f0e6f2;
+    cursor: pointer;
+  }
+  .recording-item .icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: linear-gradient(135deg, #f5a9c0, #b886c9);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 18px;
+  }
+  .recording-item .info { flex: 1; }
+  .recording-item .info h4 { font-size: 14px; font-weight: 600; color: #2d1b3d; margin-bottom: 2px; }
+  .recording-item .info .meta-line { font-size: 12px; color: #8b7c93; }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="island"></div>
+  <div class="status-bar">
+    <span>9:41</span>
+    <span class="status-right">
+      <svg width="16" height="10" viewBox="0 0 16 10"><rect x="0" y="6" width="3" height="4" fill="#1a1a1a" rx="0.5"/><rect x="4" y="4" width="3" height="6" fill="#1a1a1a" rx="0.5"/><rect x="8" y="2" width="3" height="8" fill="#1a1a1a" rx="0.5"/><rect x="12" y="0" width="3" height="10" fill="#1a1a1a" rx="0.5"/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11"><rect x="0.5" y="0.5" width="20" height="10" rx="2.5" fill="none" stroke="#1a1a1a"/><rect x="2" y="2" width="17" height="7" rx="1" fill="#1a1a1a"/><rect x="21" y="3.5" width="1.5" height="4" rx="0.5" fill="#1a1a1a"/></svg>
+    </span>
+  </div>
+
+  <div class="screen">
+
+    <!-- =========== 1. WELCOME =========== -->
+    <div class="page welcome active" id="page-welcome">
+      <div class="logo">🌸</div>
+      <h1>Bloom</h1>
+      <p class="sub" style="text-align:center;">Your appointment companion<br>through every week of pregnancy</p>
+      <div style="width:100%; margin-top: 40px;">
+        <button class="btn btn-primary" onclick="go('page-login')">Get Started</button>
+        <button class="btn btn-ghost" style="margin-top: 8px;" onclick="go('page-login')">I already have an account</button>
+      </div>
+    </div>
+
+    <!-- =========== 2. LOGIN / PREGNANCY INFO =========== -->
+    <div class="page" id="page-login">
+      <div class="topbar">
+        <div class="back" onclick="go('page-welcome')">‹</div>
+        <h2>Your Pregnancy</h2>
+        <div style="width:36px;"></div>
+      </div>
+      <p class="sub">Tell us about you so we can personalize your experience.</p>
+
+      <div class="scroll">
+        <div class="field">
+          <label>Your Name</label>
+          <input type="text" placeholder="Jane Doe" value="Sruthi" />
+        </div>
+        <div class="field">
+          <label>Due Date</label>
+          <input type="date" value="2026-09-15" />
+        </div>
+        <div class="field">
+          <label>Current Week</label>
+          <select>
+            <option>Week 12</option>
+            <option>Week 16</option>
+            <option selected>Week 22</option>
+            <option>Week 28</option>
+            <option>Week 34</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Provider</label>
+          <input type="text" placeholder="Dr. Smith — Greenway OB/GYN" value="Dr. Patel — Bloom OB/GYN" />
+        </div>
+        <div class="field">
+          <label>Pregnancy Type</label>
+          <select>
+            <option selected>First pregnancy</option>
+            <option>Second or more</option>
+            <option>High-risk pregnancy</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: 12px;" onclick="go('page-home')">Continue</button>
+    </div>
+
+    <!-- =========== 3. HOME / RECORD =========== -->
+    <div class="page" id="page-home">
+      <div class="home-header">
+        <div>
+          <p style="font-size:13px; color:#8b7c93;">Good morning</p>
+          <h2>Sruthi</h2>
+        </div>
+        <div class="avatar">S</div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-label">Week</div>
+        <div class="week-num">22</div>
+        <div class="week-sub">Baby is the size of a papaya 🥭</div>
+      </div>
+
+      <h3 style="margin-bottom:4px;">Record Your Visit</h3>
+      <p style="margin-bottom: 10px;">Tap the button below when you start your appointment.</p>
+
+      <div class="record-area">
+        <div style="position:relative; display:flex; align-items:center; justify-content:center;">
+          <div class="pulse-ring"></div>
+          <button class="record-btn" id="recordBtn" onclick="startRecording()">
+            <div class="dot"></div>
+          </button>
+        </div>
+        <p class="record-hint">Tap to start recording your appointment</p>
+      </div>
+
+      <div class="bottomnav">
+        <button class="navbtn active"><span class="icon">🎙️</span>Record</button>
+        <button class="navbtn" onclick="go('page-library')"><span class="icon">📋</span>Visits</button>
+        <button class="navbtn" onclick="go('page-home')"><span class="icon">💜</span>Care</button>
+      </div>
+    </div>
+
+    <!-- =========== 4. RECORDING IN PROGRESS =========== -->
+    <div class="page" id="page-recording">
+      <div class="home-header">
+        <h2>Recording...</h2>
+        <span class="pill" style="background:#fde4e9; color:#d44a6a;">● LIVE</span>
+      </div>
+
+      <div class="week-card" style="background: linear-gradient(135deg, #e85a7a, #d4a5c2);">
+        <div class="week-label">Appointment</div>
+        <div class="week-num" id="timer">00:00</div>
+        <div class="week-sub">Week 22 prenatal checkup with Dr. Patel</div>
+      </div>
+
+      <div class="record-area">
+        <div style="position:relative; display:flex; align-items:center; justify-content:center;">
+          <div class="pulse-ring"></div>
+          <button class="record-btn recording" onclick="stopRecording()">
+            <div class="dot"></div>
+          </button>
+        </div>
+        <p class="record-hint">Listening carefully to every word 💜</p>
+        <div class="waveform" style="width:100%;">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+
+      <div class="record-controls">
+        <button class="btn btn-discard" onclick="confirmDiscard()">Discard</button>
+        <button class="btn btn-end" onclick="endRecording()">End Record</button>
+      </div>
+    </div>
+
+    <!-- =========== 5. SAVE OR DISCARD =========== -->
+    <div class="page" id="page-save">
+      <div class="topbar">
+        <div class="back" onclick="go('page-recording')">‹</div>
+        <h2>Review Recording</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="card" style="text-align:center; padding: 22px;">
+        <div style="font-size: 50px; margin-bottom: 10px;">🎙️</div>
+        <h3>Recording Complete</h3>
+        <p class="meta" style="justify-content:center;"><span class="pill">22 min 14 sec</span><span>• April 19, 2026</span></p>
+      </div>
+
+      <div class="card">
+        <h3>What happens next?</h3>
+        <p style="margin-bottom: 10px;">Your appointment will be privately transcribed, dated, and our AI will scan it to:</p>
+        <p style="margin-bottom: 4px;">✓ Extract key information from your provider</p>
+        <p style="margin-bottom: 4px;">✓ Provide trusted resources to help you</p>
+        <p>✓ Suggest questions for your next visit</p>
+      </div>
+
+      <div style="flex:1;"></div>
+
+      <div class="record-controls">
+        <button class="btn btn-discard" onclick="confirmDiscard()">Discard</button>
+        <button class="btn btn-save" onclick="saveRecording()">Save Recording</button>
+      </div>
+    </div>
+
+    <!-- =========== 6. DISCARD CONFIRMATION =========== -->
+    <div class="page" id="page-discarded">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <div style="font-size: 70px; margin-bottom: 16px;">🗑️</div>
+        <h2>Recording Discarded</h2>
+        <p style="margin-top: 8px;">No worries — you can always start a<br>fresh recording any time.</p>
+      </div>
+      <button class="btn btn-primary" onclick="go('page-home')">Back to Home</button>
+    </div>
+
+    <!-- =========== 7. TRANSCRIBING (LOADING) =========== -->
+    <div class="page" id="page-processing">
+      <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 0 20px;">
+        <div class="spinner"></div>
+        <h2 id="processingTitle">Transcribing your visit...</h2>
+        <p style="margin-top: 8px;" id="processingSub">This usually takes about 30 seconds.</p>
+      </div>
+    </div>
+
+    <!-- =========== 8. TRANSCRIPTION + RESOURCES + QUESTIONS =========== -->
+    <div class="page" id="page-results">
+      <div class="topbar">
+        <div class="back" onclick="go('page-home')">‹</div>
+        <h2>Week 22 Checkup</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <p class="meta"><span class="pill">April 19, 2026</span><span>• 22 min</span><span>• Dr. Patel</span></p>
+
+      <div class="tabs" style="margin-top: 14px;">
+        <div class="tab active" data-tab="transcript" onclick="switchTab('transcript')">Transcript</div>
+        <div class="tab" data-tab="resources" onclick="switchTab('resources')">Resources</div>
+        <div class="tab" data-tab="questions" onclick="switchTab('questions')">Questions</div>
+      </div>
+
+      <div class="scroll">
+        <!-- Transcript Tab -->
+        <div id="tab-transcript" class="tab-content">
+          <div class="card">
+            <h3>Summary</h3>
+            <p class="transcript">Baby's growth is on track at <span class="highlight">22 weeks</span>. Blood pressure normal (118/76). Dr. Patel recommends a <span class="highlight">glucose screening</span> between weeks 24 and 28, and suggests starting to monitor <span class="highlight">fetal movement patterns</span> daily.</p>
+          </div>
+          <div class="card">
+            <h3>Key Points Discussed</h3>
+            <p class="transcript">
+              • Iron levels slightly low — provider suggested <span class="highlight">iron-rich foods</span> and a possible supplement<br><br>
+              • Discussed <span class="highlight">Braxton Hicks contractions</span> — normal at this stage<br><br>
+              • Anatomy scan looked great. Baby weighs ~1 lb<br><br>
+              • Start thinking about <span class="highlight">childbirth classes</span><br><br>
+              • Next appointment in 4 weeks
+            </p>
+          </div>
+          <div class="card">
+            <h3>Full Transcription</h3>
+            <p class="transcript" style="font-size:13px; color:#6b5b73;">"Your numbers all look great today. Baby's measuring right on schedule at 22 weeks. I'd like to get your glucose screening scheduled between week 24 and 28. I noticed your iron is a touch low — nothing to worry about, but let's add some iron-rich foods..."</p>
+            <button class="btn btn-ghost" style="margin-top:8px; padding:6px;">Read full transcript →</button>
+          </div>
+        </div>
+
+        <!-- Resources Tab -->
+        <div id="tab-resources" class="tab-content" style="display:none;">
+          <p class="sub">Based on your transcription, we pulled together some trusted resources just for you.</p>
+
+          <div class="res-card">
+            <h4>🍽️ Iron-Rich Foods for Pregnancy</h4>
+            <p>A gentle guide to boosting iron through everyday meals — spinach, lentils, and vitamin-C pairings.</p>
+          </div>
+          <div class="res-card">
+            <h4>🩺 Understanding Your Glucose Test</h4>
+            <p>What to expect at your 1-hour glucose screening, how to prepare, and what results mean.</p>
+          </div>
+          <div class="res-card">
+            <h4>💓 Braxton Hicks vs. Real Labor</h4>
+            <p>How to tell the difference and when to call your provider.</p>
+          </div>
+          <div class="res-card">
+            <h4>👶 Tracking Fetal Movement</h4>
+            <p>Simple daily kick count method for peace of mind in the second trimester.</p>
+          </div>
+          <div class="res-card">
+            <h4>🎓 Finding a Childbirth Class</h4>
+            <p>In-person and online options near you, with what to expect from each format.</p>
+          </div>
+        </div>
+
+        <!-- Questions Tab -->
+        <div id="tab-questions" class="tab-content" style="display:none;">
+          <p class="sub">Suggested questions to bring to your next visit. Tap to save.</p>
+
+          <div class="q-card">
+            <div class="q-num">1</div>
+            <p>Should I start an iron supplement, or is adjusting my diet enough?</p>
+          </div>
+          <div class="q-card">
+            <div class="q-num">2</div>
+            <p>What glucose levels would indicate I need further testing?</p>
+          </div>
+          <div class="q-card">
+            <div class="q-num">3</div>
+            <p>How often should I feel the baby move each day at this point?</p>
+          </div>
+          <div class="q-card">
+            <div class="q-num">4</div>
+            <p>When should I call you versus go to the hospital for contractions?</p>
+          </div>
+          <div class="q-card">
+            <div class="q-num">5</div>
+            <p>Which childbirth classes do you recommend for first-time moms?</p>
+          </div>
+          <div class="q-card">
+            <div class="q-num">6</div>
+            <p>Is it safe to continue my current exercise routine into the third trimester?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========== 9. VISITS LIBRARY =========== -->
+    <div class="page" id="page-library">
+      <div class="topbar">
+        <div class="back" onclick="go('page-home')">‹</div>
+        <h2>Your Visits</h2>
+        <div style="width:36px;"></div>
+      </div>
+
+      <div class="scroll" style="padding-bottom: 80px;">
+        <div class="recording-item" onclick="go('page-results')">
+          <div class="icon">🎙️</div>
+          <div class="info">
+            <h4>Week 22 Checkup</h4>
+            <div class="meta-line">April 19, 2026 • 22 min • Dr. Patel</div>
+          </div>
+          <span style="color:#b886c9; font-size:20px;">›</span>
+        </div>
+        <div class="recording-item">
+          <div class="icon">🎙️</div>
+          <div class="info">
+            <h4>Week 18 Anatomy Scan</h4>
+            <div class="meta-line">March 22, 2026 • 35 min • Dr. Patel</div>
+          </div>
+          <span style="color:#b886c9; font-size:20px;">›</span>
+        </div>
+        <div class="recording-item">
+          <div class="icon">🎙️</div>
+          <div class="info">
+            <h4>Week 12 Checkup</h4>
+            <div class="meta-line">February 8, 2026 • 18 min • Dr. Patel</div>
+          </div>
+          <span style="color:#b886c9; font-size:20px;">›</span>
+        </div>
+        <div class="recording-item">
+          <div class="icon">🎙️</div>
+          <div class="info">
+            <h4>Week 8 — First Visit</h4>
+            <div class="meta-line">January 11, 2026 • 45 min • Dr. Patel</div>
+          </div>
+          <span style="color:#b886c9; font-size:20px;">›</span>
+        </div>
+      </div>
+
+      <div class="bottomnav">
+        <button class="navbtn" onclick="go('page-home')"><span class="icon">🎙️</span>Record</button>
+        <button class="navbtn active"><span class="icon">📋</span>Visits</button>
+        <button class="navbtn"><span class="icon">💜</span>Care</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ---------- Navigation ----------
+  function go(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  // ---------- Recording flow ----------
+  let timerInterval;
+  let seconds = 0;
+
+  function startRecording() {
+    go('page-recording');
+    seconds = 0;
+    updateTimer();
+    timerInterval = setInterval(() => {
+      seconds++;
+      updateTimer();
+    }, 1000);
+  }
+  function updateTimer() {
+    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = `${m}:${s}`;
+  }
+  function stopRecording() {
+    // Tapping the active record button also ends the recording
+    endRecording();
+  }
+  function endRecording() {
+    clearInterval(timerInterval);
+    go('page-save');
+  }
+  function confirmDiscard() {
+    clearInterval(timerInterval);
+    go('page-discarded');
+  }
+  function saveRecording() {
+    go('page-processing');
+    // Stage 1: transcribing
+    document.getElementById('processingTitle').textContent = 'Transcribing your visit...';
+    document.getElementById('processingSub').textContent = 'This usually takes about 30 seconds.';
+    setTimeout(() => {
+      // Stage 2: AI analyzing
+      document.getElementById('processingTitle').textContent = 'Analyzing for key info...';
+      document.getElementById('processingSub').textContent = 'Pulling resources and next-visit questions.';
+    }, 1600);
+    setTimeout(() => {
+      go('page-results');
+    }, 3400);
+  }
+
+  // ---------- Tabs on results page ----------
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    ['transcript', 'resources', 'questions'].forEach(n => {
+      document.getElementById('tab-' + n).style.display = (n === name) ? 'block' : 'none';
+    });
+  }
+</script>
+
+</body>
+</html>
