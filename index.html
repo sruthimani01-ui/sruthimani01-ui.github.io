@@ -24,6 +24,7 @@
   --muted:  #74778A;   /* secondary text */
   --line:   #E8E8EF;   /* thin divider lines */
   --accent: #2E4BFF;   /* the one pop color: links, highlights */
+  --frame:  #F4F4F7;   /* background behind gallery images */
 
   /* project colors (used for the little dots and hover previews) */
   --tomato: #FF6B57;
@@ -137,11 +138,17 @@ dialog[open] { animation: rise .35s cubic-bezier(.2,.8,.3,1); }
 .highlights li::before { content: ""; position: absolute; left: 0; top: 1.05rem; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 dialog { max-height: calc(100vh - 2rem); overflow-y: auto; }
 
-.gallery { display: grid; gap: 1.75rem; margin: 0 0 1.75rem; }
+.gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1.25rem; margin: 0 0 1.75rem; }
+@media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
 .gallery figure { margin: 0; }
-.gallery img, .gallery video { display: block; width: 100%; height: auto; border-radius: 12px; background: var(--line); }
-.gallery video { max-height: 75vh; width: auto; max-width: 100%; margin: 0 auto; }
-.gallery figcaption { font-size: .875rem; color: var(--muted); margin-top: .5rem; }
+.gallery .frame {
+  display: block; aspect-ratio: 4 / 3; background: var(--frame); border-radius: 12px; overflow: hidden;
+}
+.gallery .frame img, .gallery .frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.gallery a.frame { cursor: zoom-in; }
+.gallery a.frame img { transition: transform .3s; }
+.gallery a.frame:hover img { transform: scale(1.02); }
+.gallery figcaption { font-size: .8125rem; line-height: 1.45; color: var(--muted); margin-top: .5rem; }
 dialog.has-gallery { max-width: 760px; }
 
 /* about */
@@ -531,7 +538,15 @@ function openProject(p) {
       } else {
         media = el("img"); media.src = item.src; media.alt = item.caption || ""; media.loading = "lazy";
       }
-      fig.append(media);
+      let frame;
+      if (media.tagName === "IMG") {
+        frame = el("a", "frame"); frame.href = item.src; frame.target = "_blank"; frame.rel = "noopener";
+        frame.setAttribute("aria-label", "Open full-size image" + (item.caption ? ": " + item.caption : ""));
+      } else {
+        frame = el("div", "frame");
+      }
+      frame.append(media);
+      fig.append(frame);
       if (item.caption) fig.append(el("figcaption", null, item.caption));
       g.append(fig);
     });
