@@ -24,7 +24,7 @@
   --muted:  #74778A;   /* secondary text */
   --line:   #E8E8EF;   /* thin divider lines */
   --accent: #2E4BFF;   /* the one pop color: links, highlights */
-  --frame:  #F4F4F7;   /* background behind gallery images */
+  --frame:  #FFFFFF;   /* background behind gallery images */
 
   /* project colors (used for the little dots and hover previews) */
   --tomato: #FF6B57;
@@ -142,8 +142,12 @@ dialog { max-height: calc(100vh - 2rem); overflow-y: auto; }
 @media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
 .gallery figure { margin: 0; }
 .gallery .frame {
-  display: block; aspect-ratio: 4 / 3; background: var(--frame); border-radius: 12px; overflow: hidden;
+  display: block; aspect-ratio: 4 / 3; background: var(--frame); border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden;
 }
+.gallery figure.wide { grid-column: 1 / -1; }
+.gallery figure.wide .frame { aspect-ratio: auto; padding: 1rem; }
+.gallery figure.wide .frame img { height: auto; max-height: 440px; }
 .gallery .frame img, .gallery .frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
 .gallery a.frame { cursor: zoom-in; }
 .gallery a.frame img { transition: transform .3s; }
@@ -278,6 +282,7 @@ const CONTENT = {
      image: a web link, or "images/myproject.jpg" if you upload it to an images folder
      gallery: extra images/videos shown in the popup (optional), each as
             { src: "images/file.jpg", caption: "what it shows" }
+            add  wide: true  to make one item span the full width (good for charts)
      highlights: key results shown as a short list (optional, can be [])
      link:  a URL, or "" if there isn't one                           */
   projects: [
@@ -291,8 +296,8 @@ const CONTENT = {
       color: "mint",
       image: "images/matcha-cover.jpg",
       gallery: [
-        { src: "images/matcha-affinity-diagram.jpg", caption: "Affinity diagram of insights from interviews and surveys" },
-        { src: "images/matcha-personas.jpg", caption: "Personas built from interview and survey data" },
+        { src: "images/matcha-affinity-diagram.jpg", caption: "Affinity diagram of insights from interviews and surveys", wide: true },
+        { src: "images/matcha-personas.jpg", caption: "Personas built from interview and survey data", wide: true },
         { src: "images/matcha-journey-map.jpg", caption: "User journey map: making matcha from scratch" },
         { src: "images/matcha-ai-ideation.jpg", caption: "AI-generated concept render used for early ideation" },
         { src: "images/matcha-sketch.jpg", caption: "Form sketch" },
@@ -331,8 +336,8 @@ const CONTENT = {
       color: "tomato",
       image: "images/cello-cover.jpg",
       gallery: [
-        { src: "images/cello-pain-survey.jpg", caption: "Survey of 32 cellists: 87.5% reported discomfort or pain during or after playing" },
-        { src: "images/cello-harness-iterations.jpg", caption: "Harness iterations: cello-mounted strap, load-bearing vest, and quick-connect mount" },
+        { src: "images/cello-pain-survey.jpg", caption: "Survey of 32 cellists: 87.5% reported discomfort or pain during or after playing", wide: true },
+        { src: "images/cello-harness-iterations.jpg", caption: "Harness iterations: cello-mounted strap, load-bearing vest, and quick-connect mount", wide: true },
         { src: "images/cello-bracket-cad.jpg", caption: "CAD model of the adjustable mounting bracket" },
         { src: "images/cello-components.jpg", caption: "Cello-mounted strap with the bracket and attachment hardware" },
         { src: "images/cello-body-map.jpg", caption: "Body discomfort map used to measure comfort and load while standing" },
@@ -367,13 +372,21 @@ const CONTENT = {
       role: "Quantitative UX Researcher",
       emoji: "📊",
       color: "pink",
-      image: "https://framerusercontent.com/images/1MAVh9RMv7mfBhnKMVqDvTeZSjg.png",
+      image: "images/r-cover.jpg",
+      gallery: [
+        { src: "images/r-mens-points.jpg", caption: "Group A: distribution of points per game, Tufts men's basketball" },
+        { src: "images/r-womens-points.jpg", caption: "Group B: distribution of points per game, Tufts women's basketball" },
+        { src: "images/r-welch-test.jpg", caption: "Welch two-sample t-test output: means of 76.3 vs 63.3 points, p < 0.000001", wide: true },
+        { src: "images/r-variable-importance.jpg", caption: "Random forest variable importance: income and experience matter most", wide: true },
+        { src: "images/r-predicted-vs-actual.jpg", caption: "Predicted vs. actual values for linear regression and random forest", wide: true }
+      ],
       blurb: "Answering two core research questions with statistics: are two groups really different, and what drives an outcome?",
-      details: "Most quantitative UX research comes down to two questions. First, is the difference between two groups real or just noise? That's the same question as whether design A beats design B, or whether new users behave differently from returning ones. I answered it with a two-sample t-test comparing two independent groups. Second, which factors actually drive an outcome, and how well can we predict it? Using stress as the outcome (a stand-in for satisfaction, task success, or engagement), I built linear regression and random forest models from variables like hours worked, experience, and job complexity, validated them with train/test splits, and used variable importance and partial dependence plots to explain what mattered and why.",
+      details: "Most quantitative UX research comes down to two questions. First, is the difference between two groups real or just noise? That's the same question as whether design A beats design B, or whether new users behave differently from returning ones. I answered it with a Welch two-sample t-test comparing points per game between Tufts men's and women's basketball teams, the same setup you'd use to compare two user segments. Second, which factors actually drive an outcome, and how well can we predict it? Using stress as the outcome (a stand-in for satisfaction, task success, or engagement), I built linear regression and random forest models from variables like hours worked, experience, and job complexity, validated them with train/test splits, and used variable importance and partial dependence plots to explain what mattered and why.",
       highlights: [
-        "Found a clear, statistically significant difference between groups (t = 5.70, p < 0.000001, 95% CI 8.49 to 17.55)",
+        "Found a clear, statistically significant difference between groups: 76.3 vs 63.3 average points (t = 5.70, p < 0.000001, 95% CI 8.49 to 17.55)",
         "Linear regression held up on unseen data (RMSE 0.90 overall, 0.98 on the test set), making it the more trustworthy model",
         "Random forest fit the full data better (RMSE 0.60) but slipped to 1.00 on the test set, a sign of overfitting",
+        "Income and experience were the strongest predictors, while hours worked and job complexity mattered least",
         "Takeaway: the simpler, interpretable model is often the better choice when results need to guide decisions"
       ],
       tools: ["R", "t-tests", "Linear regression", "Random forest", "tidyverse", "caret", "ggplot2"],
@@ -420,8 +433,8 @@ const CONTENT = {
       image: "images/roto-cover.jpg",
       gallery: [
         { src: "images/roto-seated-reach.jpg", caption: "The problem: loading from a seated position means overreaching to get to the back of the rack" },
-        { src: "images/roto-cad.jpg", caption: "CAD model of the Roto Rack: corner baskets, a rotating ring, and a circular rack" },
-        { src: "images/roto-space-comparison.jpg", caption: "Space tradeoff: the rotating design uses 12.2% less rack area than a standard rack" }
+        { src: "images/roto-space-comparison.jpg", caption: "Space tradeoff: the rotating design uses 12.2% less rack area than a standard rack" },
+        { src: "images/roto-cad.jpg", caption: "CAD model of the Roto Rack: corner baskets, a rotating ring, and a circular rack", wide: true }
       ],
       blurb: "A rotating dishwasher insert that makes loading easier for people with limited mobility.",
       details: "Whirlpool challenged participants to solve everyday appliance problems for people with disabilities. In one week I designed the Roto Rack, a dishwasher insert that rotates so users can reach every corner without overreaching, modeled it in CAD, and measured the tradeoff: the circular rack and corner baskets give up 12.2% of the rack area in exchange for every dish being within easy reach.",
@@ -530,7 +543,7 @@ function openProject(p) {
   if (p.gallery && p.gallery.length) {
     const g = el("div", "gallery");
     p.gallery.forEach(item => {
-      const fig = el("figure");
+      const fig = el("figure", item.wide ? "wide" : null);
       let media;
       if (/\.(mp4|webm|mov)$/i.test(item.src)) {
         media = el("video"); media.src = item.src; media.controls = true; media.playsInline = true;
