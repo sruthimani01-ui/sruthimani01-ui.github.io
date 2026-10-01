@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================
+   🎨 THEME: change these to change the whole vibe
+   ========================================================== */
+:root {
+  --page:   #FFFFFF;   /* background */
+  --ink:    #16182B;   /* main text */
+  --muted:  #74778A;   /* secondary text */
+  --line:   #E8E8EF;   /* thin divider lines */
+  --accent: #2E4BFF;   /* the one pop color: links, highlights */
+
+  /* project colors (used for the little dots and hover previews) */
+  --tomato: #FF6B57;
+  --sun:    #FFC83D;
+  --mint:   #4FD1A5;
+  --pink:   #FF8AC4;
+  --sky:    #6FA8FF;
+
+  --font-main: "Bricolage Grotesque", system-ui, sans-serif;
+}
+/* ====== you don't need to touch anything below here ====== */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font-family: var(--font-main); font-size: 1.0625rem; line-height: 1.6;
+  font-variation-settings: "opsz" 14;
+}
+a { color: inherit; }
+::selection { background: var(--accent); color: #fff; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.5rem; }
+
+/* nav */
+nav .wrap { display: flex; justify-content: space-between; align-items: baseline; padding-block: 1.5rem; gap: 1rem; flex-wrap: wrap; }
+.nav-name { font-weight: 600; text-decoration: none; }
+.nav-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+.nav-links a { text-decoration: none; color: var(--muted); transition: color .2s; }
+.nav-links a:hover { color: var(--ink); }
+
+/* hero */
+.hero { padding: 7rem 0 6rem; }
+.name {
+  font-size: clamp(3.5rem, 12vw, 9.5rem); font-weight: 300; line-height: .92;
+  letter-spacing: -0.035em; margin: 0 0 2.5rem; font-variation-settings: "opsz" 96;
+  cursor: default;
+}
+.word { display: inline-block; white-space: nowrap; margin-right: .22em; }
+.letter { display: inline-block; transition: font-weight .35s cubic-bezier(.2,.8,.3,1), color .35s; }
+.name .dot { color: var(--accent); font-weight: 800; }
+.hero-text { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 4rem; max-width: 880px; }
+.tagline { font-size: 1.35rem; line-height: 1.35; margin: 0; font-weight: 500; }
+.intro { margin: 0; color: var(--muted); max-width: 46ch; }
+
+/* sections */
+section { padding: 5rem 0; }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
+
+/* filters */
+.filters { display: flex; gap: 1.25rem; }
+.tab {
+  font: inherit; background: none; border: 0; padding: .2rem 0; cursor: pointer; color: var(--muted);
+  background-image: linear-gradient(var(--accent), var(--accent)); background-repeat: no-repeat;
+  background-size: 0% 2px; background-position: 0 100%; transition: background-size .3s, color .2s;
+}
+.tab:hover { color: var(--ink); }
+.tab[aria-pressed="true"] { color: var(--ink); background-size: 100% 2px; }
+
+/* project list */
+.list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.row {
+  width: 100%; display: grid; grid-template-columns: 14px 1fr auto auto; gap: 1.25rem; align-items: center;
+  padding: 1.4rem .25rem; border: 0; border-bottom: 1px solid var(--line); background: none;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.swatch { width: 12px; height: 12px; border-radius: 50%; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+.row-title { font-size: clamp(1.25rem, 2.6vw, 1.75rem); font-weight: 450; letter-spacing: -0.01em; transition: transform .3s cubic-bezier(.2,.8,.3,1); }
+.row-blurb { display: block; font-size: .95rem; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+.row-course, .row-year { color: var(--muted); font-size: .95rem; white-space: nowrap; }
+.row:hover .swatch, .row:focus-visible .swatch { transform: scale(1.8); }
+.row:hover .row-title, .row:focus-visible .row-title { transform: translateX(6px); }
+.empty { color: var(--muted); padding: 1.5rem 0; }
+
+/* floating preview that follows the cursor (desktop only) */
+.preview {
+  position: fixed; top: 0; left: 0; width: 280px; aspect-ratio: 4/3; border-radius: 14px; overflow: hidden;
+  pointer-events: none; z-index: 20; display: grid; place-items: center; font-size: 4rem;
+  opacity: 0; scale: .6; rotate: -4deg; transition: opacity .25s, scale .35s cubic-bezier(.3,1.5,.5,1), rotate .35s;
+}
+.preview.show { opacity: 1; scale: 1; rotate: 3deg; }
+.preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+@media (hover: none) { .preview { display: none; } }
+
+/* project popup */
+dialog {
+  border: 0; border-radius: 20px; padding: 0; max-width: 620px; width: calc(100% - 2rem);
+  color: var(--ink); background: var(--page); box-shadow: 0 30px 80px -20px rgba(22,24,43,.35);
+}
+dialog::backdrop { background: rgba(255,255,255,.7); backdrop-filter: blur(6px); }
+dialog[open] { animation: rise .35s cubic-bezier(.2,.8,.3,1); }
+@keyframes rise { from { transform: translateY(16px); opacity: 0; } }
+.dlg-art { aspect-ratio: 16/8; display: grid; place-items: center; font-size: 4.5rem; }
+.dlg-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dlg-body { padding: 1.75rem 2rem 2rem; }
+.dlg-body h3 { font-size: 1.9rem; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 .25rem; line-height: 1.15; }
+.dlg-meta { color: var(--muted); margin: 0 0 1.25rem; }
+.dlg-body p { margin: 0 0 1.25rem; }
+.tools { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: 0 0 1.5rem; }
+.tools li { border: 1px solid var(--line); border-radius: 999px; padding: .1rem .75rem; font-size: .875rem; }
+.link { color: var(--accent); font-weight: 600; text-decoration: none; border-bottom: 2px solid currentColor; }
+.close {
+  position: absolute; top: 1rem; right: 1rem; width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  border: 0; background: var(--page); font-size: 1rem; cursor: pointer; color: var(--ink);
+}
+
+/* about */
+.about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; margin-top: 2rem; }
+.about-grid p { margin: 0 0 1rem; max-width: 60ch; }
+.now h3 { font-size: 1rem; font-weight: 600; margin: 0 0 .75rem; }
+.now ul { list-style: none; margin: 0; padding: 0; }
+.now li { padding: .6rem 0; border-top: 1px solid var(--line); color: var(--muted); }
+
+/* contact */
+.contact { padding: 6rem 0 7rem; }
+.contact p { color: var(--muted); margin: 0 0 1rem; }
+.email {
+  font-size: clamp(1.8rem, 6vw, 4.5rem); font-weight: 400; letter-spacing: -0.03em; text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent)); background-repeat: no-repeat;
+  background-size: 0% 3px; background-position: 0 95%; transition: background-size .45s cubic-bezier(.2,.8,.3,1), color .3s;
+  word-break: break-word;
+}
+.email:hover { background-size: 100% 3px; color: var(--accent); }
+.socials { display: flex; gap: 1.75rem; flex-wrap: wrap; margin: 2.5rem 0 0; list-style: none; padding: 0; }
+.socials a { text-decoration: none; color: var(--muted); transition: color .2s; }
+.socials a:hover { color: var(--accent); }
+footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
+
+@media (max-width: 760px) {
+  .hero { padding: 4rem 0 3rem; }
+  .hero-text, .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .row { grid-template-columns: 12px 1fr auto; }
+  .row-course { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="nav-name" href="#top" id="navName"></a>
+  <ul class="nav-links">
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div></nav>
+
+<main id="top">
+  <header class="hero"><div class="wrap">
+    <h1 class="name" id="name"></h1>
+    <div class="hero-text">
+      <p class="tagline" id="tagline"></p>
+      <p class="intro" id="intro"></p>
+    </div>
+  </div></header>
+
+  <section id="projects"><div class="wrap">
+    <div class="sec-head">
+      <h2>Selected work</h2>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+    </div>
+    <ul class="list" id="list"></ul>
+  </div></section>
+
+  <section id="about"><div class="wrap">
+    <h2>About</h2>
+    <div class="about-grid">
+      <div id="aboutText"></div>
+      <div class="now">
+        <h3>Currently</h3>
+        <ul id="nowList"></ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="contact" class="contact"><div class="wrap">
+    <p>Want to work together, or just say hi?</p>
+    <a class="email" id="email"></a>
+    <ul class="socials" id="socials"></ul>
+  </div></section>
+</main>
+
+<footer><div class="wrap" id="footer"></div></footer>
+
+<div class="preview" id="preview" aria-hidden="true"></div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <button class="close" id="dlgClose" aria-label="Close">✕</button>
+  <div id="dlgContent"></div>
+</dialog>
+
+<script>
+/* ==========================================================
+   ✏️ YOUR CONTENT: edit the text between the quotes.
+   Keep the quotes, commas, and brackets as they are.
+   ========================================================== */
+const CONTENT = {
+  name: "Your Name",
+  tagline: "Student, designer, and maker of slightly unusual things.",
+  intro: "I study [your major] at [your school]. I like projects that mix design and code, and I'm always up for a new challenge.",
+
+  about: [
+    "Write a paragraph or two about yourself here: what you study, what you care about, and what kind of work you want to do next.",
+    "A second paragraph is a nice spot for something personal, like a hobby or what got you into your field."
+  ],
+  now: [
+    "Taking [a class you like]",
+    "Learning [a new skill]",
+    "Looking for [internships / roles]"
+  ],
+
+  email: "you@example.com",
+  socials: [
+    { label: "LinkedIn", url: "https://linkedin.com/in/yourname" },
+    { label: "GitHub",   url: "https://github.com/yourname" },
+    { label: "Resume",   url: "resume.pdf" }
+  ],
+
+  /* ---- PROJECTS ----
+     To add one: copy a whole { ... }, block, paste it, and edit.
+     type:  "School" or "Personal" (or any word; filters update by themselves)
+     color: tomato, sun, mint, pink, or sky
+     image: "images/myproject.jpg" (upload the image to an images folder),
+            or leave as "" to show the emoji instead
+     link:  a URL, or "" if there isn't one                           */
+  projects: [
+    {
+      title: "School Project One",
+      type: "School",
+      course: "Course name",
+      year: "2026",
+      emoji: "🧪",
+      color: "mint",
+      image: "",
+      blurb: "One sentence about what this project is.",
+      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
+      tools: ["Figma", "Python"],
+      link: ""
+    },
+    {
+      title: "School Project Two",
+      type: "School",
+      course: "Course name",
+      year: "2025",
+      emoji: "📐",
+      color: "sky",
+      image: "",
+      blurb: "One sentence about what this project is.",
+      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
+      tools: ["Tool one", "Tool two"],
+      link: ""
+    },
+    {
+      title: "A Framer-era Project",
+      type: "Personal",
+      course: "Side project",
+      year: "2025",
+      emoji: "🎨",
+      color: "pink",
+      image: "",
+      blurb: "One sentence about what this project is.",
+      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
+      tools: ["Framer"],
+      link: ""
+    },
+    {
+      title: "Another Project",
+      type: "Personal",
+      course: "Side project",
+      year: "2024",
+      emoji: "🛠️",
+      color: "sun",
+      image: "",
+      blurb: "One sentence about what this project is.",
+      details: "A few sentences on the problem, what you did, and what you learned or how it turned out.",
+      tools: ["HTML", "CSS"],
+      link: ""
+    }
+  ]
+};
+/* ============ end of content, the rest builds the page ============ */
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+const col = p => `var(--${p.color || "sky"})`;
+
+document.title = CONTENT.name + " | Portfolio";
+$("navName").textContent = CONTENT.name;
+$("tagline").textContent = CONTENT.tagline;
+$("intro").textContent = CONTENT.intro;
+$("footer").textContent = `© ${new Date().getFullYear()} ${CONTENT.name}`;
+
+/* name: letters get bolder near the cursor */
+const nameEl = $("name");
+nameEl.setAttribute("aria-label", CONTENT.name);
+const words = CONTENT.name.split(" ");
+words.forEach((word, wi) => {
+  const w = el("span", "word"); w.setAttribute("aria-hidden", "true");
+  [...word].forEach(ch => w.append(el("span", "letter", ch)));
+  if (wi === words.length - 1) w.append(el("span", "dot", "."));
+  nameEl.append(w);
+});
+const letters = [...nameEl.querySelectorAll(".letter")];
+nameEl.addEventListener("pointermove", e => {
+  letters.forEach(l => {
+    const r = l.getBoundingClientRect();
+    const d = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2));
+    const t = Math.max(0, 1 - d / 220);
+    l.style.fontWeight = Math.round(300 + t * 500);
+  });
+});
+nameEl.addEventListener("pointerleave", () => letters.forEach(l => l.style.fontWeight = ""));
+
+/* filters */
+const types = ["All", ...new Set(CONTENT.projects.map(p => p.type))];
+let current = "All";
+types.forEach(t => {
+  const b = el("button", "tab", t); b.type = "button";
+  b.setAttribute("aria-pressed", t === current);
+  b.addEventListener("click", () => {
+    current = t;
+    document.querySelectorAll(".tab").forEach(c => c.setAttribute("aria-pressed", c.textContent === t));
+    renderProjects();
+  });
+  $("filters").append(b);
+});
+
+function fillArt(box, p) {
+  box.innerHTML = ""; box.style.background = col(p);
+  if (p.image) { const img = el("img"); img.src = p.image; img.alt = ""; box.append(img); }
+  else box.textContent = p.emoji || "✨";
+}
+
+/* cursor-following preview */
+const preview = $("preview");
+let px = 0, py = 0, tx = 0, ty = 0;
+document.addEventListener("pointermove", e => { tx = e.clientX + 24; ty = e.clientY - 110; });
+(function follow() {
+  px += (tx - px) * .18; py += (ty - py) * .18;
+  preview.style.transform = `translate(${px}px, ${py}px)`;
+  requestAnimationFrame(follow);
+})();
+
+function renderProjects() {
+  const list = $("list"); list.innerHTML = "";
+  const items = CONTENT.projects.filter(p => current === "All" || p.type === current);
+  if (!items.length) { list.append(el("li", "empty", "No projects here yet.")); return; }
+  items.forEach(p => {
+    const li = el("li");
+    const b = el("button", "row"); b.type = "button";
+    const sw = el("span", "swatch"); sw.style.background = col(p);
+    const title = el("span", "row-title", p.title);
+    title.append(el("span", "row-blurb", p.blurb));
+    b.append(sw, title, el("span", "row-course", p.course), el("span", "row-year", p.year));
+    b.addEventListener("mouseenter", () => { fillArt(preview, p); preview.classList.add("show"); });
+    b.addEventListener("mouseleave", () => preview.classList.remove("show"));
+    b.addEventListener("click", () => { preview.classList.remove("show"); openProject(p); });
+    li.append(b); list.append(li);
+  });
+}
+
+function openProject(p) {
+  const box = $("dlgContent"); box.innerHTML = "";
+  const art = el("div", "dlg-art"); fillArt(art, p);
+  const body = el("div", "dlg-body");
+  const h = el("h3", null, p.title); h.id = "dlgTitle";
+  body.append(h, el("p", "dlg-meta", `${p.course}, ${p.year}`), el("p", null, p.details));
+  if (p.tools && p.tools.length) {
+    const ul = el("ul", "tools"); p.tools.forEach(t => ul.append(el("li", null, t))); body.append(ul);
+  }
+  if (p.link) {
+    const a = el("a", "link", "View project"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; body.append(a);
+  }
+  box.append(art, body);
+  $("dlg").showModal();
+}
+$("dlgClose").addEventListener("click", () => $("dlg").close());
+$("dlg").addEventListener("click", e => { if (e.target === $("dlg")) $("dlg").close(); });
+renderProjects();
+
+/* about + contact */
+CONTENT.about.forEach(t => $("aboutText").append(el("p", null, t)));
+CONTENT.now.forEach(t => $("nowList").append(el("li", null, t)));
+$("email").textContent = CONTENT.email;
+$("email").href = "mailto:" + CONTENT.email;
+CONTENT.socials.forEach(s => {
+  const li = el("li"); const a = el("a", null, s.label);
+  a.href = s.url; a.target = "_blank"; a.rel = "noopener";
+  li.append(a); $("socials").append(li);
+});
+</script>
+</body>
+</html>
