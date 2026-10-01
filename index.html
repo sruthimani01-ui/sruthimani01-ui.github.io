@@ -149,6 +149,8 @@ dialog { max-height: calc(100vh - 2rem); overflow-y: auto; }
 .gallery figure.wide .frame { aspect-ratio: auto; padding: 1rem; }
 .gallery figure.wide .frame img { height: auto; max-height: 440px; }
 .gallery .frame img, .gallery .frame video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.gallery figure.wide .frame.yt { aspect-ratio: 16 / 9; padding: 0; background: #000; }
+.gallery .frame iframe { display: block; width: 100%; height: 100%; border: 0; }
 .gallery a.frame { cursor: zoom-in; }
 .gallery a.frame img { transition: transform .3s; }
 .gallery a.frame:hover img { transform: scale(1.02); }
@@ -283,6 +285,8 @@ const CONTENT = {
      gallery: extra images/videos shown in the popup (optional), each as
             { src: "images/file.jpg", caption: "what it shows" }
             add  wide: true  to make one item span the full width (good for charts)
+            for a YouTube video use { youtube: "VIDEO_ID", caption: "...", wide: true }
+            (the ID is the part after youtu.be/ in the link)
      highlights: key results shown as a short list (optional, can be [])
      link:  a URL, or "" if there isn't one                           */
   projects: [
@@ -404,7 +408,10 @@ const CONTENT = {
       role: "UX Designer & Prototyper",
       emoji: "⌚",
       color: "sky",
-      image: "https://framerusercontent.com/images/JBpkVRnZgsTPFn8d3toNZHexyFc.png",
+      image: "images/watch-cover.jpg",
+      gallery: [
+        { youtube: "pAsoQNeDL-o", caption: "Prototype walkthrough: typing with the circular keyboard", wide: true }
+      ],
       blurb: "Rethinking text entry on a tiny screen with an interactive Figma prototype.",
       details: "I analyzed existing smartwatch input methods to pin down problems with accuracy, finger size, and visual clarity, sketched layout variations, and built a low-fidelity interactive prototype with micro-interactions and haptic cues.",
       highlights: ["Fastest keyboard in the class at 0.8 characters per second"],
@@ -549,7 +556,13 @@ function openProject(p) {
     p.gallery.forEach(item => {
       const fig = el("figure", item.wide ? "wide" : null);
       let media;
-      if (/\.(mp4|webm|mov)$/i.test(item.src)) {
+      if (item.youtube) {
+        media = el("iframe");
+        media.src = "https://www.youtube-nocookie.com/embed/" + item.youtube + "?rel=0";
+        media.title = item.caption || "Project video";
+        media.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+        media.allowFullscreen = true; media.loading = "lazy";
+      } else if (/\.(mp4|webm|mov)$/i.test(item.src)) {
         media = el("video"); media.src = item.src; media.controls = true; media.playsInline = true;
         media.preload = "metadata"; if (item.poster) media.poster = item.poster;
       } else {
@@ -560,7 +573,7 @@ function openProject(p) {
         frame = el("a", "frame"); frame.href = item.src; frame.target = "_blank"; frame.rel = "noopener";
         frame.setAttribute("aria-label", "Open full-size image" + (item.caption ? ": " + item.caption : ""));
       } else {
-        frame = el("div", "frame");
+        frame = el("div", item.youtube ? "frame yt" : "frame");
       }
       frame.append(media);
       fig.append(frame);
@@ -577,7 +590,10 @@ function openProject(p) {
   $("dlg").showModal();
 }
 $("dlgClose").addEventListener("click", () => $("dlg").close());
-$("dlg").addEventListener("close", () => $("dlgContent").querySelectorAll("video").forEach(v => v.pause()));
+$("dlg").addEventListener("close", () => {
+  $("dlgContent").querySelectorAll("video").forEach(v => v.pause());
+  $("dlgContent").querySelectorAll("iframe").forEach(f => f.remove());
+});
 $("dlg").addEventListener("click", e => { if (e.target === $("dlg")) $("dlg").close(); });
 renderProjects();
 
