@@ -214,6 +214,22 @@ button.skill[aria-pressed="true"] { border-color: var(--ink); background: #F6F6F
 .now ul { list-style: none; margin: 0; padding: 0; }
 .now li { padding: .6rem 0; border-top: 1px solid var(--line); color: var(--muted); }
 
+/* outside of work */
+.offduty { margin-top: 4.5rem; }
+.offduty h3 { font-size: 1rem; font-weight: 600; margin: 0 0 2rem; }
+.snaps { list-style: none; margin: 0; padding: 0 0 1.5rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.75rem; }
+.snap {
+  background: var(--page); border: 1px solid var(--line); border-radius: 6px; padding: .55rem .55rem .2rem;
+  box-shadow: 0 10px 28px -18px rgba(22,24,43,.35);
+  rotate: var(--tilt); translate: 0 var(--lift); transition: rotate .35s cubic-bezier(.3,1.4,.5,1), translate .35s cubic-bezier(.3,1.4,.5,1);
+}
+.snap:hover { rotate: 0deg; translate: 0 calc(var(--lift) - 6px); }
+.snap img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 3px; background: var(--line); }
+.snap span { display: block; text-align: center; font-size: .85rem; color: var(--muted); padding: .6rem .25rem .55rem; line-height: 1.35; }
+@media (max-width: 760px) {
+  .snaps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+}
+
 /* contact */
 .contact { padding: 6rem 0 7rem; }
 .contact p { color: var(--muted); margin: 0 0 1rem; }
@@ -285,6 +301,10 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
         <ul id="nowList"></ul>
       </div>
     </div>
+    <div class="offduty">
+      <h3>Outside of work</h3>
+      <ul class="snaps" id="snaps"></ul>
+    </div>
   </div></section>
 
   <section id="contact" class="contact"><div class="wrap">
@@ -334,6 +354,14 @@ const CONTENT = {
     { name: "CAD",               color: "#BAB0AC" },
     { name: "Figma",             color: "#A0CBE8" },
     { name: "R",                 color: "#2F4B7C" }
+  ],
+  /* PHOTOS for "Outside of work": upload them to the images folder.
+     Portrait (3:4) photos look best. 4 is a nice number, but any amount works. */
+  photos: [
+    { src: "images/me-graduation.jpg", caption: "Penn State grad, with the Nittany Lion" },
+    { src: "images/me-hiking.jpg",     caption: "Happiest on a trail" },
+    { src: "images/me-matcha.jpg",     caption: "Matcha research, field edition" },
+    { src: "images/me-travel.jpg",     caption: "Street snacks while traveling" }
   ],
   now: [
     "Studying Human Factors Engineering at Tufts",
@@ -784,6 +812,13 @@ function openProject(p) {
     body.append(ul);
   }
   body.append(el("p", null, p.details));
+  if (p.highlights && p.highlights.length) {
+    body.append(el("h4", "dlg-sub", "Key results"));
+    const hl = el("ul", "highlights"); p.highlights.forEach(t => hl.append(el("li", null, t))); body.append(hl);
+  }
+  if (p.tools && p.tools.length) {
+    const ul = el("ul", "tools"); p.tools.forEach(t => ul.append(el("li", null, t))); body.append(ul);
+  }
   if (p.process && p.process.length) {
     body.append(el("h4", "dlg-sub", "Process"));
     const ol = el("ol", "process");
@@ -843,17 +878,6 @@ function openProject(p) {
         pair.append(block);
       } else { pair = null; body.append(block); }
     });
-  }
-  if (p.highlights && p.highlights.length) {
-    if (p.process || p.tables) body.append(el("h4", "dlg-sub", "Key results"));
-    const hl = el("ul", "highlights"); p.highlights.forEach(t => hl.append(el("li", null, t))); body.append(hl);
-  }
-  if (p.outcomes && p.outcomes.items && p.outcomes.items.length) {
-    body.append(el("h4", "dlg-sub", p.outcomes.title || "Outcomes"));
-    const ol = el("ul", "highlights"); p.outcomes.items.forEach(t => ol.append(el("li", null, t))); body.append(ol);
-  }
-  if (p.tools && p.tools.length) {
-    const ul = el("ul", "tools"); p.tools.forEach(t => ul.append(el("li", null, t))); body.append(ul);
   }
   if (p.gallery && p.gallery.length) {
     const g = el("div", "gallery");
@@ -921,6 +945,16 @@ if (CONTENT.skills) {
   $("clearSkill").addEventListener("click", () => setType("All"));
 }
 CONTENT.now.forEach(t => $("nowList").append(el("li", null, t)));
+(CONTENT.photos || []).forEach((ph, i) => {
+  const li = el("li", "snap");
+  li.style.setProperty("--tilt", [-2.5, 1.8, -1.2, 2.4, -1.8, 1.2][i % 6] + "deg");
+  li.style.setProperty("--lift", (i % 2 ? 18 : 0) + "px");
+  const img = el("img"); img.src = ph.src; img.alt = ph.caption || "Photo of Sruthi"; img.loading = "lazy";
+  li.append(img);
+  if (ph.caption) li.append(el("span", null, ph.caption));
+  $("snaps").append(li);
+});
+if (!(CONTENT.photos || []).length) document.querySelector(".offduty").remove();
 $("email").textContent = CONTENT.email;
 $("email").href = "mailto:" + CONTENT.email;
 CONTENT.socials.forEach(s => {
