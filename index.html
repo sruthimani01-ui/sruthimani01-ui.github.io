@@ -81,7 +81,20 @@ nav .wrap { display: flex; justify-content: space-between; align-items: baseline
   min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center; padding: 5.5rem 1.5rem 4rem;
 }
-.avatar { width: clamp(108px, 13vw, 148px); height: auto; display: block; margin: 0 auto .5rem; }
+.avatar-wrap { position: relative; width: clamp(108px, 13vw, 148px); margin: 0 auto .5rem; cursor: default; }
+.avatar { width: 100%; height: auto; display: block; transition: transform .45s cubic-bezier(.3,1.6,.5,1); transform-origin: 50% 90%; }
+.bubble {
+  position: absolute; left: 76%; bottom: 70%; width: 82%; pointer-events: none;
+  opacity: 0; transform: scale(.35) rotate(-10deg); transform-origin: 14% 96%;   /* grows out of the tail */
+  transition: opacity .2s ease, transform .45s cubic-bezier(.3,1.6,.5,1);
+}
+.bubble img { display: block; width: 100%; height: auto; }
+.bubble span {
+  position: absolute; left: 0; right: 0; top: 38%; transform: translateY(-50%); text-align: center;
+  font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); color: var(--ink);
+}
+.avatar-wrap:hover .bubble, .avatar-wrap.say .bubble { opacity: 1; transform: none; }
+.avatar-wrap:hover .avatar, .avatar-wrap.say .avatar { transform: rotate(-3deg) translateY(-2px); }
 .name {
   font-family: var(--font-serif); font-style: italic; font-weight: 400;
   font-size: clamp(2.7rem, 8vw, 5.75rem); line-height: 1.02; letter-spacing: .005em;
@@ -352,7 +365,13 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
 
 <main id="top">
   <header class="hero">
-    <img class="avatar" src="images/avatar.png" alt="Illustrated portrait of Sruthi Manivannan" width="425" height="440">
+    <div class="avatar-wrap" id="avatarWrap">
+      <img class="avatar" src="images/avatar.png" alt="Illustrated portrait of Sruthi Manivannan" width="425" height="440">
+      <div class="bubble" aria-hidden="true">
+        <img src="images/speech-bubble.png" alt="" width="244" height="200">
+        <span>Hello!</span>
+      </div>
+    </div>
     <h1 class="name" id="name"></h1>
     <p class="tagline" id="tagline"></p>
     <a class="cta" href="#projects">
@@ -871,6 +890,15 @@ $("tagline").textContent = CONTENT.tagline;
 $("intro").textContent = CONTENT.intro;
 $("intro").hidden = !CONTENT.intro;
 $("footer").textContent = `© ${new Date().getFullYear()} ${CONTENT.name}`;
+
+/* avatar: tap on touch screens to say hello (mouse users get it on hover) */
+(() => {
+  const w = $("avatarWrap"); let t;
+  w.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse") return;
+    w.classList.add("say"); clearTimeout(t); t = setTimeout(() => w.classList.remove("say"), 2200);
+  });
+})();
 
 /* name: letters get thicker near the cursor, and lift gently on hover */
 const nameEl = $("name");
