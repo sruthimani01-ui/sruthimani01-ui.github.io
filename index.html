@@ -70,8 +70,7 @@ a { color: inherit; }
 
 /* nav */
 nav { position: absolute; top: 0; left: 0; right: 0; z-index: 5; }
-nav .wrap { display: flex; justify-content: space-between; align-items: baseline; padding-block: 1.5rem; gap: 1rem; flex-wrap: wrap; }
-.nav-name { font-weight: 600; text-decoration: none; }
+nav .wrap { display: flex; justify-content: flex-end; align-items: baseline; padding-block: 1.5rem; gap: 1rem; flex-wrap: wrap; }
 .nav-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
 .nav-links a { text-decoration: none; color: var(--muted); transition: color .2s; }
 .nav-links a:hover { color: var(--ink); }
@@ -355,9 +354,7 @@ footer { padding: 2rem 0 3rem; color: var(--muted); font-size: .9rem; border-top
 <body>
 
 <nav><div class="wrap">
-  <a class="nav-name" href="#top" id="navName"></a>
   <ul class="nav-links">
-    <li><a href="#projects">Work</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -885,7 +882,6 @@ function dots(names, cls) {
 }
 
 document.title = CONTENT.name + " | Portfolio";
-$("navName").textContent = CONTENT.name;
 $("tagline").textContent = CONTENT.tagline;
 $("intro").textContent = CONTENT.intro;
 $("intro").hidden = !CONTENT.intro;
